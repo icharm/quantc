@@ -11,7 +11,7 @@ Python version >= 3.0
 
 ## Api Catalog
 
-#### Common Info
+### Common Info
 Name | File Name | Chinese
 :----------- | :-----------: | -----------:
 Trading Date | tradeDate.py | 交易日历数据
@@ -22,7 +22,8 @@ Public Coded | N/A | 公共编码数据
 Intermediate Exchange Rate of RMB | N/A | 人民币汇率中间价
 
 ## Plan
-First to code common info api.
+First to code common info api. Obviously there is a lot of boring basic work to do, if you have any good idea,
+<a href="mailto:icharm.me@outlook.com">send mail to me</a>
 
 ## License
 MIT
