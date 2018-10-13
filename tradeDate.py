@@ -81,7 +81,37 @@ def callService(sdate, edate, status):
             dict[obj.date] = obj
         return dict
 
-# if __name__=="__main__":
-#     tmp = callService('2018-10-01', '2018-10-11', '')
-#     print(tmp)
+def certainDate(date):
+    ''' Get date info of certain date '''
+    return callService(date, date, '')
+
+def dateRange(sdate, edate):
+    ''' Get date info dict of certain date range
+    Args:
+        sdate: start date.
+        edate: end date.
+    Returns:
+        TradeDate object dict, eg: {date:TradeDateObject, ..., ...}
+    '''
+    return callService(sdate, edate, '')
+
+def tradingDayOfRange(sdate, edate):
+    ''' Get trading day dict of certain date range
+    Args:
+        sdate: start date.
+        edate: end date.
+    Returns:
+        TradeDate object dict, eg: {date:TradeDateObject, ..., ...}
+    '''
+    return callService(sdate, edate, 1)
+
+def closedDayOfRange(sdate, edate):
+    ''' Get trading day dict of certain date range
+    Args:
+        sdate: start date.
+        edate: end date.
+    Returns:
+        TradeDate object dict, eg: {date:TradeDateObject, ..., ...}
+    '''
+    return callService(sdate, edate, 0)
 
