@@ -10,14 +10,16 @@ Maybe I should make a database to cache some data to reduce call times.
 Python version >= 3.0
 
 ## Api Catalog
-Type | Name | File Name | Chinese
-:----------- | :-----------: | :-----------: | -----------:
-CommonInfo | Trading Date | tradeDate.py | 交易日历数据
- | Industry Classification | | 行业分类数据
- | Regional Classification | | 地区分类数据
- | Securities Category | | 证券类别编码数据
- | Public Coded | | 公共编码数据
- | Intermediate Exchange Rate of RMB | | 人民币汇率中间价
+
+#### Common Info
+Name | File Name | Chinese
+:----------- | :-----------: | -----------:
+Trading Date | tradeDate.py | 交易日历数据
+Industry Classification | N/A | 行业分类数据
+Regional Classification | N/A | 地区分类数据
+Securities Category | N/A | 证券类别编码数据
+Public Coded | N/A | 公共编码数据
+Intermediate Exchange Rate of RMB | N/A | 人民币汇率中间价
 
 ## Plan
 First to code common info api.
