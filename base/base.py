@@ -3,8 +3,8 @@ import http.client
 import urllib
 import json
 
-import config
-import log
+from base import config
+from base import log
 
 log = log.Log('base.py')
 

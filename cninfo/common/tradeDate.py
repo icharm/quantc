@@ -2,10 +2,10 @@
 import http.client
 import urllib
 import json
-import log
-import base
+from base import log
+from base import base
 
-log = log.Log('tradeDate.py')
+log = log.Log(__package__+__name__)
 
 class TradeDate:
     date = ''                #F001D  日期	        date
@@ -21,27 +21,28 @@ class TradeDate:
     previousTradingDay = ''  #F011D  前一交易日	    date	
     nextTradingDay = ''      #F012D  后一交易日	    date
 
-def parse(dict):
-    """
-    Parse dict to TradeDate object.
+    def __init__(self, dict):
+        self.parse(dict)
 
-    Args: dict
-    Returns: TradeDate object
-    """
-    obj = TradeDate()
-    obj.date = dict['F001D']
-    obj.isFirstDayOfWeek = dict['F002C']
-    obj.isLastDayOfWeek = dict['F003C']
-    obj.isFirstDayOfMonth = dict['F004C']
-    obj.isLastDayOfMonth = dict['F005C']
-    obj.isTradingDay = dict['F006C']
-    obj.isLastDayOfSeason = dict['F007C']
-    obj.isLastDayOfHalfYear = dict['F008C']
-    obj.isLastDayOfYear = dict['F009C']
-    obj.isBankTradingDay = dict['F010C']
-    obj.previousTradingDay = dict['F011D']
-    obj.nextTradingDay = dict['F012D']
-    return obj
+    def parse(self, dict):
+        """
+        Parse dict to TradeDate object.
+
+        Args: dict
+        Returns: TradeDate object
+        """
+        self.date = dict['F001D']
+        self.isFirstDayOfWeek = dict['F002C']
+        self.isLastDayOfWeek = dict['F003C']
+        self.isFirstDayOfMonth = dict['F004C']
+        self.isLastDayOfMonth = dict['F005C']
+        self.isTradingDay = dict['F006C']
+        self.isLastDayOfSeason = dict['F007C']
+        self.isLastDayOfHalfYear = dict['F008C']
+        self.isLastDayOfYear = dict['F009C']
+        self.isBankTradingDay = dict['F010C']
+        self.previousTradingDay = dict['F011D']
+        self.nextTradingDay = dict['F012D']
 
 def callService(sdate, edate, status):
     """
@@ -73,20 +74,27 @@ def callService(sdate, edate, status):
         log.info('No data form serivce')
         return None
     elif count == 1:
-        return parse(dataDict[0])
+        return TradeDate(dataDict[0])
     else:
         dict = {}
         for item in dataDict:
-            obj = parse(item)
+            obj = TradeDate(item)
             dict[obj.date] = obj
         return dict
 
 def certainDate(date):
-    ''' Get date info of certain date '''
+    ''' Get date info of certain date
+
+    Args:
+        date: certain date.
+    Returns:
+        TradeDate object.
+    '''
     return callService(date, date, '')
 
 def dateRange(sdate, edate):
     ''' Get date info dict of certain date range
+
     Args:
         sdate: start date.
         edate: end date.
@@ -97,6 +105,7 @@ def dateRange(sdate, edate):
 
 def tradingDayOfRange(sdate, edate):
     ''' Get trading day dict of certain date range
+
     Args:
         sdate: start date.
         edate: end date.
@@ -107,6 +116,7 @@ def tradingDayOfRange(sdate, edate):
 
 def closedDayOfRange(sdate, edate):
     ''' Get trading day dict of certain date range
+    
     Args:
         sdate: start date.
         edate: end date.

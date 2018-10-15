@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*- 
-import config
+from base import config
 import time
 
 class Log:

@@ -11,7 +11,7 @@ Python version >= 3.0
 
 ## Api Catalog
 
-### Common Info
+### Common Info (cninfo\common)
 Name | File Name | Chinese
 :----------- | :-----------: | -----------:
 Trading Date | tradeDate.py | 交易日历数据

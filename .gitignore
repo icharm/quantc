@@ -1,4 +1,4 @@
 /log/*
 /cache/*
-/__pycache__/*
 /.idea/*
+*.pyc
