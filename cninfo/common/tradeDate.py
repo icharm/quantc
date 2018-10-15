@@ -5,7 +5,7 @@ import json
 from base import log
 from base import base
 
-log = log.Log(__package__+__name__)
+log = log.Log(__name__)
 
 class TradeDate:
     date = ''                #F001D  日期	        date
@@ -58,7 +58,7 @@ def callService(sdate, edate, status):
         2. TradeDate Object.
         3. Dict: {date:TradeDateObject, ...}
     """
-    url = 'http://webapi.cninfo.com.cn/api/stock/p_public0001'
+    url = '/api/stock/p_public0001'
     params = {
         'sdate': sdate,
         'edate': edate,
@@ -116,7 +116,7 @@ def tradingDayOfRange(sdate, edate):
 
 def closedDayOfRange(sdate, edate):
     ''' Get trading day dict of certain date range
-    
+
     Args:
         sdate: start date.
         edate: end date.

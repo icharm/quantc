@@ -6,7 +6,7 @@ import json
 from base import config
 from base import log
 
-log = log.Log('base.py')
+log = log.Log(__name__)
 
 # Main entrance to get token
 def getAccessToken():
@@ -50,7 +50,7 @@ def getAccessTokenFromService():
 def callService(url, params):
     params['access_token'] = getAccessToken()
     paramsbyte = bytes(urllib.parse.urlencode(params), 'utf8')
-    response = urllib.request.urlopen(url, paramsbyte)
+    response = urllib.request.urlopen(config.base_url+url, paramsbyte)
     respContent = response.read()
     respContent = json.loads(respContent)
     respCode = respContent['resultcode']
