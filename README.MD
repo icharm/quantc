@@ -16,7 +16,7 @@ Name | File Name | Chinese
 :----------- | :-----------: | -----------:
 Trading Date | tradeDate.py | 交易日历数据
 Industry Classification | industryClass.py | 行业分类数据
-Regional Classification | N/A | 地区分类数据
+Regional Classification | regionClass.py | 地区分类数据
 Securities Category | N/A | 证券类别编码数据
 Public Coded | N/A | 公共编码数据
 Intermediate Exchange Rate of RMB | N/A | 人民币汇率中间价

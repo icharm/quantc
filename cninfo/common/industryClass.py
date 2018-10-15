@@ -11,7 +11,7 @@ class IndustryInfo:
     parentCode = ''         # PARENTCODE 父类编码	varchar	
     classCode = ''	        # SORTCODE 类目编码	varchar	
     className = ''	        # SORTNAME 类目名称	varchar	
-    classNameEnglish = ''   # F001V	类目名称（英文）	varchar	
+    classNameEn = ''   # F001V	类目名称（英文）	varchar	
                             # F002D	终止日期	DATE	
     industryCode = ''       # F003V	行业类型编码	varchar	
     industryType = ''       # F004V	行业类型	varchar
@@ -23,7 +23,7 @@ class IndustryInfo:
         self.parentCode = industry['PARENTCODE']
         self.classCode = industry['SORTCODE']
         self.className = industry['SORTNAME']
-        self.classNameEnglish = industry['F001V']
+        self.classNameEn = industry['F001V']
         self.industryCode = industry['F003V']
         self.industryType = industry['F004V']
 

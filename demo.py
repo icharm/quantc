@@ -3,6 +3,7 @@
 from base import dateutils
 from cninfo.common import tradeDate
 from cninfo.common import industryClass
+from cninfo.common import regionClass
 
 def todayIsTradingDay():
     '''判断今天是否是交易日'''
@@ -23,3 +24,12 @@ def getSwIndustryClass():
         print(key + ' => ' + objIndustryInfo.className)
 
 # getSwIndustryClass()
+
+def getAllRegionInfo():
+    '''获取所有地区分类信息'''
+    dict = regionClass.allRegionClass()
+    items = dict.items()
+    for key, objRegionInfo in items:
+        print(key + ' => ' + objRegionInfo.regionName)
+
+getAllRegionInfo()
