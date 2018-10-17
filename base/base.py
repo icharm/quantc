@@ -5,33 +5,22 @@ import json
 
 from base import config
 from base import log
+from base import cache
 
 log = log.Log(__name__)
 
-# Main entrance to get token
 def getAccessToken():
-    token = getAccessTokenFromCache()
+    '''Main entrance to get access_token, first, get token from cache file
+    if token is '', then update it from service.
+    '''
+    token = cache.get(config.token)
     if token.strip() == '':
         token = getAccessTokenFromService()
     return token
 
-# Cache token into file
-def cacheAccessToken(token):
-    path = config.token_path
-    file = open(path, 'w+')
-    file.write(token)
-    file.close()
-
-# Get token from cache file
-def getAccessTokenFromCache():
-    path = config.token_path
-    file = open(path, 'r')
-    token = file.read()
-    file.close()
-    return token
-
-# Get token from cninfo service
 def getAccessTokenFromService():
+    '''Get access_token form service and update it into cache.
+    '''
     url = 'http://webapi.cninfo.com.cn/api-cloud-platform/oauth2/token'
     params = {
         'grant_type' : 'client_credentials',
@@ -43,11 +32,18 @@ def getAccessTokenFromService():
     respContent = response.read()
     dataDict=json.loads(respContent)
     token=dataDict['access_token']
-    cacheAccessToken(token)
+    cache.set(config.token, token)
     return token
 
-# Main function to call cninfo service
 def callService(url, params):
+    '''Main function to call cninfo services.
+    Args:
+        url: api url. String
+        params: request params. Dict
+    Returns:
+        if service return code is not 200, then return None.
+        if call service success, then return response dict.
+    '''
     params['access_token'] = getAccessToken()
     paramsbyte = bytes(urllib.parse.urlencode(params), 'utf8')
     response = urllib.request.urlopen(config.base_url+url, paramsbyte)

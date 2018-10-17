@@ -4,6 +4,8 @@ import urllib
 import json
 from base import log
 from base import base
+from base import config
+from base import cache
 
 log = log.Log(__name__)
 

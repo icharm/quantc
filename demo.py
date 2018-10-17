@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*- 
 
 from base import dateutils
+from base import cache
 from cninfo.common import tradeDate
 from cninfo.common import industryClass
 from cninfo.common import regionClass
@@ -32,4 +33,10 @@ def getAllRegionInfo():
     for key, objRegionInfo in items:
         print(key + ' => ' + objRegionInfo.regionName)
 
-getAllRegionInfo()
+# getAllRegionInfo()
+params = {
+        'indtype' : 'industryType1',
+        'indcode' : ''
+    }
+#cache.setWithParams('industry', params, "111")
+content = cache.getWithParams('industry', params)

@@ -10,18 +10,32 @@ class Log:
         self.__postion = postion
 
     def info(self, msg):
-        self.saveLog(msg, 4)
+        self.save(msg, 4)
 
     def error(self, msg):
-        self.saveLog(msg, 1)
+        self.save(msg, 1)
 
     def debug(self, msg):
-        self.saveLog(msg, 3)
+        self.save(msg, 3)
 
     def warn(self, msg):
-        self.saveLog(msg, 2)
+        self.save(msg, 2)
 
-    def saveLog(self, msg, flag):
+    def save(self, msg, flag):
+        log = self.spliceLogContent(msg, flag)
+        if flag == 3:           # debug msg only printed in consle, don't save into log file.
+            print(log)
+            return
+        elif config.log_out:    # print log in console, if log_out flag is True in config.
+            print(log)
+        try:
+            f = open(config.log_path, 'a+', encoding='utf8')
+            f.write(log)
+            f.close()
+        except Exception as e:
+            print(str(e))
+
+    def spliceLogContent(self, msg, flag):
         if flag == 1:
             log = '[x]Error|'+ self.__postion + '|' + self.getTime(1) + '|' + msg +'\n'
         elif flag == 2:
@@ -30,12 +44,7 @@ class Log:
             log = '[*]Debug|'+ self.__postion + '|' + self.getTime(1) + '|'+ msg + '\n'
         else:
             log = '[+]Info|'+ self.__postion + '|' + self.getTime(1) + '|'+ msg + '\n'
-        try:
-            f = open(config.log_path, 'a+', encoding='utf8')
-            f.write(log)
-            f.close()
-        except Exception as e:
-            print(str(e))
+        return log
 
     #getTime according specify format
     def getTime(self, format):
