@@ -13,7 +13,7 @@ base_url = 'http://webapi.cninfo.com.cn'
 # --------- #
 # Cache file root path.
 cache_root_path = dirname(dirname(__file__)) + '\\cache\\'
-# Cache switch 
+# Cache switch , if True, cacheService function (in base.py) will read cache before call api service.
 enable_cache = True
 # Access token cache file name
 token = 'token'
@@ -27,5 +27,6 @@ cache_region = 'region_class'
 # --------- #
 # Log file path
 log_path = dirname(dirname(__file__))+'\\log\\log'
+# Console print log switch, if log_out is True, log class will print log into console and log file both.
 log_out = True
 

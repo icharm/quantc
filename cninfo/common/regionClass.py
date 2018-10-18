@@ -9,43 +9,43 @@ from base import config
 log = log.Log(__name__)
 
 class RegionInfo:
-    parentCode = '' # PARENTCODE	父类编码	varchar	
-    regionCode = '' # SORTCODE	地区编码	varchar	
-    regionName = '' # SORTNAME	地区名称	varchar	
-    regionNameEn = '' # F001V	地区名称（英文）	varchar	
+    parent_code = '' # PARENTCODE	父类编码	varchar	
+    region_code = '' # SORTCODE	地区编码	varchar	
+    region_name = '' # SORTNAME	地区名称	varchar	
+    region_name_en = '' # F001V	地区名称（英文）	varchar	
                     #F002D	终止日期	date
     
     def __init__(self, region):
         self.parse(region)
     
     def parse(self, region):
-        self.parentCode = region['PARENTCODE']
-        self.regionCode = region['SORTCODE']
-        self.regionName = region['SORTNAME']
-        self.regionNameEn = region['F001V']
+        self.parent_code = region['PARENTCODE']
+        self.region_code = region['SORTCODE']
+        self.region_name = region['SORTNAME']
+        self.region_name_en = region['F001V']
 
-def callService(regionId):
+def call(region_id):
     url = '/api/stock/p_public0003'
     params = {
-        'areaid' : regionId
+        'areaid' : region_id
     }
-    respContent = base.cacheService(config.cache_region, url, params)
-    if respContent == '':
+    resp = base.call_cache(config.cache_region, url, params)
+    if resp == '':
         return ''
-    respContent = json.loads(respContent)
-    records = respContent['records']
-    dataDict = {}
+    resp = json.loads(resp)
+    records = resp['records']
+    regions = {}
     for item in records:
         obj = RegionInfo(item)
-        dataDict[obj.regionCode] = obj
-    return dataDict
+        regions[obj.region_code] = obj
+    return regions
 
 def allRegionClass():
     '''Get all region classification info.
     '''
-    return callService('')
+    return call('')
 
-def centainRegion(regionCode):
+def centainRegion(region_code):
     '''
     Get region calssification belonging to certain class
 
@@ -56,4 +56,4 @@ def centainRegion(regionCode):
         RegionInfo object dict, eg: {regionCode: objRegionInfo, ...}
 
     '''
-    return callService(regionCode)
+    return call(region_code)

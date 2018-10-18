@@ -4,17 +4,17 @@ from base import log
 
 log = log.Log(__name__)
 
-def set(fileName, content):
+def set(filename, content):
     try:
-        file = open(config.cache_root_path + fileName, 'w+', encoding='utf8')
+        file = open(config.cache_root_path + filename, 'w+', encoding='utf8')
         file.write(content)
         file.close()
     except Exception as e:
         log.error(str(e))
 
-def get(fileName):
+def get(filename):
     try:
-        file = open(config.cache_root_path + fileName, 'r', encoding='utf8')
+        file = open(config.cache_root_path + filename, 'r', encoding='utf8')
         content = file.read()
         file.close()
         return content
@@ -22,10 +22,10 @@ def get(fileName):
         log.error(str(e))
         return ''
 
-def spliceFileName(fileName, params):
+def splice_filename(filename, params):
     '''According params dict to splice full cache file name.
     Args:
-        fileName: str, cache file name prefix.
+        filename: str, cache file name prefix.
         params: dict, request params or other dict.
     Return:
         string, full file name
@@ -35,27 +35,27 @@ def spliceFileName(fileName, params):
         if key == 'access_token':
             continue
         if value != '':
-            fileName = fileName + '_' + value
-    return fileName
+            filename = filename + '_' + value
+    return filename
 
-def setWithParams(fileName, params, content):
+def set_params(filename, params, content):
     '''According params dict to cache content.
     Args:
-        fileName: str, cache file name prefix.
+        filename: str, cache file name prefix.
         params: dict, request params or other dict.
         content: str, cache content.
     '''
     if isinstance(content, bytes):
         content = str(content, encoding='utf8')
-    return set(spliceFileName(fileName, params), content)
+    return set(splice_filename(filename, params), content)
 
-def getWithParams(fileName, params):
+def get_params(filename, params):
     '''According params dict to get cache content.
     Args:
-        fileName: str, cache file name prefix.
+        filename: str, cache file name prefix.
         params: dict, request params or other dict.
     Returns:
         str, cache content.
         if can't find cache file, then return ''
     '''
-    return get(spliceFileName(fileName, params))
+    return get(splice_filename(filename, params))

@@ -6,31 +6,31 @@ from cninfo.common import tradeDate
 from cninfo.common import industryClass
 from cninfo.common import regionClass
 
-def todayIsTradingDay():
+def today_is_trading_day():
     '''判断今天是否是交易日'''
-    today = dateutils.currentDate(dateutils.DF_FULL_NORMAL)
-    objTradeDate = tradeDate.certainDate(today)
-    if objTradeDate.isTradingDay:
+    today = dateutils.current(dateutils.DF_FULL_NORMAL)
+    objTradeDate = tradeDate.certain(today)
+    if objTradeDate.is_trading_day:
         print('Today is trading day')
     else:
         print('Today is closed day')
 
-# todayIsTradingDay()
+today_is_trading_day()
 
-def getSwIndustryClass():
+def get_sw_industry_class():
     '''打印申万行业分类信息'''
-    dict = industryClass.swIndustryClass()
+    dict = industryClass.sywg()
     items = dict.items()
     for key,objIndustryInfo in items:
         print(key + ' => ' + objIndustryInfo.className)
 
-# getSwIndustryClass()
+# get_sw_industry_class()
 
-def getAllRegionInfo():
+def get_all_region_info():
     '''获取所有地区分类信息'''
     dict = regionClass.allRegionClass()
     items = dict.items()
     for key, objRegionInfo in items:
         print(key + ' => ' + objRegionInfo.regionName)
 
-# getAllRegionInfo()
+# get_all_region_info()

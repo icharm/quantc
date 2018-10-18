@@ -8,18 +8,18 @@ from base import base
 log = log.Log(__name__)
 
 class TradeDate:
-    date = ''                #F001D  日期	        date
-    isFirstDayOfWeek = ''    #F002C  是否周初	    varchar	0-否；1-是；默认为0
-    isLastDayOfWeek = ''     #F003C  是否周末	    varchar	0-否；1-是；默认为0
-    isFirstDayOfMonth = ''	 #F004C  是否月初	    varchar	0-否；1-是；默认为0
-    isLastDayOfMonth = ''    #F005C	是否月末	    varchar	0-否；1-是；默认为0
-    isTradingDay = ''        #F006C	是否交易日	    varchar	0-否；1-是；默认为0
-    isLastDayOfSeason = ''   #F007C	是否季末	    varchar	0-否；1-是；默认为0
-    isLastDayOfHalfYear = '' #F008C	是否半年末	    varchar	0-否；1-是；默认为0
-    isLastDayOfYear = ''     #F009C  是否年末	    varchar	0-否；1-是；默认为0
-    isBankTradingDay = ''    #F010C	是否银行间交易日 varchar 0-否；1-是；默认为0
-    previousTradingDay = ''  #F011D  前一交易日	    date	
-    nextTradingDay = ''      #F012D  后一交易日	    date
+    date = ''                   #F001D  日期	        date
+    is_first_day_week = ''      #F002C  是否周初	    varchar	0-否；1-是；默认为0
+    is_last_day_week = ''       #F003C  是否周末	    varchar	0-否；1-是；默认为0
+    is_first_day_month = ''	    #F004C  是否月初	    varchar	0-否；1-是；默认为0
+    is_last_day_month = ''      #F005C	是否月末	    varchar	0-否；1-是；默认为0
+    is_trading_day = ''         #F006C	是否交易日	    varchar	0-否；1-是；默认为0
+    is_last_day_season = ''     #F007C	是否季末	    varchar	0-否；1-是；默认为0
+    is_last_day_halfyear = ''   #F008C	是否半年末	    varchar	0-否；1-是；默认为0
+    is_last_day_year = ''       #F009C  是否年末	    varchar	0-否；1-是；默认为0
+    is_bank_trading_day = ''    #F010C	是否银行间交易日 varchar 0-否；1-是；默认为0
+    previous_trading_day = ''   #F011D  前一交易日	    date	
+    next_trading_day = ''       #F012D  后一交易日	    date
 
     def __init__(self, dict):
         self.parse(dict)
@@ -32,19 +32,19 @@ class TradeDate:
         Returns: TradeDate object
         """
         self.date = dict['F001D']
-        self.isFirstDayOfWeek = dict['F002C']
-        self.isLastDayOfWeek = dict['F003C']
-        self.isFirstDayOfMonth = dict['F004C']
-        self.isLastDayOfMonth = dict['F005C']
-        self.isTradingDay = dict['F006C']
-        self.isLastDayOfSeason = dict['F007C']
-        self.isLastDayOfHalfYear = dict['F008C']
-        self.isLastDayOfYear = dict['F009C']
-        self.isBankTradingDay = dict['F010C']
-        self.previousTradingDay = dict['F011D']
-        self.nextTradingDay = dict['F012D']
+        self.is_first_day_week = dict['F002C']
+        self.is_last_day_week = dict['F003C']
+        self.is_first_day_month = dict['F004C']
+        self.is_last_day_month = dict['F005C']
+        self.is_trading_day = dict['F006C']
+        self.is_last_day_season = dict['F007C']
+        self.is_last_day_halfyear = dict['F008C']
+        self.is_last_day_year = dict['F009C']
+        self.is_bank_trading_day = dict['F010C']
+        self.previous_trading_day = dict['F011D']
+        self.next_trading_day = dict['F012D']
 
-def callService(sdate, edate, status):
+def call(sdate, edate, status):
     """
     Query cninfo trading date api by call base.py callService method.
 
@@ -65,25 +65,25 @@ def callService(sdate, edate, status):
     }
     if status != '':
         params['state'] = status
-    respContent = base.callService(url, params)
-    if respContent == '':
+    resp = base.call(url, params)
+    if resp == '':
         return ''
-    respContent = json.loads(respContent)
-    dataDict = respContent['records']
-    count = respContent['count']
+    resp = json.loads(resp)
+    records = resp['records']
+    count = resp['count']
     if count == 0:
         log.info('No data form serivce')
         return ''
     elif count == 1:
-        return TradeDate(dataDict[0])
+        return TradeDate(records[0])
     else:
-        dict = {}
-        for item in dataDict:
+        trade_dates = {}
+        for item in records:
             obj = TradeDate(item)
-            dict[obj.date] = obj
-        return dict
+            trade_dates[obj.date] = obj
+        return trade_dates
 
-def certainDate(date):
+def certain(date):
     ''' Get date info of certain date
 
     Args:
@@ -91,9 +91,9 @@ def certainDate(date):
     Returns:
         TradeDate object.
     '''
-    return callService(date, date, '')
+    return call(date, date, '')
 
-def dateRange(sdate, edate):
+def range(sdate, edate):
     ''' Get date info dict of certain date range
 
     Args:
@@ -102,9 +102,9 @@ def dateRange(sdate, edate):
     Returns:
         TradeDate object dict, eg: {date:TradeDateObject, ..., ...}
     '''
-    return callService(sdate, edate, '')
+    return call(sdate, edate, '')
 
-def tradingDayOfRange(sdate, edate):
+def trading_range(sdate, edate):
     ''' Get trading day dict of certain date range
 
     Args:
@@ -113,9 +113,9 @@ def tradingDayOfRange(sdate, edate):
     Returns:
         TradeDate object dict, eg: {date:TradeDateObject, ..., ...}
     '''
-    return callService(sdate, edate, 1)
+    return call(sdate, edate, 1)
 
-def closedDayOfRange(sdate, edate):
+def closed_range(sdate, edate):
     ''' Get trading day dict of certain date range
 
     Args:
@@ -124,5 +124,5 @@ def closedDayOfRange(sdate, edate):
     Returns:
         TradeDate object dict, eg: {date:TradeDateObject, ..., ...}
     '''
-    return callService(sdate, edate, 0)
+    return call(sdate, edate, 0)
 

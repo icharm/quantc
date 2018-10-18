@@ -4,7 +4,7 @@ import time
 DF_FULL_NORMAL = '%Y-%m-%d'
 DTF_FULL_NORMAL = '%Y-%m-%d %X'
 
-def currentDate(format):
+def current(format):
     ''' Get current date, no time
     Agrs: 
         format: date format, for example: '%Y-%m-%d' or '%Y%m%d' or '%Y/%m/%d' ...

@@ -10,43 +10,43 @@ from base import cache
 log = log.Log(__name__)
 
 class IndustryInfo:
-    parentCode = ''         # PARENTCODE 父类编码	varchar	
-    classCode = ''	        # SORTCODE 类目编码	varchar	
-    className = ''	        # SORTNAME 类目名称	varchar	
-    classNameEn = ''   # F001V	类目名称（英文）	varchar	
+    parent_code = ''         # PARENTCODE 父类编码	varchar	
+    class_code = ''	        # SORTCODE 类目编码	varchar	
+    class_name = ''	        # SORTNAME 类目名称	varchar	
+    class_name_en = ''   # F001V	类目名称（英文）	varchar	
                             # F002D	终止日期	DATE	
-    industryCode = ''       # F003V	行业类型编码	varchar	
-    industryType = ''       # F004V	行业类型	varchar
+    industry_code = ''       # F003V	行业类型编码	varchar	
+    industry_type = ''       # F004V	行业类型	varchar
 
     def __init__(self, industry):
         self.parse(industry)
 
     def parse(self, industry):
-        self.parentCode = industry['PARENTCODE']
-        self.classCode = industry['SORTCODE']
-        self.className = industry['SORTNAME']
-        self.classNameEn = industry['F001V']
-        self.industryCode = industry['F003V']
-        self.industryType = industry['F004V']
+        self.parent_code = industry['PARENTCODE']
+        self.class_code = industry['SORTCODE']
+        self.class_name = industry['SORTNAME']
+        self.class_name_en = industry['F001V']
+        self.industry_code = industry['F003V']
+        self.industry_type = industry['F004V']
 
-def callService(industryType, industryCode):
+def call(industry_type, industry_code):
     url = '/api/stock/p_public0002'
     params = {
-        'indtype' : industryType,
-        'indcode' : industryCode
+        'indtype' : industry_type,
+        'indcode' : industry_code
     }
-    respContent = base.cacheService(config.cache_industry, url, params)
-    if respContent == '':
+    resp = base.call_cache(config.cache_industry, url, params)
+    if resp == '':
         return ''
-    respContent = json.loads(respContent)
-    records = respContent['records']
-    recordDict = {}
+    resp = json.loads(resp)
+    records = resp['records']
+    industries = {}
     for item in records:
         obj = IndustryInfo(item)
-        recordDict[obj.classCode] = obj
-    return recordDict
+        industries[obj.class_code] = obj
+    return industries
 
-def industryClass(industryType):
+def industry_class(industry_type):
     ''' Get all industry class info by industryType
     
     Args:
@@ -63,15 +63,15 @@ def industryClass(industryType):
     Returns:
         IndustryInfo object dict, eg: {classCode : objIndustryInfo, ... }
     '''
-    return callService(industryType, '')
+    return call(industry_type, '')
 
-def swIndustryClass():
+def sywg():
     '''Get Shen Yin Wang Guo industry class info.
     
     Returns:
         IndustryInfo object dict, eg: {classCode : objIndustryInfo, ... }
     '''
-    return callService('008003', '')
+    return call('008003', '')
 
 
 
