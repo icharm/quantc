@@ -29,9 +29,9 @@ def token_service():
     }
     paramsbyte = bytes(urllib.parse.urlencode(params), 'utf8')
     response = urllib.request.urlopen(url, paramsbyte)
-    respContent = response.read()
-    dataDict=json.loads(respContent)
-    token=dataDict['access_token']
+    resp = response.read()
+    data = json.loads(resp)
+    token=data['access_token']
     cache.set(config.token, token)
     return token
 
@@ -47,20 +47,20 @@ def call(url, params):
     params['access_token'] = token()
     paramsbyte = bytes(urllib.parse.urlencode(params), 'utf8')
     response = urllib.request.urlopen(config.base_url+url, paramsbyte)
-    respContentStr = response.read()
-    respContent = json.loads(respContentStr)
-    respCode = respContent['resultcode']
+    respStr = response.read()
+    resp = json.loads(respStr)
+    respCode = resp['resultcode']
     if respCode == 401 or respCode == 404 or respCode == 405:
         log.debug('Token invalid. Updating it from service')
         token_service()
         return call(url, params)
     elif respCode != 200:
-        log.error('Api调用出错：' + respContent['resultmsg'])
+        log.error('Api调用出错：' + resp['resultmsg'])
         return ''
     else:
-        return respContentStr
+        return respStr
 
-def call_cache(fileName, url, params):
+def call_cache(filename, url, params):
     '''Before call service, get data from cache first, if not data from cache, 
     then call service and cache it.
     Args: 
@@ -71,13 +71,13 @@ def call_cache(fileName, url, params):
         Response content: Json String
         if not any data from cache and service, then return ''.
     '''
-    respContent = cache.getWithParams(fileName, params)
+    respContent = cache.get_params(filename, params)
     if respContent != '' and config.enable_cache:
-        log.debug('Return cache data, from :' + cache.spliceFileName(fileName, params))
+        log.debug('Return cache data, from :' + cache.splice_filename(filename, params))
         return respContent
     respContent = call(url, params)
     if respContent != '':
-        cache.setWithParams(fileName, params, respContent)
+        cache.set_params(filename, params, respContent)
     return respContent
         
     

@@ -21,6 +21,8 @@ token = 'token'
 cache_industry = 'industry_class'
 # Region classification cache file name
 cache_region = 'region_class'
+# Securities category cache file name
+cache_securities = ' securities_category'
 
 # --------- #
 #   Log     #
