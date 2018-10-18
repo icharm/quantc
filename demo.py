@@ -34,9 +34,3 @@ def getAllRegionInfo():
         print(key + ' => ' + objRegionInfo.regionName)
 
 # getAllRegionInfo()
-params = {
-        'indtype' : 'industryType1',
-        'indcode' : ''
-    }
-#cache.setWithParams('industry', params, "111")
-content = cache.getWithParams('industry', params)

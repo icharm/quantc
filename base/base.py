@@ -41,21 +41,44 @@ def callService(url, params):
         url: api url. String
         params: request params. Dict
     Returns:
-        if service return code is not 200, then return None.
-        if call service success, then return response dict.
+        if service return code is not 200, then return ''.
+        if call service success, then return response Json string.
     '''
     params['access_token'] = getAccessToken()
     paramsbyte = bytes(urllib.parse.urlencode(params), 'utf8')
     response = urllib.request.urlopen(config.base_url+url, paramsbyte)
-    respContent = response.read()
-    respContent = json.loads(respContent)
+    respContentStr = response.read()
+    respContent = json.loads(respContentStr)
     respCode = respContent['resultcode']
     if respCode == 401 or respCode == 404 or respCode == 405:
-        log.debug('Token invalid. Updating it form service')
+        log.debug('Token invalid. Updating it from service')
         getAccessTokenFromService()
         return callService(url, params)
     elif respCode != 200:
         log.error('Api调用出错：' + respContent['resultmsg'])
-        return None
+        return ''
     else:
+        return respContentStr
+
+def cacheService(fileName, url, params):
+    '''Before call service, get data from cache first, if not data from cache, 
+    then call service and cache it.
+    Args: 
+        fileName: cache file name.
+        url: service api url.
+        params: request params. Dict
+    Returns:
+        Response content: Json String
+        if not any data from cache and service, then return ''.
+    '''
+    respContent = cache.getWithParams(fileName, params)
+    if respContent != '' and config.enable_cache:
+        log.debug('Return cache data, from :' + cache.spliceFileName(fileName, params))
         return respContent
+    respContent = callService(url, params)
+    if respContent != '':
+        cache.setWithParams(fileName, params, respContent)
+    return respContent
+        
+    
+

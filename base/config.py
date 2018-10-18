@@ -18,7 +18,9 @@ enable_cache = True
 # Access token cache file name
 token = 'token'
 # Industry classification cache file name
-industryClass = 'industry_class'
+cache_industry = 'industry_class'
+# Region classification cache file name
+cache_region = 'region_class'
 
 # --------- #
 #   Log     #

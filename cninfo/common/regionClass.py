@@ -4,6 +4,7 @@ import urllib
 import json
 from base import log
 from base import base
+from base import config
 
 log = log.Log(__name__)
 
@@ -28,15 +29,16 @@ def callService(regionId):
     params = {
         'areaid' : regionId
     }
-    respContent = base.callService(url, params)
-    if respContent == None:
-        return None
-    dataDict = respContent['records']
-    dict = {}
-    for item in dataDict:
+    respContent = base.cacheService(config.cache_region, url, params)
+    if respContent == '':
+        return ''
+    respContent = json.loads(respContent)
+    records = respContent['records']
+    dataDict = {}
+    for item in records:
         obj = RegionInfo(item)
-        dict[obj.regionCode] = obj
-    return dict
+        dataDict[obj.regionCode] = obj
+    return dataDict
 
 def allRegionClass():
     '''Get all region classification info.

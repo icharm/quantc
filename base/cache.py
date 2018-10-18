@@ -30,8 +30,10 @@ def spliceFileName(fileName, params):
     Return:
         string, full file name
     '''
-    values = params.values()
-    for value in values:
+    items = params.items()
+    for key,value in items:
+        if key == 'access_token':
+            continue
         if value != '':
             fileName = fileName + '_' + value
     return fileName
@@ -43,6 +45,8 @@ def setWithParams(fileName, params, content):
         params: dict, request params or other dict.
         content: str, cache content.
     '''
+    if isinstance(content, bytes):
+        content = str(content, encoding='utf8')
     return set(spliceFileName(fileName, params), content)
 
 def getWithParams(fileName, params):

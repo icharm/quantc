@@ -35,15 +35,16 @@ def callService(industryType, industryCode):
         'indtype' : industryType,
         'indcode' : industryCode
     }
-    respContent = base.callService(url, params)
-    if respContent == None:
-        return None
-    dataDict = respContent['records']
-    dict = {}
-    for item in dataDict:
+    respContent = base.cacheService(config.cache_industry, url, params)
+    if respContent == '':
+        return ''
+    respContent = json.loads(respContent)
+    records = respContent['records']
+    recordDict = {}
+    for item in records:
         obj = IndustryInfo(item)
-        dict[obj.classCode] = obj
-    return dict
+        recordDict[obj.classCode] = obj
+    return recordDict
 
 def industryClass(industryType):
     ''' Get all industry class info by industryType

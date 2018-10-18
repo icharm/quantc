@@ -66,13 +66,14 @@ def callService(sdate, edate, status):
     if status != '':
         params['state'] = status
     respContent = base.callService(url, params)
-    if respContent == None:
-        return None
+    if respContent == '':
+        return ''
+    respContent = json.loads(respContent)
     dataDict = respContent['records']
     count = respContent['count']
     if count == 0:
         log.info('No data form serivce')
-        return None
+        return ''
     elif count == 1:
         return TradeDate(dataDict[0])
     else:
