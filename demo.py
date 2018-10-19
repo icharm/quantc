@@ -6,6 +6,7 @@ from cninfo.common import TradeDate
 from cninfo.common import IndustryClass
 from cninfo.common import RegionClass
 from cninfo.common import SecuritiesCategory
+from cninfo.common import IndustryStocks
 
 def today_is_trading_day():
     '''判断今天是否是交易日'''
@@ -37,9 +38,20 @@ def all_region_info():
 # all_region_info()
 
 def all_securities():
+    ''' 获取所有证券分类信息'''
     securities = SecuritiesCategory.securities()
     items = securities.items()
     for key, obj in items:
         print(key + ' => ' + obj.name)
 
 # all_securities()
+
+def stocks_certain_industry():
+    '''获取申万调味乳制品分类下股票列表'''
+    stocks = IndustryStocks.sw_industry_stocks('S340402')
+    if stocks != '':
+        items = stocks.items()
+        for key, obj in items:
+                print(key + ' => ' + obj.name)
+
+# stocks_certain_industry()
