@@ -2,11 +2,18 @@
 import http.client
 import urllib
 import json
+import Stock
 from base import log
 from base import base
 from base import config
 from base import cache
-from model import Stock
+
+def parse(stock_dict):
+    '''Parse api return records to Stock object.
+    '''
+    stock = Stock.Stock()
+    stock.code = stock_dict['SECCODE']
+    stock.name = stock_dict['SECNAME']
 
 def call_industry(platetype, platecode, abtype):
     '''Query stock list belong to a certain industry classification.
