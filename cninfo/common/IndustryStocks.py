@@ -2,18 +2,11 @@
 import http.client
 import urllib
 import json
-import Stock
+from cninfo import D
 from base import log
 from base import base
 from base import config
 from base import cache
-
-def parse(stock_dict):
-    '''Parse api return records to Stock object.
-    '''
-    stock = Stock.Stock()
-    stock.code = stock_dict['SECCODE']
-    stock.name = stock_dict['SECNAME']
 
 def call_industry(platetype, platecode, abtype):
     '''Query stock list belong to a certain industry classification.
@@ -31,7 +24,7 @@ def call_industry(platetype, platecode, abtype):
         abtype: A: A股, B: B股
     Returns:
         1. no data, return ''
-        2. Stock object dict. eg: {code:obj_Stock, ...}
+        2. Stocks list. eg: [stock1_dict, stock2_dict, ...]
     '''
     url = '/api/stock/p_public0004'
     params = {
@@ -44,11 +37,7 @@ def call_industry(platetype, platecode, abtype):
         return ''
     resp = json.loads(resp)
     records = resp['records']
-    stocks = {}
-    for record in records:
-        obj = Stock.Stock(record)
-        stocks[obj.code] = obj
-    return stocks
+    return D.Stock.parse_nc(records)
 
 def sw_industry_stocks(code):
     '''Get stocks under a certain sywg industry classification.
@@ -56,7 +45,7 @@ def sw_industry_stocks(code):
         code: classification code of sywg industry.
     Returns:
         1. no data, return ''
-        2. Stock object dict. eg: {code:obj_Stock, ...}
+        2. Stocks list. eg: [stock1_dict, stock2_dict, ...]
     '''
     return call_industry('137004', code, '')
 
@@ -66,7 +55,7 @@ def sw_industry_stocks_a(code):
         code: classification code of sywg industry.
     Returns:
         1. no data, return ''
-        2. Stock object dict. eg: {code:obj_Stock, ...}
+        2. Stocks list. eg: [stock1_dict, stock2_dict, ...]
     '''
     return call_industry('137004', code, 'A')
 
@@ -76,6 +65,6 @@ def sw_industry_stocks_b(code):
         code: classification code of sywg industry.
     Returns:
         1. no data, return ''
-        2. Stock object dict. eg: {code:obj_Stock, ...}
+        2. Stocks list. eg: [stock1_dict, stock2_dict, ...]
     '''
     return call_industry('137004', code, 'B')

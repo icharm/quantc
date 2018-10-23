@@ -11,29 +11,27 @@ from cninfo.common import IndustryStocks
 def today_is_trading_day():
     '''判断今天是否是交易日'''
     today = dateutils.current(dateutils.DF_FULL_NORMAL)
-    objTradeDate = TradeDate.certain(today)
-    if objTradeDate.is_trading_day:
+    day = TradeDate.certain(today)
+    if day['is_trading_day']:
         print('Today is trading day')
     else:
         print('Today is closed day')
 
-# today_is_trading_day()
+today_is_trading_day()
 
 def sw_industry_class():
     '''打印申万行业分类信息'''
-    dict = IndustryClass.sywg()
-    items = dict.items()
-    for key,objIndustryInfo in items:
-        print(key + ' => ' + objIndustryInfo.className)
+    ls = IndustryClass.sywg()
+    for dt in ls:
+        print(dt['code'] + ' => ' + dt['name'])
 
 # sw_industry_class()
 
 def all_region_info():
     '''获取所有地区分类信息'''
-    dict = RegionClass.allRegionClass()
-    items = dict.items()
-    for key, objRegionInfo in items:
-        print(key + ' => ' + objRegionInfo.regionName)
+    regions = RegionClass.all()
+    for region in regions:
+        print(region['code'] + ' => ' + region['name'])
 
 # all_region_info()
 
@@ -46,12 +44,12 @@ def all_securities():
 
 # all_securities()
 
-def stocks_certain_industry():
-    '''获取申万调味乳制品分类下股票列表'''
-    stocks = IndustryStocks.sw_industry_stocks('S340402')
-    if stocks != '':
-        items = stocks.items()
-        for key, obj in items:
-                print(key + ' => ' + obj.name)
+# def stocks_certain_industry():
+#     '''获取申万调味乳制品分类下股票列表'''
+#     stocks = IndustryStocks.sw_industry_stocks('S340402')
+#     if stocks != '':
+#         items = stocks.items()
+#         for key, obj in items:
+#                 print(key + ' => ' + obj.name)
 
 # stocks_certain_industry()
