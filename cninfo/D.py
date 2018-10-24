@@ -38,7 +38,7 @@ class Day:
         if count <= 0:
             return ''
         elif count == 1:
-            return Day.parse(records)
+            return Day.parse(records[0])
         else:
             day_list = []
             for record in records:
@@ -69,7 +69,7 @@ class Industry:
         if count <= 0:
             return ''
         elif count == 1:
-            return Industry.parse(industries)
+            return Industry.parse(industries[0])
         else:
             industry_list = []
             for industry in industries:
@@ -98,7 +98,7 @@ class Region:
         if count <= 0:
             return ''
         elif count == 1:
-            return Region.parse(regions)
+            return Region.parse(regions[0])
         else:
             region_list = []
             for region in regions:
@@ -108,6 +108,20 @@ class Region:
 class Stock:
     '''
     Stock basic info.
+    Field list:
+        code : 证券代码
+        name : 证券简称
+        org  :  机构名称
+        type_code : 证券类别编码
+        type : 证券类别
+        market_code : 交易市场编码
+        market : 交易市场
+        start_date : 上市日期
+        start_count : 初始上市数量
+        attribute_code : 代码属性编码
+        attribute : 代码属性
+        status_code : 上市状态编码
+        status :上市状态
     '''
     @staticmethod
     def parse_nc(records):
@@ -120,3 +134,37 @@ class Stock:
             stock['code'] = record['SECCODE']
             stock['name'] = record['SECNAME']
         return stocks
+
+    @staticmethod
+    def parse(stock):
+        stock = {}           
+        stock['code'] = stock['SECCODE']        # SECCODE	证券代码	varchar
+        stock['name'] = stock['SECNAME']        # SECNAME	证券简称	varchar	
+        stock['org'] = stock['ORGNAME']         # ORGNAME	机构名称	varchar	
+        stock['type_code'] = stock['F002V']     # F002V	证券类别编码	varchar	
+        stock['type'] = stock['F003V']          # F003V	证券类别	varchar	
+        stock['market_code'] = stock['F004V']   # F004V	交易市场编码	varchar	
+        stock['market'] = stock['F005V']        # F005V	交易市场	varchar	
+        stock['start_date'] = stock['F006D']    # F006D	上市日期	datetime	
+        stock['start_count'] = stock['F007N']   # F007N 初始上市数量	decimal	单位：股
+        stock['attribute_code'] = stock['F008V']# F008V	代码属性编码	varchar	
+        stock['attribute'] = stock['F009V']     # F009V	代码属性	varchar	
+        stock['status_code'] = stock['F010V']   # F010V	上市状态编码	varchar	
+        stock['status'] = stock['F011V']        # F011V	上市状态	varchar	
+                                                # Below field ignored
+                                                # F001V	拼音简称	varchar	
+                                                # F012N	面值	decimal	单位：元
+                                                # F013V	ISIN	varchar
+        return stock
+    
+    @staticmethod
+    def parses(stocks, count):
+        if count <= 0:
+            return ''
+        elif count == 1:
+            return Region.parse(stocks[0])
+        else:
+            stock_list = []
+            for stock in stocks:
+                stock_list.append(Region.parse(stock))
+            return stock_list
