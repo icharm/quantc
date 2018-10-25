@@ -22,8 +22,10 @@ Stock List Of Industry Classification | IndustryStocks.py | 行业股票列表
 Public Coded | N/A | 公共编码数据
 Intermediate Exchange Rate of RMB | N/A | 人民币汇率中间价
 
-### Stock Info (cninfo\stock)
-
+### Basic Info (cninfo\basic)
+Name | File Name | Chinese
+:----------- | :-----------: | -----------:
+Corporation info | Corporation.py | 上市公司基本信息
 
 ## Plan
 First to code common info api. Obviously there is a lot of boring basic work to do, if you have any good idea,

@@ -32,6 +32,7 @@ class Day:
         day['is_bank_trading_day'] = record['F010C']    #F010C	是否银行间交易日 varchar 0-否；1-是；默认为0
         day['previous_trading_day'] = record['F011D']   #F011D  前一交易日	    date	
         day['next_trading_day'] = record['F012D']       #F012D  后一交易日	    date
+        return day
     
     @staticmethod
     def parses(records, count):
@@ -133,6 +134,7 @@ class Stock:
             stock = {}
             stock['code'] = record['SECCODE']
             stock['name'] = record['SECNAME']
+            stocks.append(stock)
         return stocks
 
     @staticmethod
@@ -168,3 +170,77 @@ class Stock:
             for stock in stocks:
                 stock_list.append(Region.parse(stock))
             return stock_list
+
+class Corporation:
+    '''
+    Corporation basic info.
+    Field list:
+
+    '''
+    @staticmethod
+    def parse(record):
+        corp = {}
+        corp['org_id'] = record['ORGID']        # ORGID	机构ID	varchar	
+        corp['org_name'] = record['ORGNAME']    # ORGNAME机构名称	varchar	
+        #F001V	英文名称	varchar	
+        #F002V	英文简称	varchar	
+        #F003V	法人代表	varchar	
+        #F004V	注册地址	varchar	
+        #F005V	办公地址	varchar	
+        #F006V	邮政编码	varchar	
+        corp['reg_capital'] = record['F007N']   # F007N	注册资金	varchar	
+        corp['currency_code'] = record['F008V'] # F008V	货币编码	varchar	
+        corp['currency_name'] = record['F009V'] # F009V	货币名称	varchar	
+        corp['setup_date'] = record['F010D']    # F010D	成立日期	DATE	
+        corp['website'] = record['F011V']       # F011V	机构网址	varchar	
+        #F012V	电子信箱	varchar	
+        #F013V	联系电话	varchar	
+        #F014V	联系传真	varchar	
+        #F015V	主营业务	varchar	
+        #F016V	经营范围	varchar	
+        #F017V	机构简介/公司成立概况	varchar	
+        #F018V	董事会秘书	varchar	
+        #F019V	董秘联系电话	varchar	
+        #F020V	董秘联系传真	varchar	
+        #F021V	董秘电子邮箱	varchar	
+        #F022V	证券事务代表	varchar	
+        corp['status_code'] = record['F023V']   # F023V	上市状态编码	varchar	
+        corp['status'] = record['F024V']        # F024V	上市状态	varchar	
+        corp['province_code'] = record['F025V'] # F025V	所属省份编码	varchar	
+        corp['province'] = record['F026V']      # F026V	所属省份	varchar	
+        corp['city_code'] = record['F027V']     # F027V	所属城市编码	varchar	
+        corp['city'] = record['F028V']          # F028V	所属城市	varchar	
+        corp['sec_lv1_code'] = record['F029V']  # F029V	证监会一级行业编码	varchar	
+        corp['sec_lv1_name'] = record['F030V']  # F030V	证监会一级行业名称	varchar	
+        corp['sec_lv2_code'] = record['F031V']  # F031V	证监会二级行业编码	varchar	
+        corp['sec_lv2_name'] = record['F032V']  # F032V	证监会二级行业名称	varchar	
+        corp['sw_lv1_code'] = record['F033V']   # F033V	申万行业分类一级编码	varchar	
+        corp['sw_lv1_name'] = record['F034V']   # F034V	申万行业分类一级名称	varchar	
+        corp['sw_lv2_code'] = record['F035V']   # F035V	申万行业分类二级编码	varchar	
+        corp['sw_lv2_name'] = record['F036V']   # F036V	申万行业分类二级名称	varchar	
+        corp['sw_lv3_code'] = record['F037V']   # F037V	申万行业分类三级编码	varchar	
+        corp['sw_lv3_name'] = record['F038V']   # F038V	申万行业分类三级名称	varchar	
+        #F039V	会计师事务所	varchar	
+        #F040V	律师事务所	varchar	
+        #F041V	董事长	varchar	
+        #F042V	总经理	varchar	
+        #F043V	公司独立董事(现任)	varchar	多名
+        corp['index_selected'] = record['F044V']    # F044V	入选指数	varchar	多个
+        corp['latest_report_date'] = record['F045V'] #F045V	最新报告预约日期	varchar	
+        #F046V	保荐机构	varchar	多个
+        #F047V	主承销商	varchar	
+        corp['code'] = record['SECCODE']        # SECCODE	股票代码	varchar	
+        corp['name'] = record['SECNAME']        # SECNAME	股票简称	varchar
+        return corp
+
+    @staticmethod
+    def parses(records, count):
+        if count <= 0:
+            return ''
+        elif count == 1:
+            return Corporation.parse(records[0])
+        else:
+            corp_list = []
+            for corp in records:
+                corp_list.append(Corporation.parse(corp))
+            return corp_list
