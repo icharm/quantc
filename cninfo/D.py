@@ -244,3 +244,135 @@ class Corporation:
             for corp in records:
                 corp_list.append(Corporation.parse(corp))
             return corp_list
+
+class BalanceSheet:
+    '''
+    Balance sheet data.
+    '''
+    @staticmethod
+    def parse(record):
+        sheet = {}
+        sheet['name'] = record['SECNAME'] # SECNAME	证券简称	varchar	
+        sheet['code'] = record['SECCODE'] # SECCODE	证券代码	varchar	
+        sheet['org'] = record['ORGNAME']  # ORGNAME	机构名称	varchar	
+        sheet['bulletin_date'] = record['DECLAREDATE'] # DECLAREDATE	公告日期	date	
+        sheet['end_date'] = record['ENDDATE'] # ENDDATE	截止日期	date	
+        sheet['year'] = record['F001D'] # F001D	报告年度	date	
+        # F002V	合并类型编码	varchar	
+        # F003V	合并类型	varchar	
+        # F004V	报表来源编码	varchar	
+        # F005V	报表来源	varchar	
+        sheet['monetay_funds'] = record['F006N'] # F006N	货币资金(现金储备)	decimal	单位：元 
+        sheet['financial_assets'] = record['F007N'] # F007N	以公允价值计量且其变动计入当期损益的金融资产	decimal	单位：元
+        sheet['bill_receivable']  = record['F008N'] # F008N	应收票据	decimal	单位：元
+        sheet['accounts_receivable'] = record['F009N'] # F009N	应收账款	decimal	单位：元
+        sheet['advance_payment'] = record['F010N'] # F010N	预付款项(欠账)	decimal	单位：元
+        sheet['other_receivable'] = record['F011N']  # F011N	其他应收款	decimal	单位：元
+        sheet['affiliated_company_receivable'] = record['F012N'] # F012N	应收关联公司(母公司or子公司)款	decimal	单位：元
+        sheet['interest_receivable'] = record['F013N'] # F013N	应收利息	decimal	单位：元
+        sheet['dividend_receivable'] = record['F014N'] # F014N	应收股利	decimal	单位：元
+        sheet['inventory'] = record['F015N'] # F015N	存货(库存)	decimal	单位：元
+        sheet['expendable_biological_assets'] = record['F016N'] # F016N	其中：消耗性生物资产	decimal	单位：元
+        sheet['illiquid_assets_expried_nextyear'] = record['F017N'] # F017N	一年内到期的非流动资产	decimal	单位：元
+        sheet['other_current_assets'] = record['F018N'] # F018N	其他流动资产	decimal	单位：元
+        sheet['total_current_assets'] = record['F019N'] # F019N	流动资产合计	decimal	单位：元
+        sheet['financial_assets_salability'] = record['F020N'] # F020N	可供出售金融资产	decimal	单位：元
+        sheet['held_maturity_investment'] = record['F021N'] # F021N	持有至到期投资	decimal	单位：元
+        sheet['long_term_receviables'] = record['F022N'] # F022N	长期应收款	decimal	单位：元
+        sheet['long_term_stock_investment'] = record['F023N'] # F023N	长期股权投资	decimal	单位：元
+        sheet['real_estate_investment'] = record['F024N'] # F024N	投资性房地产	decimal	单位：元
+        sheet['fixed_assets'] = record['F025N'] # F025N	固定资产	decimal	单位：元
+        sheet['construction_in_process'] = record['F026N'] # F026N	在建工程(支出)	decimal	单位：元
+        sheet['engineer_material'] = record['F027N'] # F027N	工程物资	decimal	单位：元
+        sheet['fixed_assets_disposal'] = record['F028N'] # F028N	固定资产清理	decimal	单位：元
+        sheet['productive_biological_assets'] = record['F029N'] # F029N	生产性生物资产	decimal	单位：元
+        sheet['oil_gas_assets'] = record['F030N'] # F030N	油气资产	decimal	单位：元
+        sheet['intangible_assets'] = record['F031N'] # F031N	无形资产	decimal	单位：元
+        sheet['development_expenditure'] = record['F032N'] # F032N	开发支出	decimal	单位：元
+        sheet['business_reputation'] = record['F033N'] # F033N	商誉	decimal	单位：元
+        sheet['long_term_deferred_expenses'] = record['F034N'] # F034N	长期待摊费用	decimal	单位：元
+        sheet['deferred_income_tax_assets'] = record['F035N'] # F035N	递延所得税资产	decimal	单位：元
+        sheet['other_non_current_assets'] = record['F036N'] # F036N	其他非流动资产	decimal	单位：元
+        sheet['total_non_current_assets'] = record['F037N'] # F037N	非流动资产合计	decimal	单位：元
+        sheet['total_assets'] = record['F038N'] # F038N	资产总计	decimal	单位：元
+        sheet['short_term_borrowing'] = record['F039N'] # F039N	短期借款	decimal	单位：元
+        sheet['financial_liabilities'] = record['F040N'] # F040N	以公允价值计量且其变动计入当期损益的金融负债	decimal	单位：元
+        sheet['bill_payable'] = record['F041N'] # F041N	应付票据	decimal	单位：元
+        sheet['accounts_payable'] = record['F042N'] # F042N	应付账款	decimal	单位：元
+        sheet['accounts_received_advance'] = record['F043N'] # F043N	预收款项	decimal	单位：元
+        sheet['payroll_payable'] = record['F044N'] # F044N	应付职工薪酬	decimal	单位：元
+        sheet['taxes_payable'] = record['F045N'] # F045N	应交税费	decimal	单位：元
+        sheet['interest_payable'] = record['F046N'] # F046N	应付利息	decimal	单位：元
+        sheet['dividend_payable'] = record['F047N'] # F047N	应付股利	decimal	单位：元
+        sheet['other_payable'] = record['F048N'] # F048N	其他应付款	decimal	单位：元
+        sheet['affiliated_company_payable'] = record['F049N'] # F049N	应付关联公司款	decimal	单位：元
+        sheet['illiquid_liabilities_expried_nextyear'] = record['F050N'] # F050N	一年内到期的非流动负债	decimal	单位：元
+        sheet['other_current_liability'] = record['F051N'] # F051N	其他流动负债	decimal	单位：元
+        sheet['total_current_liability'] = record['F052N'] # F052N	流动负债合计	decimal	单位：元
+        sheet['long_term_borrowing'] = record['F053N'] # F053N	长期借款	decimal	单位：元
+        sheet['bond_payable'] = record['F054N'] # F054N	应付债券	decimal	单位：元
+        sheet['long_term_payable'] = record['F055N'] # F055N	长期应付款	decimal	单位：元
+        sheet['special_payable'] = record['F056N'] # F056N	专项应付款	decimal	单位：元
+        sheet['estimated_liabilites'] = record['F057N'] # F057N	预计负债	decimal	单位：元
+        sheet['deferred_income_tax_liabilites'] = record['F058N'] # F058N	递延所得税负债	decimal	单位：元
+        sheet['other_illiquid_liabilites'] = record['F059N'] # F059N	其他非流动负债	decimal	单位：元
+        sheet['total_illiquid_liabilites'] = record['F060N'] # F060N	非流动负债合计	decimal	单位：元
+        sheet['total_liabilites'] = record['F061N'] # F061N	负债合计	decimal	单位：元
+        sheet['paid_in_capital'] = record['F062N'] # F062N	实收资本（或股本）	decimal	单位：元
+        sheet['additional_paid_in_capital'] = record['F063N'] # F063N	资本公积	decimal	单位：元
+        sheet['features_surplus'] = record['F064N'] # F064N	盈余公积	decimal	单位：元
+        sheet['special_reserves'] = record['F072N'] # F072N	专项储备	decimal	单位：元
+        sheet['treasury_share'] = record['F066N'] # F066N	减：库存股	decimal	单位：元
+        sheet['generic_risk_reserves'] = record['F076N'] # F076N	一般风险准备	decimal	单位：元
+        sheet['undistributed_profits'] = record['F065N'] # F065N	未分配利润	decimal	单位：元
+        sheet['mother_company_interest'] = record['F073N'] # F073N	归属于母公司所有者权益	decimal	单位：元
+        sheet['minority_stock_holder_interest'] = record['F067N'] # F067N	少数股东权益	decimal	单位：元
+        sheet['translation_foreign_statements'] = record['F068N'] # F068N	外币报表折算价差	decimal	单位：元
+        sheet['income_abnormal_project'] = record['F069N'] # F069N	非正常经营项目收益调整	decimal	单位：元
+        sheet['total_investors_equity'] = record['F070N'] # F070N	所有者权益（或股东权益）合计	decimal	单位：元
+        sheet['total_equity_liabilites'] = record['F071N'] # F071N	负债和所有者（或股东权益）合计	decimal	单位：元
+        sheet['remark'] = record['MEMO'] # MEMO	备注	varchar	
+        sheet['other_comprehensive_income'] = record['F074N'] # F074N	其他综合收益	decimal	单位：元
+        sheet['deferred_illiquid_liabilites'] = record['F075N'] # F075N	递延收益-非流动负债	decimal	单位：元
+        sheet['deposit_reservation'] = record['F077N'] # F077N	结算备付金	decimal	单位：元
+        sheet['lendings_funds'] = record['F078N'] # F078N	拆出资金	decimal	单位：元
+        sheet['lendings_liquid_funds'] = record['F079N'] # F079N	发放贷款及垫款-流动资产	decimal	单位：元
+        sheet['derivative_assets'] = record['F080N'] # F080N	衍生金融资产	decimal	单位：元
+        sheet['insurance_receivable'] = record['F081N'] # F081N	应收保费(保险公司)	decimal	单位：元
+        sheet['reinsurance_accounts_receivable'] = record['F082N'] # F082N	应收分保账款	decimal	单位：元
+        sheet['contract_reserve_receivable'] = record['F083N'] # F083N	应收分保合同准备金	decimal	单位：元
+        sheet['buy_sale_financial_assets'] = record['F084N'] # F084N	买入返售金融资产	decimal	单位：元
+        sheet['hold_for_sale_assets'] = record['F085N'] # F085N	划分为持有待售的资产	decimal	单位：元
+        sheet['lendings_illiquid_funds'] = record['F086N'] # F086N	发放贷款及垫款-非流动资产	decimal	单位：元
+        sheet['borrowing_from_central_bank'] = record['F087N'] # F087N	向中央银行借款(银行)	decimal	单位：元
+        sheet['interbank_and_absorption'] = record['F088N'] # F088N	吸收存款及同业存放(银行)	decimal	单位：元
+        sheet['loans_from_bank'] = record['F089N'] # F089N	拆入资金	decimal	单位：元
+        sheet['derivative_liabilites'] = record['F090N'] # F090N	衍生金融负债	decimal	单位：元
+        sheet['sold_repurchase_financial_assets'] = record['F091N'] # F091N	卖出回购金融资产款	decimal	单位：元
+        sheet['fees_commissions_payable'] = record['F092N'] # F092N	应付手续费及佣金	decimal	单位：元
+        sheet['reinsurance_accounts_payable'] = record['F093N'] # F093N	应付分保账款	decimal	单位：元
+        sheet['insurance_contract_reserve'] = record['F094N'] # F094N	保险合同准备金	decimal	单位：元
+        sheet['acting_trading_securities'] = record['F095N'] # F095N	代理买卖证券款(证券公司)	decimal	单位：元
+        sheet['acting_underwriting_securities'] = record['F096N'] # F096N	代理承销证券款	decimal	单位：元
+        sheet['hold_for_sale_liabilites'] = record['F097N'] # F097N	划分为持有待售的负债	decimal	单位：元
+        sheet['estimated_current_liabilites'] = record['F098N'] # F098N	预计负债-流动负债	decimal	单位：元
+        sheet['deferred_current_liabilites'] = record['F099N'] # F099N	递延收益-流动负债	decimal	单位：元
+        sheet['preferred_illiquid_liabilites'] = record['F100N'] # F100N	其中：优先股-非流动负债	decimal	单位：元
+        sheet['perpetual_debt_illiquid_liabilites'] = record['F101N'] # F101N	永续债-非流动负债	decimal	单位：元
+        sheet['long_term_payroll'] = record['F102N'] # F102N	长期应付职工薪酬	decimal	单位：元
+        sheet['other_equity_instruments'] = record['F103N'] # F103N	其他权益工具	decimal	单位：元
+        sheet['preferred_investory_equity'] = record['F104N'] # F104N	其中：优先股-所有者权益	decimal	单位：元
+        sheet['perpetual_debt_investory_equity'] = record['F105N'] # F105N	永续债-所有者权益	decimal	单位：元
+        return sheet
+
+    @staticmethod
+    def parses(records, count):
+        if count <= 0:
+            return ''
+        elif count == 1:
+            return BalanceSheet.parse(records[0])
+        else:
+            sheet_list = []
+            for sheet in records:
+                sheet_list.append(BalanceSheet.parse(sheet))
+            return sheet_list

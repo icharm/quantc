@@ -25,7 +25,12 @@ Intermediate Exchange Rate of RMB | N/A | 人民币汇率中间价
 ### Basic Info (cninfo\basic)
 Name | File Name | Chinese
 :----------- | :-----------: | -----------:
-Corporation info | Corporation.py | 上市公司基本信息
+Corporation Info | Corporation.py | 上市公司基本信息
+
+### Finance Info (cninfo\basic)
+Name | File Name | Chinese
+:----------- | :-----------: | -----------:
+Balance Sheet Info | BalanceSheet.py | 资产负债表
 
 ## Plan
 First to code common info api. Obviously there is a lot of boring basic work to do, if you have any good idea,

@@ -23,8 +23,10 @@ cache_industry = 'industry_class'
 cache_region = 'region_class'
 # Securities category cache file name
 cache_securities = 'securities_category'
-#
+# Industry classification stock list
 cache_stocks_class = 'stocks_class'
+# Balance sheet
+cache_balance = 'balance_sheet'
 
 # --------- #
 #   Log     #

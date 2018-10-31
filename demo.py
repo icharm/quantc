@@ -8,6 +8,7 @@ from cninfo.common import RegionClass
 from cninfo.common import SecuritiesCategory
 from cninfo.common import IndustryStocks
 from cninfo.basic import Corporation
+from cninfo.finance import BalanceSheet
 
 def today_is_trading_day():
     '''判断今天是否是交易日'''
@@ -58,4 +59,11 @@ def corporation_info():
     corp = Corporation.call('600351')
     print(corp)
     
-corporation_info()
+# corporation_info()
+
+def balance_sheet():
+    '''获取002024,600351的所有报告期资产负债表数据'''
+    sheets = BalanceSheet.codes('002024,600351')
+    print(sheets)
+
+balance_sheet()
