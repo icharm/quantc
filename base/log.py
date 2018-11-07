@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*- 
 import time
-from base import config
-from base import dateutils
+
+from . import config
 
 class Log:
 
@@ -38,11 +38,14 @@ class Log:
 
     def splice_content(self, msg, flag):
         if flag == 1:
-            log = '[x]Error|'+ self.__postion + '|' + dateutils.current(dateutils.DTF_FULL_NORMAL) + '|' + msg +'\n'
+            log = '[x]Error|'+ self.__postion + '|' + self.current_time() + '|' + msg +'\n'
         elif flag == 2:
-            log = '[!]Warning|'+ self.__postion + '|' + dateutils.current(dateutils.DTF_FULL_NORMAL) + '|' + msg + '\n'
+            log = '[!]Warning|'+ self.__postion + '|' + self.current_time() + '|' + msg + '\n'
         elif flag == 3:
-            log = '[*]Debug|'+ self.__postion + '|' + dateutils.current(dateutils.DTF_FULL_NORMAL) + '|'+ msg + '\n'
+            log = '[*]Debug|'+ self.__postion + '|' + self.current_time() + '|'+ msg + '\n'
         else:
-            log = '[+]Info|'+ self.__postion + '|' + dateutils.current(dateutils.DTF_FULL_NORMAL) + '|'+ msg + '\n'
+            log = '[+]Info|'+ self.__postion + '|' + self.current_time() + '|'+ msg + '\n'
         return log 
+
+    def current_time(self):
+        return time.strftime('%Y-%m-%d %X', time.localtime())

@@ -1,13 +1,17 @@
-# cninfo-sdk
-Packaging stock data api provided by [巨潮资讯(cninfo)](http://webapi.cninfo.com.cn/).
-I always wanted to make something on the quantitative analysis, but I have not found any good stock data service for free use,
-then I found cninfo.
+# QuantC
+Localized quantification tool with the goal of becoming a product similar to BigQuant, JoinQuant. The underlying data form [巨潮资讯(cninfo)](http://webapi.cninfo.com.cn/).<br>
 The data provided by cninfo is more comprehensive, but an account can only call interface 1000 times for free. It is still not
-clear the price of call once. I guess it should not very expensive. So I decided to use it.
-Maybe I should make a database to cache some data to reduce call times.
+clear the price of call once. I guess it should not very expensive. So I decided to use it and make a simple file cache function to reduce call times.<br>
+Quantc many designs refer to BigQuant, simple and straightforward, now, it's still has few features, but I will continue to improve it.
 
 ## Requirement
 Python version >= 3.0
+pandas
+highcharts
+
+## Usage
+Step 1: Goto [深证信数据服务平台(cninfo)](http://webapi.cninfo.com.cn/) register a account, and then get access_key and serect in 个人中心 - 我的凭证, copy them.
+Step 2: Paste them into base/config.py
 
 ## Api Catalog
 

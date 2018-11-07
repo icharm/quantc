@@ -5,7 +5,7 @@ from os.path import dirname
 #   API     #
 # --------- #
 access_key = '626b1fe5c1df4a878c91949aafba7f59'
-access_sercet = '4127670dfbfa4fa791b4a5c4bb6bad69'
+access_sercet = ''
 base_url = 'http://webapi.cninfo.com.cn'
 
 # --------- #

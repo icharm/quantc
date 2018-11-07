@@ -1,6 +1,10 @@
 # -*- coding: UTF-8 -*- 
 import time
 
+from . import log
+
+logger = log.Log(__name__)
+
 DF_FULL_NORMAL = '%Y-%m-%d'
 DTF_FULL_NORMAL = '%Y-%m-%d %X'
 
@@ -12,3 +16,13 @@ def current(format):
         string date according to format.
     '''
     return time.strftime(format, time.localtime())
+
+def seconds(datetime, format):
+    ''' String datetime to total seconds.
+    '''
+    try:
+        st = time.strptime(datetime, format)
+        return time.mktime(st)
+    except Exception as e:
+        logger.error(str(e))
+        return 0

@@ -3,9 +3,9 @@ import http.client
 import urllib
 import json
 
-from base import config
-from base import log
-from base import cache
+from . import log
+from . import config
+from . import cache
 
 log = log.Log(__name__)
 
@@ -46,6 +46,7 @@ def call(url, params):
     '''
     params['access_token'] = token()
     paramsbyte = bytes(urllib.parse.urlencode(params), 'utf8')
+    log.debug('Calling cninfo services ...')
     response = urllib.request.urlopen(config.base_url+url, paramsbyte)
     respStr = response.read()
     resp = json.loads(respStr)
@@ -58,6 +59,7 @@ def call(url, params):
         log.error('Api调用出错：' + resp['resultmsg'])
         return ''
     else:
+        log.debug('Called successfully.')
         return respStr
 
 def call_cache(filename, url, params):

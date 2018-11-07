@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*- 
-from base import config
-from base import log
+from . import config
+from . import log
 
 log = log.Log(__name__)
 

@@ -255,11 +255,11 @@ class BalanceSheet:
         sheet['name'] = record['SECNAME'] # SECNAME	证券简称	varchar	
         sheet['code'] = record['SECCODE'] # SECCODE	证券代码	varchar	
         sheet['org'] = record['ORGNAME']  # ORGNAME	机构名称	varchar	
-        sheet['bulletin_date'] = record['DECLAREDATE'] # DECLAREDATE	公告日期	date	
+        sheet['report_date'] = record['DECLAREDATE'] # DECLAREDATE	公告日期	date	
         sheet['end_date'] = record['ENDDATE'] # ENDDATE	截止日期	date	
         sheet['year'] = record['F001D'] # F001D	报告年度	date	
-        # F002V	合并类型编码	varchar	
-        # F003V	合并类型	varchar	
+        sheet['report_type_code'] = record['F002V'] # F002V	合并类型编码	varchar	
+        sheet['report_type'] = record['F003V'] # F003V	合并类型	varchar	
         # F004V	报表来源编码	varchar	
         # F005V	报表来源	varchar	
         sheet['monetay_funds'] = record['F006N'] # F006N	货币资金(现金储备)	decimal	单位：元 
