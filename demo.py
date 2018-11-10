@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*- 
-
+import pandas as pd
 from base import dateutils
 from base import cache
 from cninfo.common import TradeDate
@@ -9,6 +9,7 @@ from cninfo.common import SecuritiesCategory
 from cninfo.common import IndustryStocks
 from cninfo.basic import Corporation
 from cninfo.finance import BalanceSheet
+from cninfo.finance import ProfitSheet
 
 def today_is_trading_day():
     '''判断今天是否是交易日'''
@@ -66,4 +67,11 @@ def balance_sheet():
     sheets = BalanceSheet.codes('002024,600351')
     print(sheets)
 
-balance_sheet()
+# balance_sheet()
+
+def profit_sheet():
+    '''获取603027的所有报告期利润表'''
+    sheets = ProfitSheet.call('603027')
+    print(sheets)
+
+profit_sheet()

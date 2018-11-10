@@ -1,5 +1,5 @@
 # QuantC
-Localized quantification tool with the goal of becoming a product similar to BigQuant, JoinQuant. The underlying data form [巨潮资讯(cninfo)](http://webapi.cninfo.com.cn/).<br>
+Localized quantification tool with the goal of becoming a product similar to BigQuant, JoinQuant. The underlying data from [巨潮资讯(cninfo)](http://webapi.cninfo.com.cn/).<br>
 The data provided by cninfo is more comprehensive, but an account can only call interface 1000 times for free. It is still not
 clear the price of call once. I guess it should not very expensive. So I decided to use it and make a simple file cache function to reduce call times.<br>
 Quantc many designs refer to BigQuant, simple and straightforward, now, it's still has few features, but I will continue to improve it.
@@ -35,6 +35,7 @@ Corporation Info | Corporation.py | 上市公司基本信息
 Name | File Name | Chinese
 :----------- | :-----------: | -----------:
 Balance Sheet Info | BalanceSheet.py | 资产负债表
+Profit Sheet Info | ProfitSheet.py | 利润表
 
 ## Plan
 First to code common info api. Obviously there is a lot of boring basic work to do, if you have any good idea,

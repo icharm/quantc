@@ -27,6 +27,8 @@ cache_securities = 'securities_category'
 cache_stocks_class = 'stocks_class'
 # Balance sheet
 cache_balance = 'balance_sheet'
+# Profit sheet.
+cache_profit = 'profit_sheet'
 
 # --------- #
 #   Log     #

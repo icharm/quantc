@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*- 
-
+import pandas as pd
 class Day:
     """
         Trade day info formater class.
@@ -370,9 +370,85 @@ class BalanceSheet:
         if count <= 0:
             return ''
         elif count == 1:
-            return BalanceSheet.parse(records[0])
+            return pd.Series(BalanceSheet.parse(records[0]))
         else:
             sheet_list = []
             for sheet in records:
                 sheet_list.append(BalanceSheet.parse(sheet))
-            return sheet_list
+            return pd.DataFrame(sheet_list)
+
+class ProfitSheet:
+
+    @staticmethod
+    def parse(record):
+        sheet = {}
+        sheet['code'] = record['SECCODE']                   # SECCODE	证券代码	varchar	
+        sheet['name'] = record['SECNAME']                   # SECNAME	证券简称	varchar	
+        sheet['org'] = record['ORGNAME']                    # ORGNAME	机构名称	varchar	
+        sheet['rdate'] = record['DECLAREDATE']              # DECLAREDATE	公告日期	date	
+        sheet['sdate'] = record['STARTDATE']                # STARTDATE	开始日期	date	
+        sheet['edate'] = record['ENDDATE']                  # ENDDATE	截止日期	date	
+        sheet['year'] = record['F001D']                     # F001D	报告年度	date	
+        sheet['tcode'] = record['F002V']                    # F002V	合并类型编码	varchar	
+        sheet['type'] = record['F003V']                     # F003V	合并类型	varchar	
+        sheet['scode'] = record['F004V']                    # F004V	报表来源编码	varchar	
+        sheet['source'] = record['F005V']                   # F005V	报表来源	varchar	
+        sheet['total_operating_income'] = record['F035N']   # F035N	一、营业总收入	decimal	单位：元
+        sheet['operating_income'] = record['F006N']         # F006N	其中：营业收入	decimal	单位：元
+        sheet['total_operating_costs'] = record['F036N']    # F036N	二、营业总成本	decimal	单位：元
+        sheet['operating_costs'] = record['F007N']          # F007N	其中：营业成本	decimal	单位：元
+        sheet['business_taxes_surcharges'] = record['F008N'] # F008N	营业税金及附加	decimal	单位：元
+        sheet['selling_fee'] = record['F009N']              # F009N	销售费用	decimal	单位：元
+        sheet['management_fee'] = record['F010N']           # F010N	管理费用	decimal	单位：元
+        sheet['exporing_fee'] = record['F011N']             # F011N	堪探费用	decimal	单位：元
+        sheet['financing_fee'] = record['F012N']            # F012N	财务费用	decimal	单位：元
+        sheet['assets_impairment_loss'] = record['F013N']   # F013N	资产减值损失	decimal	单位：元
+        sheet['fair_value_change_income'] = record['F014N'] # F014N	加：公允价值变动净收益	decimal	单位：元
+        sheet['investment_income'] = record['F015N']        # F015N	投资收益	decimal	单位：元
+        sheet['associates_investment_income'] = record['F016N'] # F016N	其中：对联营企业和合营企业的投资收益	decimal	单位：元
+        sheet['exchange_income'] = record['F037N']          # F037N	汇兑收益	decimal	单位：元
+        sheet['other_operating'] = record['F017N']          # F017N	影响营业利润的其他科目	decimal	单位：元
+        sheet['selling_profit'] = record['F018N']           # F018N	三、营业利润	decimal	单位：元
+        sheet['subsidize_income'] = record['F019N']         # F019N	加：补贴收入	decimal	单位：元
+        sheet['non_operating_income'] = record['F020N']     # F020N	营业外收入	decimal	单位：元
+        sheet['non_operating_expenditure'] = record['F021N'] # F021N	减：营业外支出	decimal	单位：元
+        sheet['illiquid_assets_disposal_loss'] = record['F022N'] # F022N	其中：非流动资产处置损失	decimal	单位：元
+        sheet['other_profit'] = record['F023N']             # F023N	加：影响利润总额的其他科目	decimal	单位：元
+        sheet['total_profit'] = record['F024N']             # F024N	四、利润总额	decimal	单位：元
+        sheet['income_tax'] = record['F025N']               # F025N	减：所得税	decimal	单位：元
+        sheet['other_net_profit'] = record['F026N']         # F026N	加：影响净利润的其他科目	decimal	单位：元
+        sheet['net_profit'] = record['F027N']               # F027N	五、净利润	decimal	单位：元
+        sheet['mother_company_profit'] = record['F028N']    # F028N	归属于母公司所有者的净利润	decimal	单位：元
+        sheet['minority_interest_income'] = record['F029N'] # F029N	少数股东损益	decimal	单位：元
+        sheet['base_income_share'] = record['F031N']        # F031N	（一）基本每股收益	decimal	
+        sheet['diluted_income_share'] = record['F032N']     # F032N	（二）稀释每股收益	decimal	
+        sheet['other_comprehensive_income'] = record['F038N'] # F038N	七、其他综合收益	decimal	单位：元
+        sheet['total_comprehensive_income'] = record['F039N'] # F039N	八、综合收益总额	decimal	单位：元
+        sheet['belong_mother_income'] = record['F040N']     # F040N	其中：归属于母公司	decimal	单位：元
+        sheet['belong_minority_income'] = record['F041N']   # F041N	其中：归属于少数股东	decimal	单位：元
+        sheet['remark'] = record['MEMO']                    # MEMO	备注	varchar	
+        sheet['interest_income'] = record['F033N']          # F033N	利息收入	decimal	单位：元
+        sheet['insurance_income'] = record['F034N']         # F034N	已赚保费	decimal	单位：元
+        sheet['fee_commission_income'] = record['F042N']    # F042N	手续费及佣金收入	decimal	单位：元
+        sheet['interest_expense'] = record['F043N']         # F043N	利息支出	decimal	单位：元
+        sheet['fee_commission_expense'] = record['F044N']   # F044N	手续费及佣金支出	decimal	单位：元
+        sheet['surrender'] = record['F045N']                # F045N	退保金	decimal	单位：元
+        sheet['compensation_expense'] = record['F046N']     # F046N	赔付支出净额	decimal	单位：元
+        sheet['insurance_contract_reserve'] = record['F047N'] # F047N	提取保险合同准备金净额	decimal	单位：元
+        sheet['insurance_dividend_expense'] = record['F048N'] # F048N	保单红利支出	decimal	单位：元
+        sheet['amortized_insurance_expense'] = record['F049N'] # F049N	分保费用	decimal	单位：元
+        sheet['illiquid_disposal_income'] = record['F050N'] # F050N	其中：非流动资产处置利得	decimal	单位：元
+        sheet['other_income'] = record['F051N']             # F051N	其他收益	decimal	单位：元
+        return sheet
+
+    @staticmethod
+    def parses(records, count):
+        if count <= 0:
+            return ''
+        elif count == 1:
+            return pd.Series(ProfitSheet.parse(records[0]))
+        else:
+            sheet_list = []
+            for sheet in records:
+                sheet_list.append(ProfitSheet.parse(sheet))
+            return pd.DataFrame(sheet_list)

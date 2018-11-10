@@ -33,6 +33,7 @@ def token_service():
     data = json.loads(resp)
     token=data['access_token']
     cache.set(config.token, token)
+    log.debug('Token updated successfully.')
     return token
 
 def call(url, params):

@@ -32,7 +32,7 @@ def code(code):
         code: stock code.
     Returns:
         1. no data, return ''
-        2. Balance sheet dict list.
+        2. Balance sheet pandas.DataFrame.
     '''
     return call(code, '')
 
@@ -43,7 +43,7 @@ def codes(codes):
         code: stock codes, split by comma(,) eg: 100001,100002
     Returns:
         1. no data, return ''
-        2. Balance sheet dict list.
+        2. Balance sheet pandas.DataFrame.
     '''
     return call(codes, '')
 
@@ -55,7 +55,7 @@ def rdate(codes, rdate):
         rdate: reported date.
     Returns
         1. no data, return ''
-        2. Balance sheet dict if codes only one.
-        3. Balance sheet dict list.
+        2. one record, return Balance sheet pandas.Series
+        3. Balance sheet pandas.DataFrame.
     '''
     return call(codes, rdate)
