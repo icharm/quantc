@@ -34,7 +34,14 @@ cache_profit = 'profit_sheet'
 #   Log     #
 # --------- #
 # Log file path
-log_path = dirname(dirname(__file__))+'\\log\\log'
+log_path = dirname(dirname(__file__))+'/log/log'
 # Console print log switch, if log_out is True, log class will print log into console and log file both.
 log_out = True
+
+# --------- #
+# Database  #
+# --------- #
+# Db file path
+db_default = dirname(dirname(__file__))+'/quantc.db'
+
 

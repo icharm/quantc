@@ -1,12 +1,9 @@
 # -*- coding: UTF-8 -*- 
-import pandas as pd
 from base import dateutils
-from base import cache
-from cninfo.common import TradeDate
+from cninfo.common import TradeDate, IndustryStocks
 from cninfo.common import IndustryClass
 from cninfo.common import RegionClass
 from cninfo.common import SecuritiesCategory
-from cninfo.common import IndustryStocks
 from cninfo.basic import Corporation
 from cninfo.finance import BalanceSheet
 from cninfo.finance import ProfitSheet
@@ -74,4 +71,4 @@ def profit_sheet():
     sheets = ProfitSheet.call('603027')
     print(sheets)
 
-profit_sheet()
+# profit_sheet()
