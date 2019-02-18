@@ -109,5 +109,7 @@ def daily_line(scode):
     '''
     url = cninfo_url + '/data/cube/dailyLine?stockCode=' + scode
     response = requests.get(url)
+    if response.status_code != 200:
+        logger.error('Request failed, ' + str(response))
     dt = json.loads(response.text)
     return dt['line']
