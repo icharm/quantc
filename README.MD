@@ -21,6 +21,10 @@ Step 2: Paste them into base/config.py
 Name | File Name | Chinese
 :----------- | :-----------: | -----------:
 Corporation Info | Corporation.py | 上市公司基本信息
+
+### Common Info (cninfo\common)
+Name | File Name | Chinese
+:----------- | :-----------: | -----------:
 Trading Date | TradeDate.py | 交易日历数据
 Industry Classification | IndustryClass.py | 行业分类数据
 Regional Classification | RegionClass.py | 地区分类数据

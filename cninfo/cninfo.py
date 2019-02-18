@@ -3,7 +3,7 @@ import requests
 import json
 from base import log
 
-logger = log.Log(__name__)
+logger = log.Log()
 
 # Request headers
 headers = {

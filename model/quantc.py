@@ -5,7 +5,7 @@ from peewee import *
 from base import config
 from base import log
 
-logger = log.Log(__file__)
+logger = log.Log()
 db = SqliteDatabase(config.db_default)
 
 class SwStock(Model):

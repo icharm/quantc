@@ -6,7 +6,7 @@ from cninfo import cninfo
 from model.quantc import SwStock
 from model.quantc import HammerShape
 
-logger = log.Log(__name__)
+logger = log.Log()
 
 # Ratio of entity and line
 entity_line_ratio_h = 0.5
