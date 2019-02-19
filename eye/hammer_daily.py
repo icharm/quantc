@@ -13,23 +13,29 @@ logger = log.Log()
 entity_line_ratio_h = 0.5
 linehead_line_ratio_h = 0.1
 
+today_date = time.strftime('%Y-%m-%d', time.localtime())
+
 # todo trend_before
 def main():
     count = 0
     for stock in SwStock.select():
         try:
             logger.debug('Hammer analysis in stock : ' + stock.seccode + ' ' + stock.secname)
+            # cninfo 的日K数据没有当天收盘的数据
             nodes = cninfo.daily_line(stock.seccode)
             # Find today node
             now = int(time.time() * 1000)
             today = None
-            for node in nodes:
-                balance = now - int(node[0])
-                if balance > 864000000 or balance < 0:  # Not the same day, 864000000 is the number of milliseconds a day
-                    continue
-                today = node
+            today_date = time.strftime('%Y-%m-%d', time.localtime())
+            length = len(nodes)
+            result = is_hammer_shape(nodes[length])
+            # for node in nodes:
+            #     datetime = time.strftime('%Y-%m-%d', time.localtime(node[0] / 1000))
+            #     if datetime == today_date:
+            #         today = node
+            #         break
             # Determine
-            result = is_hammer_shape(today)
+            # result = is_hammer_shape(today)
             if not result:
                 continue
             HammerShape.create(
@@ -47,12 +53,15 @@ def main():
             result['secname'] = stock.secname
             logger.debug('Found! : ' + str(result))
         except:
-            traceback.extract_stack()
+            traceback.print_exception()
             continue
 
 def is_hammer_shape(node):
     color = 1
     if node[1] < 2:     # Open price < 2, not consider.
+        return False
+    datetime = time.strftime('%Y-%m-%d', time.localtime(node[0] / 1000))
+    if datetime != today_date:
         return False
     line_h = round(node[3] - node[4], 2)    # Keep two decimals
     entity_h = abs(round(node[1] - node[2], 2))
