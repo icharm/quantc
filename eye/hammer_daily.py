@@ -2,8 +2,8 @@
 # Find hammer shape in daily line.
 import time
 import traceback
+import sina
 from base import log
-from cninfo import cninfo
 from model.quantc import SwStock
 from model.quantc import HammerShape
 
@@ -18,70 +18,65 @@ today_date = time.strftime('%Y-%m-%d', time.localtime())
 # todo trend_before
 def main():
     count = 0
-    for stock in SwStock.select():
+    count = SwStock.select().count()
+    count = int(count / 100)
+    for offset in range(0, count):
+        stocks = SwStock.select(SwStock.seccode).limit(100).offset(offset*100)
+        codes = []
+        for stock in stocks:
+            codes.append(stock.seccode)
         try:
-            logger.debug('Hammer analysis in stock : ' + stock.seccode + ' ' + stock.secname)
-            # cninfo 的日K数据没有当天收盘的数据
-            nodes = cninfo.daily_line(stock.seccode)
-            # Find today node
-            now = int(time.time() * 1000)
-            today = None
-            today_date = time.strftime('%Y-%m-%d', time.localtime())
-            length = len(nodes)
-            result = is_hammer_shape(nodes[length])
-            # for node in nodes:
-            #     datetime = time.strftime('%Y-%m-%d', time.localtime(node[0] / 1000))
-            #     if datetime == today_date:
-            #         today = node
-            #         break
-            # Determine
-            # result = is_hammer_shape(today)
-            if not result:
-                continue
-            HammerShape.create(
-                seccode=stock.seccode,
-                secname=stock.secname,
-                type='day',
-                color=result['color'],
-                ratio=result['ratio'],
-                lratio=result['lratio'],
-                date=time.strftime("%Y-%m-%d", time.localtime()),
-                score_s=score_s(result['ratio'], result['lratio']),
-            )
-            count += 1
-            result['seccode'] = stock.seccode
-            result['secname'] = stock.secname
-            logger.debug('Found! : ' + str(result))
+            quetos_list = sina.quotes_multiple(codes)
+            for quetos in quetos_list:
+                logger.debug('Hammer analysis in stock : ' + quetos['code'] + ' ' + quetos['name'])
+                result = is_hammer_shape(quetos)
+                if not result:
+                    continue
+                HammerShape.create(
+                    seccode=quetos['code'],
+                    secname=quetos['name'],
+                    type='day',
+                    color=result['color'],
+                    ratio=result['ratio'],
+                    lratio=result['lratio'],
+                    date=time.strftime("%Y-%m-%d", time.localtime()),
+                    score_s=score_s(result['ratio'], result['lratio']),
+                )
+                count += 1
+                result['seccode'] = quetos['code']
+                result['secname'] = quetos['name']
+                logger.debug('Found! : ' + str(result))
         except:
             traceback.print_exception()
             continue
+    logger.info('Found ' + str(count) + ' hammer shape.')
 
-def is_hammer_shape(node):
+def is_hammer_shape(quetos):
     color = 1
-    if node[1] < 2:     # Open price < 2, not consider.
+    if quetos['open'] < 2:     # Open price < 2, not consider.
         return False
-    datetime = time.strftime('%Y-%m-%d', time.localtime(node[0] / 1000))
-    if datetime != today_date:
+
+    line_h = quetos['high'] - quetos['low']    # Keep two decimals
+    entity_h = quetos['open'] - quetos['close']
+    if line_h <= 0:
         return False
-    line_h = round(node[3] - node[4], 2)    # Keep two decimals
-    entity_h = abs(round(node[1] - node[2], 2))
     # rais(1) or drop(-1)
-    if entity_h > 0:    # Open - Close > 0 drop
+    if entity_h < 0:    # Open - Close < 0 drop
         color = -1
     # entity line ratio
-    ratio = round(entity_h / line_h, 4)
+    ratio = abs(round(entity_h / line_h, 4))
     if ratio > entity_line_ratio_h:
         return False
     # line head line ratio
     if color > 0:
-        lhead = round(node[3] - node[2], 2)   # High - Close rise
+        lhead = quetos['high'] - quetos['close']   # High - Close rise
     else:
-        lhead = round(node[3] - node[1], 2)   # High - Open drop
+        lhead = quetos['high'] - quetos['open']   # High - Open drop
     lratio = round(lhead / line_h, 4)
     if lratio > linehead_line_ratio_h:
         return False
     # is hammer shape
-    logger.info(str(node))
+    logger.info(str(quetos))
     return {
         'color': color,
         'ratio': ratio,
@@ -91,7 +86,7 @@ def is_hammer_shape(node):
 def score_s(ratio, lratio):
     add = (ratio + lratio)
     if add == 0:    # Shape T super hammer.
-        return 100
-    return round(60 / (ratio + lratio), 2)  # 60 / max(0.6) = 100
+        return 10000
+    return round(10 / (ratio + lratio), 2)  # 60 / max(0.6) = 100
 
 main()
