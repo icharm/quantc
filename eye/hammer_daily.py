@@ -3,6 +3,7 @@
 import time
 import traceback
 import sina
+import szse
 from base import log
 from model.quantc import SwStock
 from model.quantc import HammerShape
@@ -17,7 +18,10 @@ today_date = time.strftime('%Y-%m-%d', time.localtime())
 
 # todo trend_before
 def main():
-    count = 0
+    if not szse.is_trade(today_date):
+        logger.info('Today is not trading day, interrupt search.')
+        return
+    target_count = 0
     count = SwStock.select().count()
     count = int(count / 100)
     for offset in range(0, count):
@@ -26,30 +30,31 @@ def main():
         for stock in stocks:
             codes.append(stock.seccode)
         try:
-            quetos_list = sina.quotes_multiple(codes)
-            for quetos in quetos_list:
-                logger.debug('Hammer analysis in stock : ' + quetos['code'] + ' ' + quetos['name'])
-                result = is_hammer_shape(quetos)
+            quotes_list = sina.quotes_multiple(codes)
+            for code, quotes in quotes_list.items():
+                logger.debug('Hammer analysis in stock : ' + quotes['code'] + ' ' + quotes['name'])
+                result = is_hammer_shape(quotes)
                 if not result:
                     continue
                 HammerShape.create(
-                    seccode=quetos['code'],
-                    secname=quetos['name'],
+                    seccode=code,
+                    secname=quotes['name'],
                     type='day',
                     color=result['color'],
                     ratio=result['ratio'],
                     lratio=result['lratio'],
                     date=time.strftime("%Y-%m-%d", time.localtime()),
                     score_s=score_s(result['ratio'], result['lratio']),
+                    close=quotes['close']
                 )
-                count += 1
-                result['seccode'] = quetos['code']
-                result['secname'] = quetos['name']
+                target_count += 1
+                result['seccode'] = code
+                result['secname'] = quotes['name']
                 logger.debug('Found! : ' + str(result))
         except:
             traceback.print_exception()
             continue
-    logger.info('Found ' + str(count) + ' hammer shape.')
+    logger.info('Found ' + str(target_count) + ' hammer shape.')
 
 def is_hammer_shape(quetos):
     color = 1
@@ -87,6 +92,6 @@ def score_s(ratio, lratio):
     add = (ratio + lratio)
     if add == 0:    # Shape T super hammer.
         return 10000
-    return round(10 / (ratio + lratio), 2)  # 60 / max(0.6) = 100
+    return round(10 / (ratio + lratio), 2)
 
 main()

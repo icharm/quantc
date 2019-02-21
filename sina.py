@@ -54,9 +54,9 @@ def parse(strs):
 
 def parse_multiple(strs):
     lt = strs.split(';\n')
-    data = []
+    data = {}
     for item in lt:
         dt = parse(item)
         if dt is not None:
-            data.append(dt)
+            data[dt['code']] = dt
     return data

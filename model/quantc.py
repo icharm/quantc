@@ -30,6 +30,7 @@ class HammerShape(Model):
     ratio = DoubleField()   # entity ratio
     lratio = DoubleField()  # line header ratio
     date = DateField()      # trade date
+    close = DoubleField()   # close price.
     trend_after = IntegerField(null=True)    # rise 1 or drop -1
     range_day1 = DoubleField(null=True)      # after one day range of pice change.
     range_day2 = DoubleField(null=True)
@@ -48,8 +49,17 @@ class HammerShape(Model):
     class Meta:
         database = db
 
-# tables = [SwStock, HammerShape]
+class TradeCalendar(Model):
+    ym = CharField(unique=True)
+    json = TextField()
+    updated = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        database = db
+
+
+# tables = [SwStock, HammerShape, TradeCalendar]
 # db.connect()
-# db.create_tables([HammerShape])
+# db.create_tables([TradeCalendar])
 # logger.debug('Tables created successfully.')
 
