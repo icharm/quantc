@@ -12,7 +12,7 @@ logger = log.Log()
 
 # Ratio of entity and line
 entity_line_ratio_h = 0.5
-linehead_line_ratio_h = 0.1
+linehead_line_ratio_h = 0.2
 
 today_date = time.strftime('%Y-%m-%d', time.localtime())
 
@@ -66,7 +66,7 @@ def is_hammer_shape(quetos):
     if line_h <= 0:
         return False
     # rais(1) or drop(-1)
-    if entity_h < 0:    # Open - Close < 0 drop
+    if entity_h > 0:    # Open - Close < 0 drop
         color = -1
     # entity line ratio
     ratio = abs(round(entity_h / line_h, 4))
