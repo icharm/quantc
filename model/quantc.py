@@ -7,6 +7,7 @@ from base import log
 
 logger = log.Log()
 db = SqliteDatabase(config.db_default)
+# db = MySQLDatabase('quantc', user=config.db_username, password=config.db_password, host=config.db_address, port=config.db_port)
 
 class SwStock(Model):
     seccode = CharField()
@@ -50,16 +51,16 @@ class HammerShape(Model):
         database = db
 
 class TradeCalendar(Model):
-    ym = CharField(unique=True)
-    json = TextField()
+    month = CharField(unique=True)
+    calendar = TextField()
     updated = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
         database = db
 
 
-# tables = [SwStock, HammerShape, TradeCalendar]
+tables = [SwStock, HammerShape, TradeCalendar]
 # db.connect()
-# db.create_tables([TradeCalendar])
+# db.create_tables(tables)
 # logger.debug('Tables created successfully.')
 

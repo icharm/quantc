@@ -11,8 +11,8 @@ from model.quantc import HammerShape
 logger = log.Log()
 
 # Ratio of entity and line
-entity_line_ratio_h = 0.5
-linehead_line_ratio_h = 0.2
+entity_line_ratio_h = 0.3
+linehead_line_ratio_h = 0.15
 
 today_date = time.strftime('%Y-%m-%d', time.localtime())
 
@@ -66,10 +66,11 @@ def is_hammer_shape(quetos):
     if line_h <= 0:
         return False
     # rais(1) or drop(-1)
-    if entity_h > 0:    # Open - Close < 0 drop
+    if entity_h > 0:    # Open - Close > 0 drop
         color = -1
+    entity_h = abs(entity_h)
     # entity line ratio
-    ratio = abs(round(entity_h / line_h, 4))
+    ratio = round(entity_h / line_h, 4)
     if ratio > entity_line_ratio_h:
         return False
     # line head line ratio
@@ -77,7 +78,7 @@ def is_hammer_shape(quetos):
         lhead = quetos['high'] - quetos['close']   # High - Close rise
     else:
         lhead = quetos['high'] - quetos['open']   # High - Open drop
-    lratio = round(lhead / line_h, 4)
+    lratio = 0 if lhead == 0 or entity_h == 0 else round(lhead / entity_h, 4)
     if lratio > linehead_line_ratio_h:
         return False
     # is hammer shape

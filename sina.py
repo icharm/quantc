@@ -56,6 +56,8 @@ def parse_multiple(strs):
     lt = strs.split(';\n')
     data = {}
     for item in lt:
+        if item == '':
+            continue
         dt = parse(item)
         if dt is not None:
             data[dt['code']] = dt
