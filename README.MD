@@ -10,6 +10,8 @@ pandas
 highcharts
 peewee-3.8.2
 requests-2.21.0
+pymysql-0.9.3
+tornado 5.1.1
 
 ## Usage
 Step 1: Goto [深证信数据服务平台(cninfo)](http://webapi.cninfo.com.cn/) register a account, and then get access_key and serect in 个人中心 - 我的凭证, copy them.
