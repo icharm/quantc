@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*- 
 import time
 import inspect
-from base import config
+from . import config
 
 class Log:
 

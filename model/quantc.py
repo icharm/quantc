@@ -2,8 +2,8 @@
 
 import datetime
 from peewee import *
-from base import config
-from base import log
+from ..base import config
+from ..base import log
 
 logger = log.Log()
 db = SqliteDatabase(config.db_default)
