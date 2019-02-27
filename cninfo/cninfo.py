@@ -91,7 +91,7 @@ def stocks_under_category(param, url='/api/stock/p_public0004'):
     return dt.get('records')
 
 # Daily line data
-def daily_line(scode):
+def daily_line(scode, is_parse=True):
     '''
     line_node:{
         0:"TIME",
@@ -111,5 +111,7 @@ def daily_line(scode):
     response = requests.get(url)
     if response.status_code != 200:
         logger.error('Request failed, ' + str(response))
+    if not is_parse:
+        return response.text
     dt = json.loads(response.text)
     return dt['line']
