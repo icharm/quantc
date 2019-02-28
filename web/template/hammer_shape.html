@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block breadcrumb %}
+<h3 class="text-themecolor">StockShape</h3>
+<ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
     <li class="breadcrumb-item active">HammerShape</li>
+</ol>
 {% end %}
 
 {% block content %}
@@ -13,12 +16,13 @@
             <div class="card-header">
                 <div class="card-actions">
                     <a class="" data-action="collapse"><i class="ti-minus"></i></a>
-                    <a class="btn-minimize" data-action="expand"><i class="mdi mdi-arrow-expand"></i></a>
+                    <a class="btn-minimize" data-action="expand_hs"><i class="mdi mdi-arrow-expand"></i></a>
                     <a class="btn-close" data-action="close"><i class="ti-close"></i></a>
                 </div>
-                <h4 class="card-title m-b-0">{{ stock.seccode }}</h4>
+                <h4 class="card-title m-b-0">{{ stock.secname + '(' + stock.seccode + ')' }}</h4>
             </div>
-            <div id="{{stock.seccode}}" class="card-body collapse" style="height: 600px; min-width: 310px">
+            <div id="{{stock.seccode}}" class="card-body collapse">
+                <div id="chart_{{stock.seccode}}" style="min-height: 500px; min-width: 310px"></div>
             </div>
         </div>
     </div>
@@ -31,7 +35,7 @@
 {% end %}
 
 {% block foot_js %}
-<script src="https://code.highcharts.com/stock/highstock.src.js"></script>
+<script src="{{static_url('assets/plugins/highstock/highstock.src.js')}}"></script>
 <script src="{{static_url('quantc/js/hammer_shape.js')}}"></script>
 <script src="{{static_url('quantc/js/highstock_kline.js')}}"></script>
 {% end %}

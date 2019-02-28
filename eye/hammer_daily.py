@@ -2,17 +2,18 @@
 # Find hammer shape in daily line.
 import time
 import traceback
-import sina
-import szse
-from base import log
-from model.quantc import SwStock
-from model.quantc import HammerShape
+from .. import sina
+from .. import szse
+from ..base import log
+from ..model.quantc import SwStock
+from ..model.quantc import HammerShape
 
 logger = log.Log()
 
 # Ratio of entity and line
 entity_line_ratio_h = 0.3
-linehead_line_ratio_h = 0.15
+linehead_entity_ratio_h = 0.15
+linehead_line_ratio_h = 0.2
 
 today_date = time.strftime('%Y-%m-%d', time.localtime())
 
@@ -78,8 +79,11 @@ def is_hammer_shape(quetos):
         lhead = quetos['high'] - quetos['close']   # High - Close rise
     else:
         lhead = quetos['high'] - quetos['open']   # High - Open drop
-    lratio = 0 if lhead == 0 or entity_h == 0 else round(lhead / entity_h, 4)
-    if lratio > linehead_line_ratio_h:
+    if entity_h == 0:
+        lratio = round(lhead / line_h, 4)
+    else:
+        lratio = round(lhead / entity_h, 4)
+    if lratio > linehead_entity_ratio_h:
         return False
     # is hammer shape
     logger.info(str(quetos))

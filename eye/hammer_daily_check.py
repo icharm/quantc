@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
 import time
 import datetime
-import szse
-import sina
-from base import log
-from model.quantc import HammerShape
+from .. import szse
+from .. import sina
+from ..base import log
+from ..model.quantc import HammerShape
 
 logger = log.Log()
 fm = '%Y-%m-%d'

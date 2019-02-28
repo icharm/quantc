@@ -2,15 +2,14 @@
 """
 the url structure of website
 """
-
-import sys
-
-from .handler.index import IndexHandler    #假设已经有了
+from .handler.index import IndexHandler
 from .handler.hammer_shape import HammerShapeHandler
 from .handler.stock_data import DailyLineHandler
+from .handler.stock_data import QuotesHandler
 
 url = [
     (r'/', IndexHandler),
     (r'/hs', HammerShapeHandler),
-    (r'/sd/daily_line', DailyLineHandler)
+    (r'/sd/daily_line', DailyLineHandler),
+    (r'/sd/quotes', QuotesHandler)
 ]

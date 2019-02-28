@@ -1,37 +1,29 @@
 
 // 监听collapse卡片展开事件
 $(".collapse").on('show.bs.collapse', function(e) {
-  console.log(e.currentTarget.id);
+  // console.log(e.currentTarget.id);
   showKLineChart(e.currentTarget.id)
 });
 
+// 监听expand卡片全屏事件
+// Toggle fullscreen
+$('a[data-action="expand_hs"]').on('click',function(e){
+    e.preventDefault();
+    $(this).closest('.card').find('[data-action="expand_hs"] i').toggleClass('mdi-arrow-expand mdi-arrow-compress');
+    $(this).closest('.card').toggleClass('card-fullscreen');
+    // reset chart height width
+    let id = e.currentTarget.parentNode.parentNode.nextElementSibling.id;
+    let chart = charts.get(id);
+    let $card = $(this).closest('.card');
+    let $chartParentDiv = $("#"+id);
+    if ($card.hasClass("card-fullscreen")) {
+        chart.setSize($chartParentDiv.width(), $chartParentDiv.height())
+    } else {
+        chart.setSize($chartParentDiv.width(), 500)
+    }
+});
+
 var charts = new Map();
-
-// echarts resize
-// $(function() {
-//     setTimeout(function () {
-//         window.onresize = function () {
-//
-//         }
-//     }, 200);
-// });
-
-// $(window).on('resize', function(){
-//     setTimeout(function () {
-//         charts.forEach(function (value, key, map) {
-//             container = document.getElementById(key);
-//             resizeChartContainer(container, key);
-//             value.resize()
-//         });
-//     }, 200)
-//
-// });
-
-// function resizeChartContainer(container, id){
-//     // 使用原生获取dom的方式echarts无法获取宽高度。
-//     container.setAttribute('width', $("#"+id).width());
-//     container.setAttribute('height', $("#"+id).height());
-// }
 
 function showKLineChart(id) {
     // 判断是否重复初始化
@@ -39,70 +31,67 @@ function showKLineChart(id) {
         console.log(1);
         return;
     }
-    // 基于准备好的dom，初始化echarts实例，
-    chartContainer = document.getElementById(id);
-    // dailyLineData('600606');
 
+    let chart = createStockChart('chart_'+id);
+    charts.set(id, chart);
+    let today = currentDate();
+    chart.showLoading();
     $.ajax({
-        url: '/sd/daily_line?code=600606',
+        url: '/sd/daily_line?code='+id,
         type:'GET',
         dataType: 'json',
         success: function (ret) {
-            console.log(ret.line);
-            highStockChart('002458', ret.line);
+            let nodes = ret.line;
+
+            $.ajax({
+                url: '/sd/quotes?code='+id,
+                type:'GET',
+                dataType: 'json',
+                success: function (ret1) {
+                    if (ret1.date.toString === today.toString) {
+                        nodes.push([
+                            currentStamp(),
+                            ret1.open,
+                            ret1.close,
+                            ret1.high,
+                            ret1.low,
+                            ret1.money,
+                            ret1.volume,
+                            0,
+                            0
+                        ])
+                    }
+                    setData(chart, nodes, ret1.name);
+                },
+                error: function (ret1) {
+                    console.log(ret1);
+                }
+            });
+
+            chart.hideLoading();
         },
         error: function (ret) {
-            console.log(ret)
+            console.log(ret);
+            chart.hideLoading();
         }
     });
-
-    // resizeChartContainer(chartContainer, id);
-    // var kline = echarts.init(chartContainer);
-    // charts.set(id, kline);
-    //
-    // // 指定图表的配置项和数据
-    //
-    //
-    // // 使用刚指定的配置项和数据显示图表。
-    // // kline.setOption(option);
-    // kline.setOption(option, true);
 }
 
-// var upColor = '#ff4a68';
-// var upBorderColor = '#8A0000';
-// var downColor = '#26a69a';
-// var downBorderColor = '#008F28';
-//
-//
-//
-// function splitData(rawData) {
-//     var categoryData = [];
-//     var values = []
-//     for (var i = 0; i < rawData.length; i++) {
-//         categoryData.push(rawData[i].splice(0, 1)[0]);
-//         values.push(rawData[i])
-//     }
-//     return {
-//         categoryData: categoryData,
-//         values: values
-//     };
-// }
-//
-// function calculateMA(dayCount) {
-//     var result = [];
-//     for (var i = 0, len = data0.values.length; i < len; i++) {
-//         if (i < dayCount) {
-//             result.push('-');
-//             continue;
-//         }
-//         var sum = 0;
-//         for (var j = 0; j < dayCount; j++) {
-//             sum += data0.values[i - j][1];
-//         }
-//         result.push(sum / dayCount);
-//     }
-//     return result;
-// }
-//
-//
-//
+function currentDate() {
+    let d = new Date();
+    let date = (d.getFullYear()) + "-" +
+            (d.getMonth() + 1) + "-" +
+            (d.getDate());
+    return date;
+}
+
+function timestamp(strtimg) {
+    var date = new Date(strtime); //传入一个时间格式，如果不传入就是获取现在的时间了，这样做不兼容火狐。
+    // 可以这样做
+    var date = new Date(strtime.replace(/-/g, '/'));
+    return date.getTime();
+}
+
+function currentStamp() {
+    return new Date().getTime();
+}

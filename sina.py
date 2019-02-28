@@ -2,7 +2,7 @@
 # Sina stock data
 import requests
 import re
-from base import log
+from .base import log
 
 logger = log.Log()
 
@@ -49,7 +49,10 @@ def parse(strs):
         'now': float(lt[3]),
         'close': float(lt[3]),
         'high': float(lt[4]),
-        'low': float(lt[5])
+        'low': float(lt[5]),
+        'money': lt[9],
+        'volume': float(lt[8]),
+        'date': lt[30]
     }
 
 def parse_multiple(strs):
