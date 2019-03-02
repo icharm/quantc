@@ -17,13 +17,16 @@ $('a[data-action="expand_hs"]').on('click',function(e){
     let $card = $(this).closest('.card');
     let $chartParentDiv = $("#"+id);
     if ($card.hasClass("card-fullscreen")) {
-        chart.setSize($chartParentDiv.width(), $chartParentDiv.height())
+        chart.setSize($chartParentDiv.width(), $chartParentDiv.height());
+        chart.rangeSelector.clickButton(2);
     } else {
         chart.setSize($chartParentDiv.width(), 500)
+        chart.rangeSelector.clickButton(1);
     }
 });
 
 var charts = new Map();
+var todayDateStamp = currentDateStamp();
 
 function showKLineChart(id) {
     // 判断是否重复初始化
@@ -34,7 +37,6 @@ function showKLineChart(id) {
 
     let chart = createStockChart('chart_'+id);
     charts.set(id, chart);
-    let today = currentDate();
     chart.showLoading();
     $.ajax({
         url: '/sd/daily_line?code='+id,
@@ -44,29 +46,29 @@ function showKLineChart(id) {
             let nodes = ret.line;
 
             $.ajax({
-                url: '/sd/quotes?code='+id,
-                type:'GET',
-                dataType: 'json',
-                success: function (ret1) {
-                    if (ret1.date.toString === today.toString) {
-                        nodes.push([
-                            currentStamp(),
-                            ret1.open,
-                            ret1.close,
-                            ret1.high,
-                            ret1.low,
-                            ret1.money,
-                            ret1.volume,
-                            0,
-                            0
-                        ])
+                    url: '/sd/quotes?code=' + id,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (ret1) {
+                        if (todayDateStamp === timestamp(ret1.date)) {
+                            nodes.push([
+                                currentStamp(),
+                                ret1.open,
+                                ret1.close,
+                                ret1.high,
+                                ret1.low,
+                                ret1.money,
+                                ret1.volume,
+                                0,
+                                0
+                            ])
+                        }
+                        setData(chart, nodes, ret1.name);
+                    },
+                    error: function (ret1) {
+                        console.log(ret1);
                     }
-                    setData(chart, nodes, ret1.name);
-                },
-                error: function (ret1) {
-                    console.log(ret1);
-                }
-            });
+                });
 
             chart.hideLoading();
         },
@@ -77,21 +79,15 @@ function showKLineChart(id) {
     });
 }
 
-function currentDate() {
-    let d = new Date();
-    let date = (d.getFullYear()) + "-" +
-            (d.getMonth() + 1) + "-" +
-            (d.getDate());
-    return date;
-}
 
 function timestamp(strtimg) {
-    var date = new Date(strtime); //传入一个时间格式，如果不传入就是获取现在的时间了，这样做不兼容火狐。
-    // 可以这样做
-    var date = new Date(strtime.replace(/-/g, '/'));
-    return date.getTime();
+    return Date.parse(new Date(strtimg)) / 1000;
 }
 
 function currentStamp() {
     return new Date().getTime();
+}
+
+function currentDateStamp() {
+    return new Date(new Date().setHours(0, 0, 0, 0)) / 1000;
 }

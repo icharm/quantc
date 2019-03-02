@@ -22,7 +22,7 @@
                 <h4 class="card-title m-b-0">{{ stock.secname + '(' + stock.seccode + ')' }}</h4>
             </div>
             <div id="{{stock.seccode}}" class="card-body collapse">
-                <div id="chart_{{stock.seccode}}" style="min-height: 500px; min-width: 310px"></div>
+                <div id="chart_{{stock.seccode}}" style="min-height: 500px; min-width: 310px;"></div>
             </div>
         </div>
     </div>
@@ -38,4 +38,9 @@
 <script src="{{static_url('assets/plugins/highstock/highstock.src.js')}}"></script>
 <script src="{{static_url('quantc/js/hammer_shape.js')}}"></script>
 <script src="{{static_url('quantc/js/highstock_kline.js')}}"></script>
+<!-- 技术指标主文件 -->
+<script src="http://cdn.hcharts.cn/highstock/indicators/indicators.js"></script>
+
+<!-- 技术指标文件，如果是 SMA，则无需引入（因为 indicators 包含 SMA） -->
+<script src="http://cdn.hcharts.cn/highstock/indicators/macd.js"></script>
 {% end %}

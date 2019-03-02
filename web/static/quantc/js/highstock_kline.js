@@ -23,7 +23,7 @@ function setData(chart, data, name='stock') {
 	}
 	console.log(data[data.length-1][0]);
 	MA5Array = calculateMA(5, ohlcArray);
-	MA200Array = calculateMA(200, ohlcArray);
+	// MA200Array = calculateMA(200, ohlcArray);
 
 	// setting data.
 	chart.series[0].update({data: ohlcArray, name:name});
@@ -124,8 +124,23 @@ function createStockChart(divID) {
                 lineWidth:1,//Y轴边缘线条粗细
                 gridLineColor: '#346691',
                 gridLineWidth:0.1,
-              // gridLineDashStyle: 'longdash',
-                opposite:true
+                tickPositioner: function () {
+                    var positions = [],
+                        increment = (this.dataMax - this.dataMin) / 4;
+                    increment = (this.dataMax - this.dataMin + increment/2) / 4;
+                    var half = Math.round(increment / 4 * 100) / 100;
+                    increment = Math.round(increment * 100) / 100;
+                    var low = this.dataMin - half;
+                    for (let i=0; i<5; i++) {
+                        positions.push(low + i*increment);
+                    }
+                    // console.log(positions);
+                    return positions;
+                },
+                labels: {
+                    format: '{value: .2f}'
+                }
+
 	        }, {
                 title: {
                    enable:false
@@ -166,7 +181,7 @@ function createStockChart(divID) {
                 dataGrouping: {
                     enabled: false
                 }
-            }, {
+            }/*, {
                 type: 'spline',
                 name: 'MA200',
                 data: [],
@@ -176,7 +191,7 @@ function createStockChart(divID) {
                 dataGrouping: {
                     enabled: false
                 }
-            }
+            }*/
 	    ],
 		responsive: {
             rules: [{
