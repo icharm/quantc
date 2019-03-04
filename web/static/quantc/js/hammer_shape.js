@@ -69,7 +69,7 @@ function showKLineChart(id) {
                     type: 'GET',
                     dataType: 'json',
                     success: function (ret1) {
-                        if (todayDateStamp === timestamp(ret1.date)) {
+                        if (todayDateStamp === timestamp(ret1.date+" 00:00:00")) {
                             nodes.push([
                                 currentStamp(),
                                 ret1.open,
