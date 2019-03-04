@@ -25,6 +25,25 @@ $('a[data-action="expand_hs"]').on('click',function(e){
     }
 });
 
+var datepaginator = function() {
+    return {
+        init: function() {
+            let url = window.location.href;
+            let date = url.split('?date=')[1];
+            $("#paginator").datepaginator({
+                    selectedDate: date,
+                    selectedDateFormat:  'YYYY-MM-DD',
+                    onSelectedDateChanged: function(a, t) {
+                        window.location.href='/hs?date='+ moment(t).format("YYYY-MM-DD")
+                    }
+                })
+        }
+    }
+}();
+jQuery(document).ready(function() {
+    datepaginator.init()
+});
+
 var charts = new Map();
 var todayDateStamp = currentDateStamp();
 

@@ -3,12 +3,17 @@
 {% block breadcrumb %}
 <h3 class="text-themecolor">StockShape</h3>
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item active">HammerShape</li>
 </ol>
 {% end %}
 
 {% block content %}
+    <div class="col-md-12">
+        <div class="card">
+            <div id="paginator"></div>
+        </div>
+    </div>
     {% for stock in stocks %}
     <!-- Column -->
     <div class="col-md-12">
@@ -21,7 +26,53 @@
                 </div>
                 <h4 class="card-title m-b-0">{{ stock.secname + '(' + stock.seccode + ')' }}</h4>
             </div>
+
             <div id="{{stock.seccode}}" class="card-body collapse">
+                <div class="row">
+                    <div class="col-md-2 col-xs-4 b-r">
+                        <p class="text-muted">S:{{stock.score_s}}</p>
+                    </div>
+                    {% if stock.range_day1 != None and stock.range_day1 != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">D1:{{stock.range_day1}}%</p>
+                        </div>
+                    {% end %}
+                    {% if stock.range_day2 != None and stock.range_day2 != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">D2:{{stock.range_day2}}%</p>
+                        </div>
+                    {% end %}
+                    {% if stock.range_day3 != None and stock.range_day3 != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">D3:{{stock.range_day3}}%</p>
+                        </div>
+                    {% end %}
+                    {% if stock.range_day4 != None and stock.range_day4 != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">D4:{{stock.range_day4}}%</p>
+                        </div>
+                    {% end %}
+                    {% if stock.range_week1 != None and stock.range_week1 != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">W1:{{stock.range_week1}}%</p>
+                        </div>
+                    {% end %}
+                    {% if stock.range_week2 != None and stock.range_week2 != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">W2:{{stock.range_week2}}%</p>
+                        </div>
+                    {% end %}
+                    {% if stock.range_week3 != None and stock.range_week3 != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">W3:{{stock.range_week3}}%</p>
+                        </div>
+                    {% end %}
+                    {% if stock.range_month != None and stock.range_month != '' %}
+                        <div class="col-md-1 col-xs-3 b-r">
+                            <p class="text-muted">M:{{stock.range_month}}%</p>
+                        </div>
+                    {% end %}
+                </div>
                 <div id="chart_{{stock.seccode}}" style="min-height: 500px; min-width: 310px;"></div>
             </div>
         </div>
@@ -31,16 +82,22 @@
 {% end %}
 
 {% block head_css %}
-<!--<script src="{{static_url('assets/plugins/echarts/echarts.js')}}"></script>-->
+<link href="{{static_url('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
 {% end %}
 
 {% block foot_js %}
 <script src="{{static_url('assets/plugins/highstock/highstock.src.js')}}"></script>
+<!--DataSelector-->
+<script src="{{static_url('assets/plugins/date-paginator/moment.min.js')}}"></script>
+<script src="{{static_url('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{static_url('assets/plugins/date-paginator/bootstrap-datepaginator.min.js')}}"></script>
+<!--DataSelector End-->
 <script src="{{static_url('quantc/js/hammer_shape.js')}}"></script>
 <script src="{{static_url('quantc/js/highstock_kline.js')}}"></script>
+
 <!-- 技术指标主文件 -->
-<script src="http://cdn.hcharts.cn/highstock/indicators/indicators.js"></script>
+<!--<script src="http://cdn.hcharts.cn/highstock/indicators/indicators.js"></script>-->
 
 <!-- 技术指标文件，如果是 SMA，则无需引入（因为 indicators 包含 SMA） -->
-<script src="http://cdn.hcharts.cn/highstock/indicators/macd.js"></script>
+<!--<script src="http://cdn.hcharts.cn/highstock/indicators/macd.js"></script>-->
 {% end %}

@@ -16,4 +16,4 @@ class HammerShapeHandler(tornado.web.RequestHandler):
             else:
                 date_str = today_str
         stocks = HammerShape.select().where(HammerShape.date == date_str)
-        self.render('hammer_shape.html', title='HammerShape', content='', stocks=stocks)
+        self.render('hammer_shape.html', stocks=stocks,)
