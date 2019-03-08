@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 import datetime
-import tornado.web
 from ...model.quantc import HammerShape
+from .base import PeeweeRequestHandler
 
-class HammerShapeHandler(tornado.web.RequestHandler):
+class HammerShapeHandler(PeeweeRequestHandler):
     def get(self):
         date_str = self.get_argument('date', '')
         if date_str is None or date_str == '':

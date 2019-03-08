@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import requests
 import json
-from base import log
+from ..base import log
 
 logger = log.Log()
 

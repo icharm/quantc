@@ -62,7 +62,7 @@ def calendar(tm=None, open=False):
 
     # The date is not this month and database dont have calendar, then return None.
     if tm != month:
-        logger.error('No calendar for date: '+ tm)
+        logger.error('No calendar for date: ' + tm)
         return None
 
     # Request szse.cn for this month.
@@ -86,7 +86,7 @@ def remove_close_days(dt):
     for date, day in dt.items():
         if day['open'] == 1:
             newdt[date] = day
-    return dt
+    return newdt
 
 def is_trade(date):
     '''

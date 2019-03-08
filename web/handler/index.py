@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
-import tornado.web
+from .base import PeeweeRequestHandler
 
-class IndexHandler(tornado.web.RequestHandler):
+class IndexHandler(PeeweeRequestHandler):
     def get(self):
         self.render('index.html', title='DashBoard', content='')
         # greeting = self.get_argument('greeting', 'Hello')
