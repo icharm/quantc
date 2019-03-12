@@ -46,7 +46,7 @@ def quotes_multiple(codes):
     data_str = response.text
     return parse_multiple(data_str)
 
-async def quotes_multiple(codes):
+async def quotes_multiple_async(codes):
     all = ''
     for code in codes:
         all += prefix(code) + ','

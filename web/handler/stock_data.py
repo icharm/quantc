@@ -22,6 +22,6 @@ class QuotesHandler(tornado.web.RequestHandler):
 class TestHandler(tornado.web.RequestHandler):
     async def get(self):
         query = self.get_argument('q')
-        lt = await gtimg.daily_year_async(query)
+        lt = await gtimg.daily_lately_async(query)
         self.write("hello %s" % lt)
 

@@ -58,9 +58,35 @@ class TradeCalendar(Model):
     class Meta:
         database = db
 
+class HammerShapeWeek(Model):
+    seccode = CharField()
+    secname = CharField()
+    type = CharField(null=True)      # day, week, month line hammer shape
+    trend_before = IntegerField(null=True)   # rise 1 or drop -1
+    color = IntegerField()  # rise 1 or drop -1
+    ratio = DoubleField()   # entity ratio
+    lratio = DoubleField()  # line header ratio
+    date = DateField()      # trade date
+    close = DoubleField()   # close price.
+    trend_after = IntegerField(null=True)    # rise 1 or drop -1
+    week1 = DoubleField(null=True)      # after one day range of pice change.
+    week2 = DoubleField(null=True)
+    week3 = DoubleField(null=True)
+    month1 = DoubleField(null=True)
+    week5 = DoubleField(null=True)
+    week6 = DoubleField(null=True)     # after one week range of pice change.
+    week7 = DoubleField(null=True)
+    month2 = DoubleField(null=True)
+    score_s = DoubleField(null=True)  # hammer shape score
+    score_p = DoubleField(null=True)  # prediction score
+    updated = DateTimeField(default=datetime.datetime.now)
 
-tables = [SwStock, HammerShape, TradeCalendar]
+    class Meta:
+        database = db
+
+
+tables = [SwStock, HammerShape, TradeCalendar, HammerShapeWeek]
 # db.connect()
-# db.create_tables(tables)
+# db.create_tables([HammerShapeWeek])
 # logger.debug('Tables created successfully.')
 

@@ -2,6 +2,7 @@
 # Find hammer shape in daily line.
 import time
 import traceback
+from .shape import is_hammer_shape, hammer_score_s
 from .. import sina
 from .. import szse
 from ..base import log
@@ -45,7 +46,7 @@ def main():
                     ratio=result['ratio'],
                     lratio=result['lratio'],
                     date=time.strftime("%Y-%m-%d", time.localtime()),
-                    score_s=score_s(result['ratio'], result['lratio']),
+                    score_s=hammer_score_s(result['ratio'], result['lratio']),
                     close=quotes['close']
                 )
                 target_count += 1
@@ -53,50 +54,8 @@ def main():
                 result['secname'] = quotes['name']
                 logger.debug('Found! : ' + str(result))
         except:
-            traceback.print_exception()
+            traceback.print_exc()
             continue
     logger.info('Found ' + str(target_count) + ' hammer shape.')
-
-def is_hammer_shape(quetos):
-    color = 1
-    if quetos['open'] < 2:     # Open price < 2, not consider.
-        return False
-
-    line_h = quetos['high'] - quetos['low']    # Keep two decimals
-    entity_h = quetos['open'] - quetos['close']
-    if line_h <= 0:
-        return False
-    # rais(1) or drop(-1)
-    if entity_h > 0:    # Open - Close > 0 drop
-        color = -1
-    entity_h = abs(entity_h)
-    # entity line ratio
-    ratio = round(entity_h / line_h, 4)
-    if ratio > entity_line_ratio_h:
-        return False
-    # line head line ratio
-    if color > 0:
-        lhead = quetos['high'] - quetos['close']   # High - Close rise
-    else:
-        lhead = quetos['high'] - quetos['open']   # High - Open drop
-    if entity_h == 0:
-        lratio = round(lhead / line_h, 4)
-    else:
-        lratio = round(lhead / entity_h, 4)
-    if lratio > linehead_entity_ratio_h:
-        return False
-    # is hammer shape
-    logger.info(str(quetos))
-    return {
-        'color': color,
-        'ratio': ratio,
-        'lratio': lratio
-    }
-
-def score_s(ratio, lratio):
-    add = (ratio + lratio)
-    if add == 0:    # Shape T super hammer.
-        return 10000
-    return round(10 / (ratio + lratio), 2)
 
 main()

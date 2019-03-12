@@ -19,11 +19,11 @@ def main():
     calendar = szse.calendar_2m_lately()
     length = len(calendar) - 1
     # check for day1-4 and week1
-    for i in range(1, 5):
+    for i in range(1, 6):
         if length >= i:
             day(calendar[length-i], i)
     # check for week2-3 and month1
-    for i in range(2, 4):
+    for i in range(2, 5):
         if length >= i*5:
             day(calendar[length-i*5], i*5)
     # check for month2
@@ -34,6 +34,7 @@ def main():
 def day(calendar, num):
 
     # logger.info('HammerCheck day' + str(num) + '(' + day_str + ') price change range.')
+    logger.debug(str(calendar))
     hammers = HammerShape.select().where(HammerShape.date == calendar['date'])
     codes = []
     for hammer in hammers:
