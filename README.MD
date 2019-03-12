@@ -41,6 +41,9 @@ Name | File Name | Chinese
 Balance Sheet Info | BalanceSheet.py | 资产负债表
 Profit Sheet Info | ProfitSheet.py | 利润表
 
+## Demo
+http://stock.icharm.me
+
 ## Plan
 First to code common info api. Obviously there is a lot of boring basic work to do, if you have any good idea,
 <a href="mailto:icharm.me@outlook.com">send mail to me</a>
