@@ -3,14 +3,17 @@ import time
 import datetime
 from .. import szse
 from .. import sina
+from .. import gtimg
 from ..base import log
 from ..model.quantc import HammerShape
+from ..model.quantc import HammerShapeWeek
 
 logger = log.Log()
 fm = '%Y-%m-%d'
 today_str = time.strftime(fm, time.localtime())
 today = datetime.datetime.today()
 oneday = datetime.timedelta(days=1)
+weekday = time.strftime('%a', time.localtime())
 
 def main():
     if not szse.is_trade(today_str):
@@ -29,6 +32,10 @@ def main():
     # check for month2
     # if length >= 8*5:
     #     day(calendar[length - 8 * 5], 40)
+
+    # check for weekly
+    if weekday != 'Fri':
+        week()
 
 
 def day(calendar, num):
@@ -69,16 +76,48 @@ def save(hammer, num, rg):
         hammer.range_month = rg
     hammer.save()
 
+def week():
+    hammers = HammerShapeWeek.select().where(HammerShapeWeek.month2 >> None)
+    for hammer in hammers:
+        quotess = gtimg.weekly_lately(hammer.seccode)
+        if quotess is None:
+            continue
 
+        num = 0
+        length = len(quotess) -1
+        for i in range(length):
+            quotes = quotess[i]
+            if quotes['date'] == str(hammer.date):
+                num = length - i
+                break
+        logger.info('Week hammer check in stock code:' + hammer.seccode + ' name: ' + \
+                    hammer.secname + ' week_num: ' + str(num))
+        quotes = quotess[-1]
+        for hammer in hammers:
+            today_close = quotes.get('close')
+            rg = round((today_close - hammer.close) / hammer.close * 100, 2)
+            week_save(hammer, num, rg)
 
-
-def generte_days(week):
-    arr = []
-    for i in range(1, 5-week):
-        arr.append(i)
-    for i in range(1, week):
-        arr.append(i+2)
+def week_save(hammer, i, rg):
+    if i == 0:
+        return
+    if i == 1:
+        hammer.week1 = rg
+    elif i == 2:
+        hammer.week2 = rg
+    elif i == 3:
+        hammer.week3 = rg
+    elif i == 4:
+        hammer.month1 = rg
+    elif i == 5:
+        hammer.week5 = rg
+    elif i == 6:
+        hammer.week6 = rg
+    elif i == 7:
+        hammer.week7 = rg
+    elif i == 8:
+        hammer.month2 = rg
+    hammer.save()
 
 main()
-
 

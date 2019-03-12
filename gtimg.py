@@ -92,7 +92,7 @@ def parse(str, flag=1):
     for item in lt:
         tmp = item.split(' ')
         tmp[5] = int(tmp[5].replace('\\n\\', ''))
-        tmp[0] = int(time.mktime(time.strptime(tmp[0], '%y%m%d')) * 1000)
+        tmp[0] = time.strftime('%Y-%m-%d', time.strptime(tmp[0], '%y%m%d'))
         for i in range(1, 5):
             tmp[i] = float(tmp[i])
         alt.append({
@@ -104,6 +104,4 @@ def parse(str, flag=1):
             'volume': tmp[5]
         })
     return alt
-
-print(weekly_lately('600606'))
 

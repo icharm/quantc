@@ -11,8 +11,6 @@ from ..model.quantc import HammerShapeWeek
 
 logger = log.Log()
 
-
-
 today_date = time.strftime('%Y-%m-%d', time.localtime())
 weekday = time.strftime('%a', time.localtime())
 
@@ -21,8 +19,8 @@ def main():
     if not szse.is_trade(today_date):
         logger.info('Today is not trading day, interrupt search.')
         return
-    # if weekday != 'Fri':
-    #     logger.info('Today is not friday, interrupt search.')
+    if weekday != 'Fri':
+        logger.info('Today is not friday, interrupt search.')
     target_count = 0
     stocks = SwStock.select(SwStock.seccode, SwStock.secname)
     for stock in stocks:
