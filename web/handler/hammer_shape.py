@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 import datetime
-from ...model.quantc import HammerShape
+from ...model.quantc import HammerShape, HammerShapeWeek
 from .base import PeeweeRequestHandler
 
 class HammerShapeHandler(PeeweeRequestHandler):
@@ -16,4 +16,13 @@ class HammerShapeHandler(PeeweeRequestHandler):
             else:
                 date_str = today_str
         stocks = HammerShape.select().where(HammerShape.date == date_str)
-        self.render('hammer_shape.html', stocks=stocks,)
+        self.render('hammer_shape.html', stocks=stocks)
+
+class HammerShapeWeeklyHandler(PeeweeRequestHandler):
+    def get(self):
+        date_str = self.get_argument('date', '')
+        if date_str is None or date_str == '':
+            today = datetime.datetime.today()
+            date_str = today.strftime("%Y-%m-%d")
+        stocks = HammerShapeWeek.select().where(HammerShapeWeek.date == date_str)
+        self.render('hammer_shape_weekly.html', stocks=stocks)

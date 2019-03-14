@@ -85,8 +85,21 @@ async def weekly_lately_async(code):
         return None
     return parse(content, 2)
 
+def weekly(code):
+    url = base_url + '/weekly/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
+    content = base_request(url)
+    if content is None:
+        return None
+    return parse(content, 2)
 
-def parse(str, flag=1):
+async def weekly_async(code, retformat='dict'):
+    url = base_url + '/weekly/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
+    content = await base_asyncrequest(url)
+    if content is None:
+        return None
+    return parse(content, 2, retformat)
+
+def parse(str, flag=1, retformat='dict'):
     lt = str.split('\n')[flag:-1]
     alt = []
     for item in lt:
@@ -95,13 +108,18 @@ def parse(str, flag=1):
         tmp[0] = time.strftime('%Y-%m-%d', time.strptime(tmp[0], '%y%m%d'))
         for i in range(1, 5):
             tmp[i] = float(tmp[i])
-        alt.append({
-            'date': tmp[0],
-            'open': tmp[1],
-            'close': tmp[2],
-            'high': tmp[3],
-            'low': tmp[4],
-            'volume': tmp[5]
-        })
+        if retformat == 'dict':
+            alt.append({
+                'date': tmp[0],
+                'open': tmp[1],
+                'close': tmp[2],
+                'high': tmp[3],
+                'low': tmp[4],
+                'volume': tmp[5]
+            })
+        elif retformat == 'list':
+            alt.append(tmp)
+        else:
+            alt = None
     return alt
 

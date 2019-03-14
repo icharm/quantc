@@ -12,6 +12,14 @@ class DailyLineHandler(tornado.web.RequestHandler):
             self.write('')
         self.write(await cninfo.daily_async(code, is_parse=False))
 
+class WeeklyLineHandler(tornado.web.RequestHandler):
+    async def get(self):
+        code = self.get_argument('code')
+        if code is None or code == '':
+            self.write('')
+        ls = await gtimg.weekly_async(code, retformat='list')
+        self.write({'nodes': ls, 'responseCode': 200})
+
 class QuotesHandler(tornado.web.RequestHandler):
     async def get(self):
         code = self.get_argument('code')
