@@ -96,7 +96,7 @@ function showKLineChart(id, type) {
     }
 
     let chart = createStockChart('chart_' + chartID);
-    charts.set(chartID, type);
+    charts.set(chartID, chart);
     chart.showLoading();
     if (type === 'd') {
         ajaxDaily(chart, id);
