@@ -21,7 +21,7 @@ function setData(chart, data, name='stock') {
             parseInt(data[i][6]) // 成交量
         ]);
 	}
-	console.log(data[data.length-1][0]);
+	// console.log(data[data.length-1][0]);
 	MA5Array = calculateMA(5, ohlcArray);
 	// MA200Array = calculateMA(200, ohlcArray);
 
@@ -29,7 +29,29 @@ function setData(chart, data, name='stock') {
 	chart.series[0].update({data: ohlcArray, name:name});
 	chart.series[1].update({data: volumeArray});
 	chart.series[2].update({data: MA5Array});
-	chart.series[3].update({data: MA200Array});
+	// chart.series[3].update({data: MA200Array});
+}
+
+function setDataWeekly(chart, data, name='stock') {
+    var ohlcArray = [], volumeArray = [], MA5Array = [];
+
+	for (i = 0; i < data.length; i++) {
+		ohlcArray.push([
+			parseInt(data[i][0]), // the date
+			parseFloat(data[i][1]), // open
+			parseFloat(data[i][3]), // high
+			parseFloat(data[i][4]), // low
+			parseFloat(data[i][2]) // close
+		]);
+        volumeArray.push([
+            parseInt(data[i][0]), // the date
+            parseInt(data[i][5]) // 成交量
+        ]);
+	}
+	MA5Array = calculateMA(5, ohlcArray);
+	chart.series[0].update({data: ohlcArray, name:name});
+	chart.series[1].update({data: volumeArray});
+	chart.series[2].update({data: MA5Array});
 }
 
 function createStockChart(divID) {
@@ -37,7 +59,7 @@ function createStockChart(divID) {
 	return new Highcharts.StockChart( {
 		chart:{
 			renderTo : divID,
-			margin: [30, 30,30, 30],
+			margin: [0, 10, 0, 10],
 			plotBorderColor: borderColor,
 			plotBorderWidth: 0.3
 		},

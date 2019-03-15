@@ -1,0 +1,12 @@
+<!-- 清除li标签原生样式 -->
+.tabcontrol>.steps>ul {
+    list-style-type: none;
+}
+
+.tabcontrol>.steps>ul>li>a {
+    color: #727b84;
+}
+
+.active>a {
+    color: #fff !important;
+}

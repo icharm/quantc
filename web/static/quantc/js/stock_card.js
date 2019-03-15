@@ -1,3 +1,8 @@
+// All charts
+var charts = new Map();
+// Cache all cards tab statue.
+var tabs = new Map();
+var todayDateStamp = currentDateStamp();
 
 // 监听collapse卡片展开事件
 $(".collapse").on('show.bs.collapse', function(e) {
@@ -24,9 +29,18 @@ $(".collapse").on('show.bs.collapse', function(e) {
             for (i=0; i<lis.length; i++) {
                 lis[i].className += ' btn btn-secondary';
             }
-            // Default open first tab.
-            lis[0].className += ' active';
-            showKLineChart(id, 'd');
+            if (defaultTab === 'd') {
+                // Default is 0
+                lis[0].className += ' active';
+                tabs.set(id, 'd');
+                return showKLineChart(id, 'd');
+            } else {
+                // active is just show style, only effective after clicking tag a.
+                lis[1].className += ' active';
+                $(lis[1]).children('a').click();
+                tabs.set(id, 'w');
+                return showKLineChart(id, 'w');
+            }
         },
         onStepChanged: function(event, currentIndex, priorIndex) {
             let div = event.currentTarget;
@@ -34,14 +48,15 @@ $(".collapse").on('show.bs.collapse', function(e) {
             $(lis[currentIndex]).addClass('active');
             $(lis[priorIndex]).removeClass('active');
             if (currentIndex === 0) {
-                showKLineChart(id, 'd');
+                tabs.set(id, 'd');
+                return showKLineChart(id, 'd');
             } else if (currentIndex === 1) {
-                showKLineChart(id, 'w')
+                tabs.set(id, 'w');
+                return showKLineChart(id, 'w');
             }
         }
     });
 
-  // showKLineChart(id)
 });
 
 // 监听expand卡片全屏事件
@@ -52,49 +67,36 @@ $('a[data-action="expand_hs"]').on('click',function(e){
     $(this).closest('.card').toggleClass('card-fullscreen');
     // reset chart height width
     let id = e.currentTarget.parentNode.parentNode.nextElementSibling.id;
-    let chart = charts.get(id);
+    let type = tabs.get(id);
+    let chart = charts.get(chartId(id));
     let $card = $(this).closest('.card');
     let $chartParentDiv = $("#"+id);
     if ($card.hasClass("card-fullscreen")) {
         chart.setSize($chartParentDiv.width(), $chartParentDiv.height());
-        chart.rangeSelector.clickButton(2);
+        if (type === 'd')
+            chart.rangeSelector.clickButton(2);
     } else {
-        chart.setSize($chartParentDiv.width(), 500)
-        chart.rangeSelector.clickButton(1);
+        chart.setSize($chartParentDiv.width(), 500);
+        if (type === 'd')
+            chart.rangeSelector.clickButton(1);
     }
 });
 
-var datepaginator = function() {
-    return {
-        init: function() {
-            let url = window.location.href;
-            let date = url.split('?date=')[1];
-            $("#paginator").datepaginator({
-                    selectedDate: date,
-                    selectedDateFormat:  'YYYY-MM-DD',
-                    onSelectedDateChanged: function(a, t) {
-                        window.location.href='/hsw?date='+ moment(t).format("YYYY-MM-DD")
-                    }
-                })
-        }
-    }
-}();
-jQuery(document).ready(function() {
-    datepaginator.init()
-});
+function chartId(id){
+    return tabs.get(id) + '_' + id;
+}
 
-var charts = new Map();
-var todayDateStamp = currentDateStamp();
-
+// 绘制蜡烛图
 function showKLineChart(id, type) {
+    let chartID = type + '_' + id;
     // 判断是否重复初始化
-    if (charts.get(type+'_'+id)) {
-        console.log('Already drawn. ' + id);
+    if (charts.get(chartID)) {
+        // console.log('Already drawn. ' + chartID);
         return;
     }
 
-    let chart = createStockChart('chart_' + type + '_' + id);
-    charts.set(id, chart);
+    let chart = createStockChart('chart_' + chartID);
+    charts.set(chartID, type);
     chart.showLoading();
     if (type === 'd') {
         ajaxDaily(chart, id);
@@ -152,9 +154,11 @@ function ajaxWeekly(chart, id) {
         dataType: 'json',
         success: function (ret) {
             if (ret !== '') {
-                setData(chart, ret.nodes);
+                setDataWeekly(chart, ret.nodes);
             }
             chart.hideLoading();
+            // Default to show a year weekly nodes.
+            chart.rangeSelector.clickButton(4);
         },
         error: function (ret) {
             console.log(ret);

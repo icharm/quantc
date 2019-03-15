@@ -92,20 +92,23 @@ def weekly(code):
         return None
     return parse(content, 2)
 
-async def weekly_async(code, retformat='dict'):
+async def weekly_async(code, retformat='dict', timeformat='str'):
     url = base_url + '/weekly/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
     content = await base_asyncrequest(url)
     if content is None:
         return None
-    return parse(content, 2, retformat)
+    return parse(content, 2, retformat, timeformat)
 
-def parse(str, flag=1, retformat='dict'):
+def parse(str, flag=1, retformat='dict', timeformat='str'):
     lt = str.split('\n')[flag:-1]
     alt = []
     for item in lt:
         tmp = item.split(' ')
         tmp[5] = int(tmp[5].replace('\\n\\', ''))
-        tmp[0] = time.strftime('%Y-%m-%d', time.strptime(tmp[0], '%y%m%d'))
+        if timeformat == 'str':
+            tmp[0] = time.strftime('%Y-%m-%d', time.strptime(tmp[0], '%y%m%d'))
+        elif timeformat == 'int':
+            tmp[0] = int(time.mktime(time.strptime(tmp[0], '%y%m%d')) * 1000)
         for i in range(1, 5):
             tmp[i] = float(tmp[i])
         if retformat == 'dict':

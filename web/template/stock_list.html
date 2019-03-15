@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="card">
+            <div id="paginator"></div>
+        </div>
+    </div>
+    <input id="page-name" hidden="hidden" value="w" />
+    {% for stock in stocks %}
+    <!-- Column -->
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-actions">
+                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
+                    <a class="btn-minimize" data-action="expand_hs"><i class="mdi mdi-arrow-expand"></i></a>
+                    <a class="btn-close" data-action="close"><i class="ti-close"></i></a>
+                </div>
+                <h4 class="card-title m-b-0">{{ stock.secname + '(' + stock.seccode + ')' }}</h4>
+            </div>
+            <div id="{{stock.seccode}}" class="card-body collapse">
+                <div id="tabs_{{stock.seccode}}" class="">
+                    {% block tabs %}
+                        <h3 style="display: none">Daily</h3>
+                        {% block tab_daily %}
+                        {% end %}
+                        <h3 style="display: none">Weekly</h3>
+                        {% block tab_weekly %}
+                        {% end %}
+                    {% end %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    {% end %}
+{% end %}
+
+{% block head_css %}
+<link href="{{static_url('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+<link href="{{static_url('quantc/css/stock_card.css')}}" rel="stylesheet">
+{% end %}
+
+{% block foot_js %}
+<script src="{{static_url('assets/plugins/highstock/highstock.src.js')}}"></script>
+<!--DataSelector-->
+<script src="{{static_url('assets/plugins/date-paginator/moment.min.js')}}"></script>
+<script src="{{static_url('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{static_url('assets/plugins/date-paginator/bootstrap-datepaginator.min.js')}}"></script>
+<!--DataSelector End-->
+<!--Wizard-->
+<script src="{{static_url('assets/plugins/wizard/jquery.steps.min.js')}}"></script>
+<!--Wizard End-->
+<script src="{{static_url('quantc/js/stock_card.js')}}"></script>
+<script src="{{static_url('quantc/js/highstock_kline.js')}}"></script>
+
+<!-- 技术指标主文件 -->
+<!--<script src="http://cdn.hcharts.cn/highstock/indicators/indicators.js"></script>-->
+
+<!-- 技术指标文件，如果是 SMA，则无需引入（因为 indicators 包含 SMA） -->
+<!--<script src="http://cdn.hcharts.cn/highstock/indicators/macd.js"></script>-->
+{% block custom_js %} {% end %}
+{% end %}

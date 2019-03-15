@@ -17,7 +17,7 @@ class WeeklyLineHandler(tornado.web.RequestHandler):
         code = self.get_argument('code')
         if code is None or code == '':
             self.write('')
-        ls = await gtimg.weekly_async(code, retformat='list')
+        ls = await gtimg.weekly_async(code, retformat='list', timeformat='int')
         self.write({'nodes': ls, 'responseCode': 200})
 
 class QuotesHandler(tornado.web.RequestHandler):

@@ -10,8 +10,8 @@ from .handler.stock_data import TestHandler
 
 url = [
     (r'/', IndexHandler),
-    (r'/hs', HammerShapeHandler),
-    (r'/hsw', HammerShapeWeeklyHandler),
+    (r'/hs/d', HammerShapeHandler),
+    (r'/hs/w', HammerShapeWeeklyHandler),
     (r'/sd/daily_line', DailyLineHandler),
     (r'/sd/weekly_line', WeeklyLineHandler),
     (r'/sd/quotes', QuotesHandler),

@@ -1,103 +1,92 @@
-{% extends "base.html" %}
+{% extends "stock_list.html" %}
 
 {% block breadcrumb %}
 <h3 class="text-themecolor">StockShape</h3>
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active">HammerShape</li>
+    <li class="breadcrumb-item"><a href="#">HammerShape</a></li>
+    <li class="breadcrumb-item active">Daily</li>
 </ol>
 {% end %}
 
-{% block content %}
-    <div class="col-md-12">
-        <div class="card">
-            <div id="paginator"></div>
+{% block tab_daily %}
+<section>
+    <div class="row">
+        <div class="col-md-2 col-xs-4">
+            <p class="text-muted">S:{{stock.score_s}}</p>
         </div>
-    </div>
-    {% for stock in stocks %}
-    <!-- Column -->
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <div class="card-actions">
-                    <a class="" data-action="collapse"><i class="ti-minus"></i></a>
-                    <a class="btn-minimize" data-action="expand_hs"><i class="mdi mdi-arrow-expand"></i></a>
-                    <a class="btn-close" data-action="close"><i class="ti-close"></i></a>
-                </div>
-                <h4 class="card-title m-b-0">{{ stock.secname + '(' + stock.seccode + ')' }}</h4>
+        {% if stock.range_day1 != None and stock.range_day1 != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">D1:{{stock.range_day1}}%</p>
             </div>
-
-            <div id="{{stock.seccode}}" class="card-body collapse">
-                <div class="row">
-                    <div class="col-md-2 col-xs-4 b-r">
-                        <p class="text-muted">S:{{stock.score_s}}</p>
-                    </div>
-                    {% if stock.range_day1 != None and stock.range_day1 != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">D1:{{stock.range_day1}}%</p>
-                        </div>
-                    {% end %}
-                    {% if stock.range_day2 != None and stock.range_day2 != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">D2:{{stock.range_day2}}%</p>
-                        </div>
-                    {% end %}
-                    {% if stock.range_day3 != None and stock.range_day3 != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">D3:{{stock.range_day3}}%</p>
-                        </div>
-                    {% end %}
-                    {% if stock.range_day4 != None and stock.range_day4 != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">D4:{{stock.range_day4}}%</p>
-                        </div>
-                    {% end %}
-                    {% if stock.range_week1 != None and stock.range_week1 != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">W1:{{stock.range_week1}}%</p>
-                        </div>
-                    {% end %}
-                    {% if stock.range_week2 != None and stock.range_week2 != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">W2:{{stock.range_week2}}%</p>
-                        </div>
-                    {% end %}
-                    {% if stock.range_week3 != None and stock.range_week3 != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">W3:{{stock.range_week3}}%</p>
-                        </div>
-                    {% end %}
-                    {% if stock.range_month != None and stock.range_month != '' %}
-                        <div class="col-md-1 col-xs-3 b-r">
-                            <p class="text-muted">M:{{stock.range_month}}%</p>
-                        </div>
-                    {% end %}
-                </div>
-                <div id="chart_{{stock.seccode}}" style="min-height: 500px; min-width: 310px;"></div>
+        {% end %}
+        {% if stock.range_day2 != None and stock.range_day2 != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">D2:{{stock.range_day2}}%</p>
             </div>
-        </div>
+        {% end %}
+        {% if stock.range_day3 != None and stock.range_day3 != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">D3:{{stock.range_day3}}%</p>
+            </div>
+        {% end %}
+        {% if stock.range_day4 != None and stock.range_day4 != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">D4:{{stock.range_day4}}%</p>
+            </div>
+        {% end %}
+        {% if stock.range_week1 != None and stock.range_week1 != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">W1:{{stock.range_week1}}%</p>
+            </div>
+        {% end %}
+        {% if stock.range_week2 != None and stock.range_week2 != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">W2:{{stock.range_week2}}%</p>
+            </div>
+        {% end %}
+        {% if stock.range_week3 != None and stock.range_week3 != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">W3:{{stock.range_week3}}%</p>
+            </div>
+        {% end %}
+        {% if stock.range_month != None and stock.range_month != '' %}
+            <div class="col-md-1 col-xs-3">
+                <p class="text-muted">M:{{stock.range_month}}%</p>
+            </div>
+        {% end %}
     </div>
-    <!-- Column -->
-    {% end %}
+    <div id="chart_d_{{stock.seccode}}" style="min-height: 500px; min-width: 310px;"></div>
+</section>
 {% end %}
 
-{% block head_css %}
-<link href="{{static_url('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
+{% block tab_weekly %}
+<section>
+    <div id="chart_w_{{stock.seccode}}" style="min-height: 500px; min-width: 310px;"></div>
+</section>
 {% end %}
 
-{% block foot_js %}
-<script src="{{static_url('assets/plugins/highstock/highstock.src.js')}}"></script>
-<!--DataSelector-->
-<script src="{{static_url('assets/plugins/date-paginator/moment.min.js')}}"></script>
-<script src="{{static_url('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js')}}"></script>
-<script src="{{static_url('assets/plugins/date-paginator/bootstrap-datepaginator.min.js')}}"></script>
-<!--DataSelector End-->
-<script src="{{static_url('quantc/js/hammer_shape.js')}}"></script>
-<script src="{{static_url('quantc/js/highstock_kline.js')}}"></script>
-
-<!-- 技术指标主文件 -->
-<!--<script src="http://cdn.hcharts.cn/highstock/indicators/indicators.js"></script>-->
-
-<!-- 技术指标文件，如果是 SMA，则无需引入（因为 indicators 包含 SMA） -->
-<!--<script src="http://cdn.hcharts.cn/highstock/indicators/macd.js"></script>-->
+{% block custom_js %}
+<script>
+    var defaultTab = 'd';
+    // 日期选择器
+    var datepaginator = function() {
+        return {
+            init: function() {
+                let url = window.location.href;
+                let date = url.split('?date=')[1];
+                $("#paginator").datepaginator({
+                    selectedDate: date,
+                    selectedDateFormat:  'YYYY-MM-DD',
+                    onSelectedDateChanged: function(a, t) {
+                        window.location.href='/hs/d?date='+ moment(t).format("YYYY-MM-DD")
+                    }
+                })
+            }
+        }
+    }();
+    jQuery(document).ready(function() {
+        datepaginator.init()
+    });
+</script>
 {% end %}
