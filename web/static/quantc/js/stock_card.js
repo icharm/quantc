@@ -12,7 +12,7 @@ $(".collapse").on('show.bs.collapse', function(e) {
         return showKLineChart(id, 'd');
     } else {
         tabs.set(id, 'w');
-        $('#tabs li:eq(1) a').tab('show'); //展示第二个tab页
+        $("#w-" + id).tab('show'); //展示第二个tab页
         return showKLineChart(id, 'w');
     }
 });

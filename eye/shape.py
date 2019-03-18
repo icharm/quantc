@@ -6,7 +6,7 @@ logger = log.Log()
 def is_hammer_shape(quetos):
     # Ratio of entity and line
     entity_line_ratio_h = 0.3
-    linehead_entity_ratio_h = 0.15
+    linehead_entity_ratio_h = 0.2
     linehead_line_ratio_h = 0.2
 
     color = 1

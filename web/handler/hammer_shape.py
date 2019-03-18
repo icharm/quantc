@@ -15,7 +15,7 @@ class HammerShapeHandler(PeeweeRequestHandler):
                 date_str = yester_str
             else:
                 date_str = today_str
-        stocks = HammerShape.select().where(HammerShape.date == date_str)
+        stocks = HammerShape.select().where(HammerShape.date == date_str).order_by(HammerShape.score_s.desc())
         self.render('hammer_shape.html', stocks=stocks)
 
 class HammerShapeWeeklyHandler(PeeweeRequestHandler):
@@ -24,5 +24,5 @@ class HammerShapeWeeklyHandler(PeeweeRequestHandler):
         if date_str is None or date_str == '':
             today = datetime.datetime.today()
             date_str = today.strftime("%Y-%m-%d")
-        stocks = HammerShapeWeek.select().where(HammerShapeWeek.date == date_str)
+        stocks = HammerShapeWeek.select().where(HammerShapeWeek.date == date_str).order_by(HammerShapeWeek.score_s.desc())
         self.render('hammer_shape_weekly.html', stocks=stocks)
