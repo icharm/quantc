@@ -9,6 +9,7 @@ $(".collapse").on('show.bs.collapse', function(e) {
     var id = e.currentTarget.id;
     if (defaultTab === 'd') {
         tabs.set(id, 'd');
+        $("#d-" + id).tab('show');
         return showKLineChart(id, 'd');
     } else {
         tabs.set(id, 'w');

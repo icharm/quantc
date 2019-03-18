@@ -22,12 +22,14 @@
             <div class="card-body collapse" id="{{stock.seccode}}">
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs customtab" role="tablist" id="tabs">
-                    <li class="nav-item"> <a id="d-{{stock.seccode}}" class="nav-link active" data-toggle="tab" href="#d_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Daily</span> </a> </li>
+                    <li class="nav-item"> <a id="d-{{stock.seccode}}" class="nav-link" data-toggle="tab" href="#d_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Daily</span> </a> </li>
                     <li class="nav-item"> <a id="w-{{stock.seccode}}" class="nav-link" data-toggle="tab" href="#w_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Weekly</span></a> </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane fade active" id="d_{{stock.seccode}}" role="tabpanel">
+                    <!--为了淡入淡出特效占位-->
+                    <div style="display: none" class="tab-pane fade in active" role="tabpanel">&nbsp;</div>
+                    <div class="tab-pane fade" id="d_{{stock.seccode}}" role="tabpanel">
                         {% block tab_daily %}
                         {% end %}
                     </div>
