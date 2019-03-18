@@ -19,16 +19,22 @@
                 </div>
                 <h4 class="card-title m-b-0">{{ stock.secname + '(' + stock.seccode + ')' }}</h4>
             </div>
-            <div id="{{stock.seccode}}" class="card-body collapse">
-                <div id="tabs_{{stock.seccode}}" class="">
-                    {% block tabs %}
-                        <h3 style="display: none">Daily</h3>
+            <div class="card-body collapse" id="{{stock.seccode}}">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs customtab" role="tablist" id="tabs">
+                    <li class="nav-item"> <a id="d-{{stock.seccode}}" class="nav-link active" data-toggle="tab" href="#d_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Daily</span> </a> </li>
+                    <li class="nav-item"> <a id="w-{{stock.seccode}}" class="nav-link" data-toggle="tab" href="#w_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Weekly</span></a> </li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="d_{{stock.seccode}}" role="tabpanel">
                         {% block tab_daily %}
                         {% end %}
-                        <h3 style="display: none">Weekly</h3>
+                    </div>
+                    <div class="tab-pane" id="w_{{stock.seccode}}" role="tabpanel">
                         {% block tab_weekly %}
                         {% end %}
-                    {% end %}
+                    </div>
                 </div>
             </div>
         </div>

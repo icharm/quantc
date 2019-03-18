@@ -10,60 +10,57 @@
 {% end %}
 
 {% block tab_daily %}
-<section>
-    <div class="row">
-        <div class="col-md-2 col-xs-4">
-            <p class="text-muted">S:{{stock.score_s}}</p>
-        </div>
-        {% if stock.range_day1 != None and stock.range_day1 != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">D1:{{stock.range_day1}}%</p>
-            </div>
-        {% end %}
-        {% if stock.range_day2 != None and stock.range_day2 != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">D2:{{stock.range_day2}}%</p>
-            </div>
-        {% end %}
-        {% if stock.range_day3 != None and stock.range_day3 != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">D3:{{stock.range_day3}}%</p>
-            </div>
-        {% end %}
-        {% if stock.range_day4 != None and stock.range_day4 != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">D4:{{stock.range_day4}}%</p>
-            </div>
-        {% end %}
-        {% if stock.range_week1 != None and stock.range_week1 != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">W1:{{stock.range_week1}}%</p>
-            </div>
-        {% end %}
-        {% if stock.range_week2 != None and stock.range_week2 != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">W2:{{stock.range_week2}}%</p>
-            </div>
-        {% end %}
-        {% if stock.range_week3 != None and stock.range_week3 != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">W3:{{stock.range_week3}}%</p>
-            </div>
-        {% end %}
-        {% if stock.range_month != None and stock.range_month != '' %}
-            <div class="col-md-1 col-xs-3">
-                <p class="text-muted">M:{{stock.range_month}}%</p>
-            </div>
-        {% end %}
+<div class="row">
+    <div class="col-md-2 col-xs-4">
+        <p class="text-muted">S:{{stock.score_s}}</p>
     </div>
-    <div id="chart_d_{{stock.seccode}}" style="min-height: 500px; min-width: 310px;"></div>
-</section>
+    {% if stock.range_day1 != None and stock.range_day1 != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">D1:{{stock.range_day1}}%</p>
+        </div>
+    {% end %}
+    {% if stock.range_day2 != None and stock.range_day2 != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">D2:{{stock.range_day2}}%</p>
+        </div>
+    {% end %}
+    {% if stock.range_day3 != None and stock.range_day3 != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">D3:{{stock.range_day3}}%</p>
+        </div>
+    {% end %}
+    {% if stock.range_day4 != None and stock.range_day4 != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">D4:{{stock.range_day4}}%</p>
+        </div>
+    {% end %}
+    {% if stock.range_week1 != None and stock.range_week1 != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">W1:{{stock.range_week1}}%</p>
+        </div>
+    {% end %}
+    {% if stock.range_week2 != None and stock.range_week2 != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">W2:{{stock.range_week2}}%</p>
+        </div>
+    {% end %}
+    {% if stock.range_week3 != None and stock.range_week3 != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">W3:{{stock.range_week3}}%</p>
+        </div>
+    {% end %}
+    {% if stock.range_month != None and stock.range_month != '' %}
+        <div class="col-md-1 col-xs-3">
+            <p class="text-muted">M:{{stock.range_month}}%</p>
+        </div>
+    {% end %}
+</div>
+<div id="chart_d_{{stock.seccode}}" class="kchart"></div>
 {% end %}
 
 {% block tab_weekly %}
-<section>
-    <div id="chart_w_{{stock.seccode}}" style="min-height: 500px; min-width: 310px;"></div>
-</section>
+<div class="row">&nbsp;</div>
+<div id="chart_w_{{stock.seccode}}" class="kchart"></div>
 {% end %}
 
 {% block custom_js %}

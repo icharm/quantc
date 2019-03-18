@@ -6,57 +6,23 @@ var todayDateStamp = currentDateStamp();
 
 // 监听collapse卡片展开事件
 $(".collapse").on('show.bs.collapse', function(e) {
-  // console.log(e.currentTarget.id);
     var id = e.currentTarget.id;
-    // tabs change. doc: https://github.com/rstaib/jquery-steps/wiki/Settings
-    $("#tabs_"+id).steps({
-        headerTag: "h3",
-        bodyTag: "section",
-        labels: {
-            current: ""
-        },
-        transitionEffect: "slideLeft",
-        enableFinishButton: false,
-        enablePagination: false,
-        enableAllSteps: true,
-        titleTemplate: "#title#",
-        cssClass: "tabcontrol",
-        onInit: function(event) {
-            // 为Tabs 按钮添加样式
-            let div = event.currentTarget;
-            div.getElementsByTagName('ul')[0].className = 'btn-group';
-            let lis = div.getElementsByTagName('li');
-            for (i=0; i<lis.length; i++) {
-                lis[i].className += ' btn btn-secondary';
-            }
-            if (defaultTab === 'd') {
-                // Default is 0
-                lis[0].className += ' active';
-                tabs.set(id, 'd');
-                return showKLineChart(id, 'd');
-            } else {
-                // active is just show style, only effective after clicking tag a.
-                lis[1].className += ' active';
-                $(lis[1]).children('a').click();
-                tabs.set(id, 'w');
-                return showKLineChart(id, 'w');
-            }
-        },
-        onStepChanged: function(event, currentIndex, priorIndex) {
-            let div = event.currentTarget;
-            let lis = div.getElementsByTagName('li');
-            $(lis[currentIndex]).addClass('active');
-            $(lis[priorIndex]).removeClass('active');
-            if (currentIndex === 0) {
-                tabs.set(id, 'd');
-                return showKLineChart(id, 'd');
-            } else if (currentIndex === 1) {
-                tabs.set(id, 'w');
-                return showKLineChart(id, 'w');
-            }
-        }
-    });
+    if (defaultTab === 'd') {
+        tabs.set(id, 'd');
+        return showKLineChart(id, 'd');
+    } else {
+        tabs.set(id, 'w');
+        $('#tabs li:eq(1) a').tab('show'); //展示第二个tab页
+        return showKLineChart(id, 'w');
+    }
+});
 
+$("#tabs a").on('show.bs.tab', function(e){
+    let id = e.target.id;
+    let tmp = id.split('-');
+    let type = tmp[0], code = tmp[1];
+    tabs.set(code, type);
+    return showKLineChart(code, type);
 });
 
 // 监听expand卡片全屏事件
@@ -70,13 +36,17 @@ $('a[data-action="expand_hs"]').on('click',function(e){
     let type = tabs.get(id);
     let chart = charts.get(chartId(id));
     let $card = $(this).closest('.card');
-    let $chartParentDiv = $("#"+id);
+    // let $chartParentDiv = $("#"+id);
+    // let height = $chartParentDiv.height() - 100;
+    // let width = $chartParentDiv.width();
     if ($card.hasClass("card-fullscreen")) {
-        chart.setSize($chartParentDiv.width(), $chartParentDiv.height());
+        // chart.setSize(width, height);
+        chart.reflow();
         if (type === 'd')
             chart.rangeSelector.clickButton(2);
     } else {
-        chart.setSize($chartParentDiv.width(), 500);
+        // chart.setSize(width, 500);
+        chart.reflow();
         if (type === 'd')
             chart.rangeSelector.clickButton(1);
     }
