@@ -1,5 +1,14 @@
 .kchart{
-    min-height: 500px;
+    height: 500px;
+    /*max-height: 800px;*/
     min-width: 310px;
     margin-top: -15px;
+    /*height: 75vh;*/
+    /*为了子div absolute 能获取正确的高度*/
+    position: relative;
+}
+
+/* Conflict with Bootstrap, not needed after v7.0.1 */
+.highcharts-bindings-wrapper * {
+    box-sizing: content-box;
 }

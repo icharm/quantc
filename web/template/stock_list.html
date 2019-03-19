@@ -48,6 +48,8 @@
 {% block head_css %}
 <link href="{{static_url('assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css')}}" rel="stylesheet">
 <link href="{{static_url('quantc/css/stock_card.css')}}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{static_url('assets/plugins/highstock/gui.css')}}">
+<link rel="stylesheet" type="text/css" href="{{static_url('assets/plugins/highstock/popup.css')}}">
 {% end %}
 
 {% block foot_js %}
@@ -64,9 +66,13 @@
 <script src="{{static_url('quantc/js/highstock_kline.js')}}"></script>
 
 <!-- 技术指标主文件 -->
-<!--<script src="http://cdn.hcharts.cn/highstock/indicators/indicators.js"></script>-->
+<script src="{{static_url('assets/plugins/highstock/indicators-all.js')}}"></script>
 
 <!-- 技术指标文件，如果是 SMA，则无需引入（因为 indicators 包含 SMA） -->
-<!--<script src="http://cdn.hcharts.cn/highstock/indicators/macd.js"></script>-->
+<script src="{{static_url('assets/plugins/highstock/drag-panes.js')}}"></script>
+<script src="{{static_url('assets/plugins/highstock/annotations-advanced.js')}}"></script>
+<script src="{{static_url('assets/plugins/highstock/price-indicator.js')}}"></script>
+<script src="{{static_url('assets/plugins/highstock/full-screen.js')}}"></script>
+<script src="{{static_url('assets/plugins/highstock/stock-tools.js')}}"></script>
 {% block custom_js %} {% end %}
 {% end %}

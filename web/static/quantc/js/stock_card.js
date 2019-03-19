@@ -18,7 +18,7 @@ $(".collapse").on('show.bs.collapse', function(e) {
     }
 });
 
-$("#tabs a").on('show.bs.tab', function(e){
+$("#tabs a").on('shown.bs.tab', function(e){
     let id = e.target.id;
     let tmp = id.split('-');
     let type = tmp[0], code = tmp[1];
@@ -149,4 +149,15 @@ function currentStamp() {
 
 function currentDateStamp() {
     return new Date(new Date().setHours(0, 0, 0, 0)) / 1000;
+}
+
+function getQueryVariable(variable)
+{
+       var query = window.location.search.substring(1);
+       var vars = query.split("&");
+       for (var i=0;i<vars.length;i++) {
+               var pair = vars[i].split("=");
+               if(pair[0] == variable){return pair[1];}
+       }
+       return(false);
 }
