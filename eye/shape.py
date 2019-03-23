@@ -5,9 +5,10 @@ logger = log.Log()
 
 def is_hammer_shape(quetos):
     # Ratio of entity and line
-    entity_line_ratio_h = 0.3
-    linehead_entity_ratio_h = 0.2
-    linehead_line_ratio_h = 0.2
+    entity_head_line_ration = 0.4
+    # entity_line_ratio_h = 0.5
+    # linehead_entity_ratio_h = 0.2
+    # linehead_line_ratio_h = 0.3
 
     color = 1
     if quetos['open'] < 2:     # Open price < 2, not consider.
@@ -23,19 +24,18 @@ def is_hammer_shape(quetos):
     entity_h = abs(entity_h)
     # entity line ratio
     ratio = round(entity_h / line_h, 4)
-    if ratio > entity_line_ratio_h:
-        return False
     # line head line ratio
     if color > 0:
         lhead = quetos['high'] - quetos['close']   # High - Close rise
     else:
         lhead = quetos['high'] - quetos['open']   # High - Open drop
-    if entity_h == 0:
-        lratio = round(lhead / line_h, 4)
-    else:
-        lratio = round(lhead / entity_h, 4)
-    if lratio > linehead_entity_ratio_h:
+    if lhead >= entity_h:
         return False
+    lratio = round(lhead / line_h, 4)
+    ratio = lratio + ratio
+    if ratio > entity_head_line_ration:
+        return False
+
     # is hammer shape
     logger.info(str(quetos))
     return {
