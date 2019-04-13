@@ -34,7 +34,7 @@ def main():
     #     day(calendar[length - 8 * 5], 40)
 
     # check for weekly
-    if weekday != 'Fri':
+    if weekday == 'Fri':
         week()
 
 
@@ -84,7 +84,7 @@ def week():
             continue
 
         num = 0
-        length = len(quotess) -1
+        length = len(quotess)
         for i in range(length):
             quotes = quotess[i]
             if quotes['date'] == str(hammer.date):
@@ -119,5 +119,5 @@ def week_save(hammer, i, rg):
         hammer.month2 = rg
     hammer.save()
 
-main()
-
+# main()
+week()
