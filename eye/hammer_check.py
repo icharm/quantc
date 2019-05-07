@@ -90,6 +90,7 @@ def week():
             if quotes['date'] == str(hammer.date):
                 num = length - i
                 break
+        num = num / 5
         logger.info('Week hammer check in stock code:' + hammer.seccode + ' name: ' + \
                     hammer.secname + ' week_num: ' + str(num))
         quotes = quotess[-1]
