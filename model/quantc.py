@@ -84,9 +84,34 @@ class HammerShapeWeek(Model):
     class Meta:
         database = db
 
+class VenusShape(Model):
+    seccode = CharField()
+    secname = CharField()
+    type = CharField()  # day, week, month line hammer shape
+    trend_before = IntegerField(null=True)  # rise 1 or drop -1
+    color = IntegerField(null=True)  # rise 1 or drop -1
+    date = DateField()  # trade date
+    close = DoubleField()  # close price.
+    trend_after = IntegerField(null=True)  # rise 1 or drop -1
+    d1 = DoubleField(null=True)
+    d2 = DoubleField(null=True)
+    d3 = DoubleField(null=True)
+    d4 = DoubleField(null=True)
+    d5 = DoubleField(null=True)
+    d6 = DoubleField(null=True)
+    d7 = DoubleField(null=True)
+    d8 = DoubleField(null=True)
+    d9 = DoubleField(null=True)
+    d10 = DoubleField(null=True)
+    score_s = DoubleField(null=True)
+    score_p = DoubleField(null=True)
+    updated = DateTimeField(default=datetime.datetime.now)
 
-tables = [SwStock, HammerShape, TradeCalendar, HammerShapeWeek]
+    class Meta:
+        database = db
+
+tables = [SwStock, HammerShape, TradeCalendar, HammerShapeWeek, VenusShape]
 # db.connect()
-# db.create_tables([HammerShapeWeek])
+# db.create_tables([VenusShape])
 # logger.debug('Tables created successfully.')
 

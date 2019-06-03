@@ -4,3 +4,4 @@
 *.pyc
 /*.html
 /.vscode/*
+/quantc.db

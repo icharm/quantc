@@ -49,3 +49,52 @@ def hammer_score_s(ratio, lratio):
     if add == 0:    # Shape T super hammer.
         return 10000
     return round(10 / (ratio + lratio), 2)
+
+def venus_shape_judge(q1, q2, q3):
+    if q1['open'] > q1['close']:
+        q1_h = q1['open']
+        q1_l = q1['close']
+        q1_t = -1
+    else:
+        q1_h = q1['close']
+        q1_l = q1['open']
+        q1_t = 1
+
+    if q2['open'] > q2['close']:
+        q2_h = q2['open']
+        q2_l = q2['close']
+        q2_t = -1
+    else:
+        q2_h = q2['close']
+        q2_l = q2['open']
+        q2_t = 1
+
+    if q3['open'] > q3['close']:
+        q3_h = q3['open']
+        q3_l = q3['close']
+        q3_t = -1
+    else:
+        q3_h = q3['close']
+        q3_l = q3['open']
+        q3_t = 1
+
+    # 前天跌，昨天跌到底，今天高开高走
+    if q1_l >= q2_h and q3_l >= q2_h and q2_t < 0 and q1_t > 0:
+        c1 = (q1_l - q2_h) / q2['close']
+        c2 = (q3_l - q2_h) / q3['open']
+        return (c1 + c2) * 1000
+    else:
+        return False
+
+
+def top(d1, d2):
+    if d1 > d2:
+        return d1
+    else:
+        return d2
+
+def bottom(d1, d2):
+    if d1 > d2:
+        return d2
+    else:
+        return d1
