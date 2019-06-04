@@ -25,11 +25,8 @@ def main():
             if quotes_list is None:
                 logger.debug('Get quotes of ' + stock.seccode + " failed.")
                 exit(-1)
-            q1 = quotes_list[-1]
-            q2 = quotes_list[-2]
-            q3 = quotes_list[-3]
             logger.debug('Venus analysis in stock : ' + stock.seccode + ' ' + stock.secname)
-            result = venus_shape_judge(q1, q2, q3)
+            result = venus_shape_judge(quotes_list)
             if not result:
                 continue
             VenusShape.create(
@@ -37,13 +34,13 @@ def main():
                 secname=stock.secname,
                 type='day',
                 color=1,
-                date=q2['date'],
-                close=q3['close'],
+                date=quotes_list[-2]['date'],
+                close=quotes_list[-1]['close'],
                 score_s=result,
             )
             target_count += 1
-            result['seccode'] = [stock.seccode]
-            result['secname'] = [stock.secname]
+            result['seccode'] = str(stock.seccode)
+            result['secname'] = str(stock.secname)
             logger.debug('Venus found! : ' + str(result))
         except:
             traceback.print_exc()
