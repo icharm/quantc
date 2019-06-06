@@ -2,7 +2,7 @@
 import requests
 import json
 from tornado.httpclient import AsyncHTTPClient
-from ..base import log
+from base import log
 
 logger = log.Log()
 

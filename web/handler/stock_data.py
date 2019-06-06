@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import tornado.web
 import json
-from ...cninfo import cninfo
+import cninfo
 from ... import sina
 from ... import gtimg
 

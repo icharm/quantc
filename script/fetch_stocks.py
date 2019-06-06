@@ -2,7 +2,7 @@
 # Fetch stocks according to sw category.
 
 from base import log
-from cninfo import cninfo
+import cninfo
 from model.quantc import SwStock
 
 logger = log.Log(__name__)
