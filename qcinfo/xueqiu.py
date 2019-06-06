@@ -1,13 +1,9 @@
 # -*- coding: UTF-8 -*-
 # Xueqiu.com stock data
 
-import requests
-import re
-from tornado.httpclient import AsyncHTTPClient
-from .base import log
 import json
-from .sina import prefix
-from .gtimg import base_request, base_asyncrequest
+from qcinfo.sina import prefix
+from qcinfo.gtimg import base_asyncrequest
 
 base_url = "https://stock.xueqiu.com"
 

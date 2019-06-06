@@ -3,7 +3,7 @@
 import requests
 import re
 from tornado.httpclient import AsyncHTTPClient
-from .base import log
+from basic import log
 
 logger = log.Log()
 

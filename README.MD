@@ -11,7 +11,6 @@ Quantc is simple and straightforward, now, it's still has few features, but I wi
 - requests-2.21.0
 - pymysql-0.9.3
 - tornado 5.1.1
-- tushare
 
 ## Usage
 Go to [Quantc](http://www.quantc.top)

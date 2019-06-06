@@ -2,12 +2,12 @@
 
 import datetime
 from peewee import *
-from ..base import config
-from ..base import log
+from basic import config
+from basic import log
 
 logger = log.Log()
 db = SqliteDatabase(config.db_default)
-# db = MySQLDatabase('quantc', user=config.db_username, password=config.db_password, host=config.db_address, port=config.db_port)
+# db = MySQLDatabase('qcinfo', user=config.db_username, password=config.db_password, host=config.db_address, port=config.db_port)
 
 class SwStock(Model):
     seccode = CharField()

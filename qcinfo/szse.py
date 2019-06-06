@@ -3,8 +3,8 @@ import time
 import datetime
 import requests
 import json
-from .base import log
-from .model.quantc import TradeCalendar
+from basic import log
+from model import TradeCalendar
 
 logger = log.Log()
 

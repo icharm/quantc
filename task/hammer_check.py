@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
 import time
 import datetime
-from .. import szse
-from .. import sina
-from .. import gtimg
-from ..base import log
-from ..model.quantc import HammerShape
-from ..model.quantc import HammerShapeWeek
+from qcinfo import szse
+from qcinfo import sina
+from qcinfo import gtimg
+from basic import log
+from quantc import HammerShape
+from quantc import HammerShapeWeek
 
 logger = log.Log()
 fm = '%Y-%m-%d'

@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*- 
-import http.client
 import urllib
 import json
 
@@ -48,7 +47,7 @@ def call(url, params):
     params['access_token'] = token()
     paramsbyte = bytes(urllib.parse.urlencode(params), 'utf8')
     log.debug('Calling cninfo services ...')
-    response = urllib.request.urlopen(config.base_url+url, paramsbyte)
+    response = urllib.request.urlopen(config.base_url + url, paramsbyte)
     respStr = response.read()
     resp = json.loads(respStr)
     respCode = resp['resultcode']

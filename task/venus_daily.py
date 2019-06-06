@@ -3,11 +3,11 @@
 import time
 import traceback
 from .shape import venus_shape_judge
-from .. import gtimg
-from .. import szse
-from ..base import log
-from ..model.quantc import SwStock
-from ..model.quantc import VenusShape
+from qcinfo import gtimg
+from qcinfo import szse
+from basic import log
+from quantc import SwStock
+from quantc import VenusShape
 
 logger = log.Log()
 

@@ -2,7 +2,7 @@
 import requests
 import json
 from tornado.httpclient import AsyncHTTPClient
-from base import log
+from basic import log
 
 logger = log.Log()
 
@@ -91,7 +91,7 @@ def stocks_under_category(param, url='/api/stock/p_public0004'):
         logger.error('Request failed. ' + str(dt))
     return dt.get('records')
 
-# Daily line data
+# Daily line data, this is a unreliable api
 def daily_line(scode, is_parse=True):
     '''
     line_node:{

@@ -13,7 +13,7 @@ base_url = 'http://webapi.cninfo.com.cn'
 # --------- #
 # Cache file root path.
 cache_root_path = dirname(dirname(__file__)) + '\\cache\\'
-# Cache switch , if True, cacheService function (in base.py) will read cache before call api service.
+# Cache switch , if True, cacheService function (in basic.py) will read cache before call api service.
 enable_cache = True
 # Access token cache file name
 token = 'token'
@@ -42,6 +42,6 @@ log_out = True
 # Database  #
 # --------- #
 # Db file path
-db_default = dirname(dirname(__file__))+'/quantc.db'
+db_default = dirname(dirname(__file__))+'/qcinfo.db'
 
 

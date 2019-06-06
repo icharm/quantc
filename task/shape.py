@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Stock hammer shape judge.
-from ..base import log
+from basic import log
 logger = log.Log()
 
 def is_hammer_shape(quetos):

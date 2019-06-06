@@ -4,8 +4,8 @@
 import requests
 import time
 from tornado.httpclient import AsyncHTTPClient
-from .base import log
-from .sina import prefix
+from basic import log
+from qcinfo.sina import prefix
 
 logger = log.Log()
 

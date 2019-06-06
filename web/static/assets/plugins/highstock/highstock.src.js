@@ -349,7 +349,7 @@
         /**
          * If a number is given, it defines the pixel length. If a percentage string is
          * given, like for example `'50%'`, the setting defines a length relative to a
-         * base size, for example the size of a container.
+         * basic size, for example the size of a container.
          *
          * @typedef {number|string} Highcharts.RelativeSize
          */
@@ -1414,7 +1414,7 @@
         };
 
         /**
-         * Return a length based on either the integer value, or a percentage of a base.
+         * Return a length based on either the integer value, or a percentage of a basic.
          *
          * @function Highcharts.relativeLength
          *
@@ -3558,7 +3558,7 @@
         };
         extend(SVGElement.prototype, /** @lends Highcharts.SVGElement.prototype */ {
 
-            // Default base for animation
+            // Default basic for animation
             opacity: 1,
             SVG_NS: SVG_NS,
 
@@ -8217,7 +8217,7 @@
                         if (box) {
                             box = box.destroy();
                         }
-                        // Call base implementation to destroy the rest
+                        // Call basic implementation to destroy the rest
                         SVGElement.prototype.destroy.call(wrapper);
 
                         // Release local pointers (#1298)
@@ -16581,7 +16581,7 @@
                 /**
                  * If `true`, the first series in a stack will be drawn on top in a
                  * positive, non-reversed Y axis. If `false`, the first series is in
-                 * the base of the stack.
+                 * the basic of the stack.
                  *
                  * @sample {highcharts} highcharts/yaxis/reversedstacks-false/
                  *         Non-reversed stacks
@@ -28756,7 +28756,7 @@
                     axes[i] = axes[i].destroy();
                 }
 
-                // Destroy scroller & scroller series before destroying base series
+                // Destroy scroller & scroller series before destroying basic series
                 if (this.scroller && this.scroller.destroy) {
                     this.scroller.destroy();
                 }
@@ -30216,7 +30216,7 @@
             win = H.win;
 
         /**
-         * This is the base series prototype that all other series types inherit from.
+         * This is the basic series prototype that all other series types inherit from.
          * A new series is initialized either through the
          * [series](https://api.highcharts.com/highcharts/series)
          * option structure, or after the chart is initialized, through
@@ -30271,7 +30271,7 @@
          * @param {Highcharts.SeriesOptionsType|object} options
          *        The series options.
          *//**
-         * The line series is the base type and is therefor the series base prototype.
+         * The line series is the basic type and is therefor the series basic prototype.
          *
          * @private
          * @class
@@ -30428,7 +30428,7 @@
              *
              * @optionparent plotOptions.series
              */
-            { // base series options
+            { // basic series options
 
                 /**
                  * The SVG value used for the `stroke-linecap` and `stroke-linejoin`
@@ -31069,7 +31069,7 @@
                  */
 
                 /**
-                 * The threshold, also called zero level or base level. For line type
+                 * The threshold, also called zero level or basic level. For line type
                  * series this is only used in conjunction with
                  * [negativeColor](#plotOptions.series.negativeColor).
                  *
@@ -32267,8 +32267,8 @@
                          * @product highcharts highstock
                          */
                         marker: {
-                            // lineWidth: base + 1,
-                            // radius: base + 1
+                            // lineWidth: basic + 1,
+                            // radius: basic + 1
                         },
 
                         /**
@@ -36160,7 +36160,7 @@
                     stack.points[pointKey] = stack.points[series.index] =
                         [pick(stack.cumulative, stackThreshold)];
 
-                    // Record the base of the stack
+                    // Record the basic of the stack
                     if (!defined(stack.cumulative)) {
                         stack.base = pointKey;
                     }
@@ -37753,7 +37753,7 @@
                 softThreshold: false,
 
                 /**
-             * The Y axis value to serve as the base for the area, for distinguishing
+             * The Y axis value to serve as the basic for the area, for distinguishing
              * between values above and below a threshold. The area between the graph
              * and the threshold is filled.
              *
@@ -38042,14 +38042,14 @@
                 },
 
                 // Draw the graph and the underlying area. This method calls the Series
-                // base function and adds the area. The areaPath is calculated in the
+                // basic function and adds the area. The areaPath is calculated in the
                 // getSegmentPath method called from Series.prototype.drawGraph.
                 drawGraph: function () {
 
                     // Define or reset areaPath
                     this.areaPath = [];
 
-                    // Call the base method
+                    // Call the basic method
                     Series.prototype.drawGraph.apply(this);
 
                     // Define local variables
@@ -38731,7 +38731,7 @@
                 /**
                  * @ignore-option
                  */
-                marker: null, // point options are specified in the base options
+                marker: null, // point options are specified in the basic options
 
                 /**
                  * The maximum allowed pixel width for a column, translated to the
@@ -38804,7 +38804,7 @@
                  * packed values.
                  *
                  * @sample {highcharts} highcharts/plotoptions/column-minpointlength/
-                 *         Zero base value
+                 *         Zero basic value
                  * @sample {highcharts} highcharts/plotoptions/column-minpointlength-pos-and-neg/
                  *         Positive and negative close to zero values
                  *
@@ -38968,7 +38968,7 @@
                 },
 
                 /**
-                 * The Y axis value to serve as the base for the columns, for
+                 * The Y axis value to serve as the basic for the columns, for
                  * distinguishing between values above and below a threshold. If `null`,
                  * the columns extend from the padding Y axis minimum.
                  *
@@ -40595,7 +40595,7 @@
                 legendType: 'point',
 
                 /** @ignore-option */
-                marker: null, // point options are specified in the base options
+                marker: null, // point options are specified in the basic options
 
                 /**
                  * The minimum size for a pie in response to auto margins. The pie will
@@ -42371,7 +42371,7 @@
             };
 
             /**
-             * Override the base drawDataLabels method by pie specific functionality
+             * Override the basic drawDataLabels method by pie specific functionality
              *
              * @private
              * @function Highcharts.seriesTypes.pie#drawDataLabels
@@ -42745,7 +42745,7 @@
                     2 * labelPos[2] - labelPos[4], 2 * labelPos[3] - labelPos[5],
                     labelPos[2], labelPos[3], // second break
                     'L',
-                    labelPos[4], labelPos[5] // base
+                    labelPos[4], labelPos[5] // basic
                 ] : [
                     'M',
                     // end of the string at the label
@@ -42753,7 +42753,7 @@
                     'L',
                     labelPos[2], labelPos[3], // second break
                     'L',
-                    labelPos[4], labelPos[5] // base
+                    labelPos[4], labelPos[5] // basic
                 ];
             };
             */
@@ -44718,7 +44718,7 @@
             if (ruleIds !== currentRuleIds) {
 
                 // Undo previous rules. Before we apply a new set of rules, we need to
-                // roll back completely to base options (#6291).
+                // roll back completely to basic options (#6291).
                 if (currentResponsive) {
                     this.update(currentResponsive.undoOptions, redraw);
                 }
@@ -45504,7 +45504,7 @@
 
             /**
              * Get ticks for an ordinal axis within a range where points don't exist.
-             * It is required when overscroll is enabled. We can't base on points,
+             * It is required when overscroll is enabled. We can't basic on points,
              * because we may not have any, so we use approximated pointRange and
              * generate these ticks between Axis.dataMax, Axis.dataMax + Axis.overscroll
              * evenly spaced. Used in panning and navigator scrolling.
@@ -46244,7 +46244,7 @@
              *
              * When the `gapUnit` is `value`, the gap is based on absolute axis values,
              * which on a datetime axis is milliseconds. This also applies to the
-             * navigator series that inherits gap options from the base series.
+             * navigator series that inherits gap options from the basic series.
              *
              * @see [gapSize](plotOptions.series.gapSize)
              *
@@ -46298,7 +46298,7 @@
                 }
             }
 
-            // Call base method
+            // Call basic method
             return this.getGraphPath(points);
         };
 
@@ -46992,7 +46992,7 @@
                 croppedData,
                 revertRequireSorting = false;
 
-            // Run base method
+            // Run basic method
             series.forceCrop = groupingEnabled; // #334
             series.groupPixelWidth = null; // #2110
             series.hasProcessed = true; // #2692
@@ -48630,7 +48630,7 @@
                 forceCrop: true,
 
                 /**
-                 * Inherit the initialization from base Series.
+                 * Inherit the initialization from basic Series.
                  *
                  * @private
                  * @borrows Highcharts.Series#init as Highcharts.seriesTypes.flags#init
@@ -50303,7 +50303,7 @@
 
                 /**
                  * Whether the navigator and scrollbar should adapt to updated data
-                 * in the base X axis. When loading data async, as in the demo below,
+                 * in the basic X axis. When loading data async, as in the demo below,
                  * this should be `false`. Otherwise new data will trigger navigator
                  * redraw, which will cause unwanted looping. In the demo below, the
                  * data in the navigator is set only once. On navigating, only the main
@@ -50319,7 +50319,7 @@
                  */
 
                 /**
-                 * An integer identifying the index to use for the base series, or a
+                 * An integer identifying the index to use for the basic series, or a
                  * string representing the id of the series.
                  *
                  * **Note**: As of Highcharts 5.0, this is now a deprecated option.
@@ -51134,7 +51134,7 @@
              *        Options to merge in when updating navigator
              */
             update: function (options) {
-                // Remove references to old navigator series in base series
+                // Remove references to old navigator series in basic series
                 (this.series || []).forEach(function (series) {
                     if (series.baseSeries) {
                         delete series.baseSeries.navigatorSeries;
@@ -51788,7 +51788,7 @@
                 if (navigator.navigatorEnabled) {
                     // an x axis is required for scrollbar also
                     navigator.xAxis = new Axis(chart, merge({
-                        // inherit base xAxis' break and ordinal options
+                        // inherit basic xAxis' break and ordinal options
                         breaks: baseXaxis.options.breaks,
                         ordinal: baseXaxis.options.ordinal
                     }, navigatorOptions.xAxis, {
@@ -51826,7 +51826,7 @@
                         height: height
                     }));
 
-                    // If we have a base series, initialize the navigator series
+                    // If we have a basic series, initialize the navigator series
                     if (baseSeries || navigatorOptions.series.data) {
                         navigator.updateNavigatorSeries(false);
 
@@ -51837,7 +51837,7 @@
                             chart,
                             'beforeRedraw',
                             function () {
-                                // We've got one, now add it as base
+                                // We've got one, now add it as basic
                                 if (chart.series.length > 0 && !navigator.series) {
                                     navigator.setBaseSeries();
                                     navigator.unbindRedraw(); // reset
@@ -51929,7 +51929,7 @@
 
             /**
              * Get the union data extremes of the chart - the outer data extremes of the
-             * base X axis and the navigator axis.
+             * basic X axis and the navigator axis.
              *
              * @private
              * @function Highcharts.Navigator#getUnionExtremes
@@ -51974,7 +51974,7 @@
             },
 
             /**
-             * Set the base series and update the navigator series from this. With a bit
+             * Set the basic series and update the navigator series from this. With a bit
              * of modification we should be able to make this an API method to be called
              * from the outside
              *
@@ -52063,7 +52063,7 @@
                             var base = navSeries.baseSeries;
 
                             if (baseSeries.indexOf(base) < 0) { // Not in array
-                                // If there is still a base series connected to this
+                                // If there is still a basic series connected to this
                                 // series, remove event handler and reference.
                                 if (base) {
                                     removeEvent(
@@ -52083,13 +52083,13 @@
                             return true;
                         });
 
-                // Go through each base series and merge the options to create new
+                // Go through each basic series and merge the options to create new
                 // series
                 if (baseSeries && baseSeries.length) {
                     baseSeries.forEach(function eachBaseSeries(base) {
                         var linkedNavSeries = base.navigatorSeries,
                             userNavOptions = extend(
-                                // Grab color and visibility from base as default
+                                // Grab color and visibility from basic as default
                                 {
                                     color: base.color,
                                     visible: base.visible
@@ -52120,7 +52120,7 @@
                         );
 
                         // Merge data separately. Do a slice to avoid mutating the
-                        // navigator options from base series (#4923).
+                        // navigator options from basic series (#4923).
                         var navigatorSeriesData =
                             baseNavigatorOptions.data || userNavOptions.data;
 
@@ -52143,9 +52143,9 @@
                     });
                 }
 
-                // If user has defined data (and no base series) or explicitly defined
+                // If user has defined data (and no basic series) or explicitly defined
                 // navigator.series as an array, we create these series on top of any
-                // base series.
+                // basic series.
                 if (
                     chartNavigatorSeriesOptions.data &&
                     !(baseSeries && baseSeries.length) ||
@@ -52161,7 +52161,7 @@
                             mergedNavSeriesOptions = merge(
                                 defaultOptions.navigator.series,
                                 {
-                                // Since we don't have a base series to pull color from,
+                                // Since we don't have a basic series to pull color from,
                                 // try to fake it by using color from series with same
                                 // index. Otherwise pull from the colors array. We need
                                 // an explicit color as otherwise updates will increment
@@ -52202,8 +52202,8 @@
                 var navigator = this,
                     baseSeries = navigator.baseSeries || [];
 
-                // Bind modified extremes event to first base's xAxis only.
-                // In event of > 1 base-xAxes, the navigator will ignore those.
+                // Bind modified extremes event to first basic's xAxis only.
+                // In event of > 1 basic-xAxes, the navigator will ignore those.
                 // Adding this multiple times to the same axis is no problem, as
                 // duplicates should be discarded by the browser.
                 if (baseSeries[0] && baseSeries[0].xAxis) {
@@ -52215,7 +52215,7 @@
                 }
 
                 baseSeries.forEach(function (base) {
-                    // Link base series show/hide to navigator series visibility
+                    // Link basic series show/hide to navigator series visibility
                     addEvent(base, 'show', function () {
                         if (this.navigatorSeries) {
                             this.navigatorSeries.setVisible(true, false);
@@ -52227,7 +52227,7 @@
                         }
                     });
 
-                    // Respond to updated data in the base series, unless explicitily
+                    // Respond to updated data in the basic series, unless explicitily
                     // not adapting to data changes.
                     if (this.navigatorOptions.adaptToUpdatedData !== false) {
                         if (base.xAxis) {
@@ -52249,7 +52249,7 @@
             },
 
             /**
-             * Get minimum from all base series connected to the navigator
+             * Get minimum from all basic series connected to the navigator
              *
              * @param  {number} currentSeriesMin
              *         Minium from the current series
@@ -52293,7 +52293,7 @@
             },
 
             /**
-             * Hook to modify the base axis extremes with information from the Navigator
+             * Hook to modify the basic axis extremes with information from the Navigator
              *
              * @private
              * @function Highcharts.Navigator#modifyBaseAxisExtremes
@@ -52362,7 +52362,7 @@
             },
 
             /**
-             * Handler for updated data on the base series. When data is modified, the
+             * Handler for updated data on the basic series. When data is modified, the
              * navigator series must reflect it. This is called from the Chart.redraw
              * function before axis and series extremes are computed.
              *
@@ -52388,7 +52388,7 @@
                     (baseSeries.xAxis.min <= xDataMin) &&
                     (!this.chart.fixedRange || !navigator.stickToMax);
 
-                // Set the navigator series data to the new data of the base series
+                // Set the navigator series data to the new data of the basic series
                 if (navigatorSeries && !navigator.hasNavigatorData) {
                     navigatorSeries.options.pointStart = baseSeries.xData[0];
                     navigatorSeries.setData(
@@ -53323,7 +53323,7 @@
                     ytdExtremes,
                     dataGrouping = rangeOptions.dataGrouping;
 
-                // chart has no data, base series is removed
+                // chart has no data, basic series is removed
                 if (dataMin === null || dataMax === null) {
                     return;
                 }
@@ -54843,10 +54843,10 @@
 
         /**
          * When [compare](#plotOptions.series.compare) is `percent`, this option
-         * dictates whether to use 0 or 100 as the base of comparison.
+         * dictates whether to use 0 or 100 as the basic of comparison.
          *
          * @sample {highstock} stock/plotoptions/series-comparebase/
-         *         Compare base is 100
+         *         Compare basic is 100
          *
          * @type       {number}
          * @default    0
@@ -55469,7 +55469,7 @@
          */
         seriesProto.init = function () {
 
-            // Call base method
+            // Call basic method
             seriesInit.apply(this, arguments);
 
             // Set comparison mode
@@ -55546,7 +55546,7 @@
                 length,
                 compareValue;
 
-            // call base method
+            // call basic method
             seriesProcessData.apply(this, arguments);
 
             if (series.xAxis && series.processedYData) { // not pies

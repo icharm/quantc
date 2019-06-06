@@ -1,9 +1,8 @@
 # -*- coding: UTF-8 -*-
 import tornado.web
 import json
-import cninfo
-from ... import sina
-from ... import gtimg
+from qcinfo import cninfo, gtimg, sina
+
 
 class DailyLineHandler(tornado.web.RequestHandler):
     async def get(self):

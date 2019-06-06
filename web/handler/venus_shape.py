@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 import datetime
-from ...model.quantc import VenusShape
+from model import VenusShape
 from .base import PeeweeRequestHandler
 
 class VenusShapeHandler(PeeweeRequestHandler):

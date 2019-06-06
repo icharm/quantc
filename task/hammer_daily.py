@@ -3,11 +3,11 @@
 import time
 import traceback
 from .shape import is_hammer_shape, hammer_score_s
-from .. import sina
-from .. import szse
-from ..base import log
-from ..model.quantc import SwStock
-from ..model.quantc import HammerShape
+from qcinfo import sina
+from qcinfo import szse
+from basic import log
+from quantc import SwStock
+from quantc import HammerShape
 
 logger = log.Log()
 

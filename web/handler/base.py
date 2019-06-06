@@ -1,5 +1,6 @@
 from tornado.web import RequestHandler
-from ...model import quantc
+import quantc
+
 
 class PeeweeRequestHandler(RequestHandler):
     def prepare(self):

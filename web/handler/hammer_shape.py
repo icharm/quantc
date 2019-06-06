@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 import datetime
-from ...model.quantc import HammerShape, HammerShapeWeek
+from model import HammerShape, HammerShapeWeek
 from .base import PeeweeRequestHandler
 
 class HammerShapeHandler(PeeweeRequestHandler):
