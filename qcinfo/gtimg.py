@@ -1,30 +1,14 @@
 # -*- coding: UTF-8 -*-
-# Tencent stock data
+# QCInfo
+# Tencent Stock data
+# Version 0.1
 
-import requests
 import time
-from tornado.httpclient import AsyncHTTPClient
-from basic import log
-from qcinfo.sina import prefix
+from .basic import *
 
 logger = log.Log()
 
 base_url = 'http://data.gtimg.cn/flashdata/hushen'
-
-def base_request(url):
-    response = requests.get(url)
-    if response.status_code != 200:
-        logger.error('Request error url:' + url + ' ,response code: ' + str(response.status_code))
-        return None
-    return response.text
-
-async def base_asyncrequest(url):
-    response = await AsyncHTTPClient().fetch(url)
-    if response.code != 200:
-        logger.error('Request error url:' + url + ' ,response code: ' + str(response.code))
-        return None
-    html = response.body if isinstance(response.body, str) else response.body.decode()
-    return html
 
 # Synchronization methods
 def daily_year(code, year='19'):
@@ -35,14 +19,14 @@ def daily_year(code, year='19'):
     :return: None or List [{'date': 1552233600000, 'open': 7.0, 'close': 7.24, 'high': 7.25, 'low': 7.0, 'volume': 698387}, ...]
     '''
     url = base_url + year + '/daily/' + prefix(code) + '.js?visitDstTime=1'
-    content = base_request(url)
+    content = request(url)
     if content is None:
         return None
     return parse(content)
 
 async def daily_year_async(code, year='19'):
     url = base_url + year + '/daily/' + prefix(code) + '.js?visitDstTime=1'
-    content = await base_asyncrequest(url)
+    content = await asyncrequest(url)
     if content is None:
         return None
     return parse(content)
@@ -54,14 +38,14 @@ def daily_lately(code):
     :return: None or List
     '''
     url = base_url + '/latest/daily/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
-    content = base_request(url)
+    content = request(url)
     if content is None:
         return None
     return parse(content, 2)
 
 async def daily_lately_async(code):
     url = base_url + '/latest/daily/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
-    content = await base_asyncrequest(url)
+    content = await asyncrequest(url)
     if content is None:
         return None
     return parse(content, 2)
@@ -73,28 +57,28 @@ def weekly_lately(code):
     :return: None or List
     '''
     url = base_url + '/latest/weekly/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
-    content = base_request(url)
+    content = request(url)
     if content is None:
         return None
     return parse(content, 2)
 
 async def weekly_lately_async(code):
     url = base_url + '/latest/weekly/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
-    content = await base_asyncrequest(url)
+    content = await asyncrequest(url)
     if content is None:
         return None
     return parse(content, 2)
 
 def weekly(code):
     url = base_url + '/weekly/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
-    content = base_request(url)
+    content = request(url)
     if content is None:
         return None
     return parse(content, 2)
 
 async def weekly_async(code, retformat='dict', timeformat='str'):
     url = base_url + '/weekly/' + prefix(code) + '.js?maxage=43201&visitDstTime=1'
-    content = await base_asyncrequest(url)
+    content = await asyncrequest(url)
     if content is None:
         return None
     return parse(content, 2, retformat, timeformat)

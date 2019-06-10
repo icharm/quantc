@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-import requests
 import json
-from tornado.httpclient import AsyncHTTPClient
-from basic import log
+from .basic import *
 
 logger = log.Log()
 
@@ -109,21 +107,16 @@ def daily_line(scode, is_parse=True):
     :return: list line_node or None
     '''
     url = cninfo_url + '/data/cube/dailyLine?stockCode=' + scode
-    response = requests.get(url)
-    if response.status_code != 200:
-        logger.error('Request failed, ' + str(response))
+    response = request(url)
     if not is_parse:
-        return response.text
-    dt = json.loads(response.text)
+        return response
+    dt = json.loads(response)
     return dt['line']
 
 async def daily_async(scode, is_parse=True):
     url = cninfo_url + '/data/cube/dailyLine?stockCode=' + scode
-    response = await AsyncHTTPClient().fetch(url)
-    if response.code != 200:
-        logger.error('Request error with stock code :' + scode + ' ,response code: ' + response.code)
-    html = response.body if isinstance(response.body, str) else response.body.decode()
+    response = await asyncrequest(url)
     if not is_parse:
-        return html
-    dt = json.loads(html)
+        return response
+    dt = json.loads(response)
     return dt['line']

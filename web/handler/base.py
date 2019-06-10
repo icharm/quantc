@@ -1,13 +1,13 @@
 from tornado.web import RequestHandler
-import quantc
+import model
 
 
 class PeeweeRequestHandler(RequestHandler):
     def prepare(self):
-        quantc.db.connect()
+        model.db.connect()
         return super(PeeweeRequestHandler, self).prepare()
 
     def on_finish(self):
-        if not quantc.db.is_closed():
-            quantc.db.close()
+        if not model.db.is_closed():
+            model.db.close()
         return super(PeeweeRequestHandler, self).on_finish()

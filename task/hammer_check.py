@@ -5,8 +5,8 @@ from qcinfo import szse
 from qcinfo import sina
 from qcinfo import gtimg
 from basic import log
-from quantc import HammerShape
-from quantc import HammerShapeWeek
+from model import HammerShape
+from model import HammerShapeWeek
 
 logger = log.Log()
 fm = '%Y-%m-%d'

@@ -1,39 +1,24 @@
 # -*- coding: UTF-8 -*-
 # Sina stock data
-import requests
 import re
-from tornado.httpclient import AsyncHTTPClient
-from basic import log
+from .basic import *
 
 logger = log.Log()
 
 base_url = 'http://hq.sinajs.cn/list='
 
-def prefix(code):
-    # '00': // 深交所A股
-    # '20': // 深交所B股
-    # '30': // 深交所创业板
-    # '60': // 上交所A股
-    # '90': // 上交所B股
-    two = code[0:2]
-    if two == '00' or two == '20' or two == '30':
-        code = 'sz' + code
-    else:
-        code = 'sh' + code
-    return code
-
 def quotes(code):
     url = base_url + prefix(code)
-    response = requests.get(url)
-    data_str = response.text
-    return parse(data_str)
+    response = request(url)
+    if response is None:
+        return None
+    return parse(response)
 
 async def quotes_async(code):
     url = base_url + prefix(code)
-    response = await AsyncHTTPClient().fetch(url)
-    if response.code != 200:
-        logger.error('Request error with stock code :' + code + ' ,response code: ' + response.code)
-    content = response.body if isinstance(response.body, str) else response.body.decode('gbk')
+    content = await asyncrequest(url, encode='gbk')
+    if content is None:
+        return None
     return parse(content)
 
 def quotes_multiple(codes):
@@ -42,9 +27,10 @@ def quotes_multiple(codes):
         all += prefix(code) + ','
     all = all[:-1]
     url = base_url + all
-    response = requests.get(url)
-    data_str = response.text
-    return parse_multiple(data_str)
+    response = request(url)
+    if response is None:
+        return None
+    return parse_multiple(response)
 
 async def quotes_multiple_async(codes):
     all = ''
@@ -52,10 +38,9 @@ async def quotes_multiple_async(codes):
         all += prefix(code) + ','
     all = all[:-1]
     url = base_url + all
-    response = await AsyncHTTPClient().fetch(url)
-    if response.code != 200:
-        logger.error('Request error with stock code :' + code + ' ,response code: ' + response.code)
-    content = response.body if isinstance(response.body, str) else response.body.decode('gbk')
+    content = await asyncrequest(url, encode='gbk')
+    if content is None:
+        return None
     return parse_multiple(content)
 
 def parse(strs):

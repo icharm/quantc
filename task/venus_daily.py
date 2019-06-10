@@ -6,8 +6,8 @@ from .shape import venus_shape_judge
 from qcinfo import gtimg
 from qcinfo import szse
 from basic import log
-from quantc import SwStock
-from quantc import VenusShape
+from model import SwStock
+from model import VenusShape
 
 logger = log.Log()
 

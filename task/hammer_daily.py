@@ -6,8 +6,8 @@ from .shape import is_hammer_shape, hammer_score_s
 from qcinfo import sina
 from qcinfo import szse
 from basic import log
-from quantc import SwStock
-from quantc import HammerShape
+from model import SwStock
+from model import HammerShape
 
 logger = log.Log()
 

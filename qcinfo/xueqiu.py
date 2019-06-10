@@ -2,8 +2,7 @@
 # Xueqiu.com stock data
 
 import json
-from qcinfo.sina import prefix
-from qcinfo.gtimg import base_asyncrequest
+from .basic import *
 
 base_url = "https://stock.xueqiu.com"
 
@@ -57,10 +56,9 @@ async def company_info_async(code):
     :return: Array item refer above json from api return
     '''
     url = base_url + "/v5/stock/f10/cn/company.json?symbol=" + prefix(code)
-    content = await base_asyncrequest(url)
+    content = await asyncrequest(url)
     if content is None:
         return None
     return json.loads(content)
 
-a
 print(company_info_async('600351'))

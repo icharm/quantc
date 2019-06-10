@@ -42,6 +42,6 @@ log_out = True
 # Database  #
 # --------- #
 # Db file path
-db_default = dirname(dirname(__file__))+'/qcinfo.db'
+db_default = dirname(dirname(__file__))+'/quantc.db'
 
 
