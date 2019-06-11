@@ -82,6 +82,9 @@
             init: function() {
                 let url = window.location.href;
                 let date = url.split('?date=')[1];
+                if (date === null || date === undefined) {
+                    date = moment().subtract(1, 'days') // Set pervious day default.
+                }
                 $("#paginator").datepaginator({
                     selectedDate: date,
                     selectedDateFormat:  'YYYY-MM-DD',
