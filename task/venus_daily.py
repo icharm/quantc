@@ -34,7 +34,7 @@ def main():
                 secname=stock.secname,
                 type='day',
                 color=1,
-                date=quotes_list[-2]['date'],
+                date=quotes_list[-1]['date'],
                 close=quotes_list[-1]['close'],
                 score_s=result,
             )
