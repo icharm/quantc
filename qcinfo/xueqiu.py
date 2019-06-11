@@ -61,4 +61,4 @@ async def company_info_async(code):
         return None
     return json.loads(content)
 
-print(company_info_async('600351'))
+# print(company_info_async('600351'))

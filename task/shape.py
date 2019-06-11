@@ -3,7 +3,7 @@
 from basic import log
 logger = log.Log()
 
-def is_hammer_shape(quetos):
+def is_hammer_shape(quotes):
     # Ratio of entity and line
     entity_head_line_ration = 0.4
     # entity_line_ratio_h = 0.5
@@ -11,11 +11,11 @@ def is_hammer_shape(quetos):
     # linehead_line_ratio_h = 0.3
 
     color = 1
-    if quetos['open'] < 2:     # Open price < 2, not consider.
+    if quotes[-1]['open'] < 2:     # Open price < 2, not consider.
         return False
 
-    line_h = quetos['high'] - quetos['low']    # Keep two decimals
-    entity_h = quetos['open'] - quetos['close']
+    line_h = quotes[-1]['high'] - quotes[-1]['low']    # Keep two decimals
+    entity_h = quotes[-1]['open'] - quotes[-1]['close']
     if line_h <= 0:
         return False
     # rais(1) or drop(-1)
@@ -26,9 +26,9 @@ def is_hammer_shape(quetos):
     ratio = round(entity_h / line_h, 4)
     # line head line ratio
     if color > 0:
-        lhead = quetos['high'] - quetos['close']   # High - Close rise
+        lhead = quotes[-1]['high'] - quotes[-1]['close']   # High - Close rise
     else:
-        lhead = quetos['high'] - quetos['open']   # High - Open drop
+        lhead = quotes[-1]['high'] - quotes[-1]['open']   # High - Open drop
     if lhead >= entity_h:
         return False
     lratio = round(lhead / line_h, 4)
@@ -36,9 +36,11 @@ def is_hammer_shape(quetos):
     if ratio > entity_head_line_ration:
         return False
 
+    trendb= trend_before(quotes)
     # is hammer shape
-    logger.info(str(quetos))
+    # logger.info(str(quotes))
     return {
+        'trend_before': trendb,
         'color': color,
         'ratio': ratio,
         'lratio': lratio
@@ -105,11 +107,48 @@ def venus_shape_judge(quotes_list):
     else:
         return False
 
-def ma5(quotes, startIndex=-5, endIndex=-1, item="close"):
+def ma5(quotes, sindex=-5, eindex=-1, item="close"):
     count = 0
-    for i in range(startIndex, endIndex):
+    for i in range(sindex, eindex+1):
         count += quotes[i][item]
     return count / 5
+
+def ma5_avg(quotes, sindex=-5, eindex=-1, item="close"):
+    '''
+    Pervious 5 day md5 average
+    :param quotes:
+    :param sindex:
+    :param eindex:
+    :param item:
+    :return:
+    '''
+    count = 0
+    for i in range(sindex, eindex+1):
+        count += ma5(quotes, i-4, i, item)
+    return count / 5
+
+def trend_before(quotes, sindex=-1, item="close"):
+    '''
+    计算ma5的均线趋势，计算前5天ma5均值的平均值，与后一天收盘价比较，5%以内视为横盘
+    :param quotes: 行情list
+    :param startIndex:
+    :param item:
+    :return: 0：横盘， 1：raise， -1：drop
+    '''
+    avg_previous_5 = ma5_avg(quotes, sindex=sindex-5, eindex=sindex-1, item=item)
+    yesterday = quotes[-1]["close"]
+    if avg_previous_5 > yesterday:
+        ratio = (avg_previous_5 - yesterday) / avg_previous_5
+        if ratio < 0.05:
+            return 0
+        else:
+            return -1
+    else:
+        ratio = (yesterday - avg_previous_5) / yesterday
+        if ratio < 0.05:
+            return 0
+        else:
+            return 1
 
 def top(d1, d2):
     if d1 > d2:
