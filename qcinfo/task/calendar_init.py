@@ -20,9 +20,7 @@ try:
             month = time.strftime('%Y-%m', date.timetuple())
             cal = szse.calendar_request(month)
             for index, value in cal.items():
-                map = []
-                map.append([value["date"], [value["open"], value["weekday"]]])
-                cals.append(map)
+                cals.append([value["date"], value["open"], value["weekday"]])
     file = qcrepo.wopen(qcrepo.dir + qcrepo.CALENDAR)
     file.write(json.dumps(cals))
     file.close()
