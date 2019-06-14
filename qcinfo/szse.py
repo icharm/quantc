@@ -1,23 +1,26 @@
 # -*- coding: UTF-8 -*-
 import time
 import datetime
-import requests
 import json
-from basic import log
+import pandas
 from model import TradeCalendar
+from .basic import *
 
 logger = log.Log()
 
 month = time.strftime('%Y-%m', time.localtime())
 
 logger = log.Log()
+URL = "http://www.szse.cn"
 
-def calendar_request():
+def calendar_request(tm=""):
     '''
     Request szse.cn for calendar this month.
     :return:
     '''
     url = 'http://www.szse.cn/api/report/exchange/onepersistentday/monthList'
+    if tm != "":
+        url = url + "?month=" + tm
     response = requests.get(url)
     if response.status_code != 200:
         logger.error('Get Szse trade calendar list error. ' + response.status_code)
@@ -135,4 +138,43 @@ def calendar_2m_lately():
             break
     return arr
 
-# print(calendar_2m_lately())
+def stocks_page():
+    '''
+    深圳证券交易所上市股票列表 抓取网页
+    :return: DataFrame "seccode", "secname", "sdate", "etype", "mtype", "total", "circulating"
+    '''
+    url_a = URL + "/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&TABKEY=tab1&PAGENO=" # A股列表
+    url_b = URL + "/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&TABKEY=tab2&PAGENO=" # B股列表
+    df = pandas.DataFrame(columns=["seccode", "secname", "sdate", "etype", "mtype", "total", "circulating"])
+    for j in range(1, 1000):
+        json_a = request(url_a + str(j))
+        arr = json.loads(json_a)[0]["data"]
+        if len(arr) == 0:
+            break
+        for i in range(0, len(arr)):
+            df = df.append(pandas.Series([
+                str(arr[i]["zqdm"]).replace(" ", "").strip(),
+                str(arr[i]["agjc"]).replace(" ", "").strip(),
+                str(arr[i]["agssrq"]).replace(" ", "").strip(),
+                "sz",
+                "A",
+                float(arr[i]["agzgb"]),  # 总股 亿
+                float(arr[i]["agltgb"])  # 流通股 亿
+            ], index=df.columns), ignore_index=True)
+
+    for j in range(1, 1000):
+        json_b = request(url_b + str(j))
+        arr = json.loads(json_b)[1]["data"]
+        if len(arr) == 0:
+            break
+        for i in range(0, len(arr)):
+            df = df.append(pandas.Series([
+                str(arr[i]["zqdm"]).replace(" ", "").strip(),
+                str(arr[i]["bgjc"]).replace(" ", "").strip(),
+                str(arr[i]["bgssrq"]).replace(" ", "").strip(),
+                "sz",
+                "B",
+                float(arr[i]["bgzgb"]),  # 总股 亿
+                float(arr[i]["bgltgb"])  # 流通股 亿
+            ], index=df.columns), ignore_index=True)
+    return df

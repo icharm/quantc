@@ -1,0 +1,2 @@
+# daily line data update
+30 15 * * * python3 -m qcinfo.task.dk_update >> /dev/null 2>&1

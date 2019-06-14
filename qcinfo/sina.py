@@ -55,11 +55,11 @@ def parse(strs):
         'name': result[3],
         'open': float(lt[1]),
         'now': float(lt[3]),
-        'close': float(lt[3]),
+        'close': float(lt[2]), # 昨日收盘价
         'high': float(lt[4]),
         'low': float(lt[5]),
-        'money': lt[9],
-        'volume': float(lt[8]),
+        'money': round(float(lt[9]), 3),
+        'volume': int(lt[8]),
         'date': lt[30]
     }
 
