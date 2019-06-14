@@ -1,15 +1,15 @@
 # -*- coding: UTF-8 -*-
 import tornado.web
 import json
-from qcinfo import cninfo, gtimg, sina
+from qcinfo import D, gtimg, sina
 
 
 class DailyLineHandler(tornado.web.RequestHandler):
-    async def get(self):
+    def get(self):
         code = self.get_argument("code")
         if code is None or code == '':
             self.write('')
-        self.write(await cninfo.daily_async(code, is_parse=False))
+        self.write(D.quotes(code, type="d").to_json(orient="values"))
 
 class WeeklyLineHandler(tornado.web.RequestHandler):
     async def get(self):

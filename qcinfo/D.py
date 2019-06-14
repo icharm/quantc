@@ -1,11 +1,10 @@
 # -*- coding: UTF-8 -*-
 # Stock data fetch from website.
-from basic import log
 from qcinfo import xueqiu as XQ
-from qcinfo import gtimg
 from qcinfo import qcrepo
+from qcinfo.log import qcinfo_log
 
-logger = log.Log()
+logger = qcinfo_log()
 
 async def company_info_async(code):
     '''
@@ -15,17 +14,14 @@ async def company_info_async(code):
     '''
     return await XQ.company_info_async(code)
 
-def quotes_lately(code, type="d"):
+def quotes(code, type="d"):
     '''
-    最近的100条行情数据列表
+    所有行情数据列表
     :param code: Stock code
     :param type: d：daily, w: weekly
-    :return: list
+    :return: dateframe
     '''
-    if type == "d":
-        return gtimg.daily_lately(code)
-    else:
-        return gtimg.weekly_lately(code)
+    return qcrepo.quotes(code, type)
 
 def is_trading(date):
     '''

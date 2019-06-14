@@ -62,7 +62,7 @@ function showKLineChart(id) {
         type:'GET',
         dataType: 'json',
         success: function (ret) {
-            let nodes = ret.line;
+            let nodes = ret;
 
             $.ajax({
                     url: '/sd/quotes?code=' + id,

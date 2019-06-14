@@ -2,7 +2,6 @@
 var charts = new Map();
 // Cache all cards tab statue.
 var tabs = new Map();
-var todayDateStamp = currentDateStamp();
 
 // 监听collapse卡片展开事件
 $(".collapse").on('show.bs.collapse', function(e) {
@@ -82,33 +81,8 @@ function ajaxDaily(chart, id) {
         type:'GET',
         dataType: 'json',
         success: function (ret) {
-            let nodes = ret.line;
-
-            $.ajax({
-                    url: '/sd/quotes?code=' + id,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function (ret1) {
-                        if (todayDateStamp === timestamp(ret1.date+" 00:00:00")) {
-                            nodes.push([
-                                currentStamp(),
-                                ret1.open,
-                                ret1.close,
-                                ret1.high,
-                                ret1.low,
-                                ret1.money,
-                                ret1.volume,
-                                0,
-                                0
-                            ])
-                        }
-                        setData(chart, nodes, ret1.name);
-                    },
-                    error: function (ret1) {
-                        console.log(ret1);
-                    }
-                });
-
+            let nodes = ret;
+            setData(chart, nodes, "");
             chart.hideLoading();
         },
         error: function (ret) {
