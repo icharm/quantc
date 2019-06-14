@@ -3,8 +3,11 @@
 
 import time
 import pandas as pd
-from .. import cninfo
-from .. import qcrepo
+from qcinfo import cninfo
+from qcinfo import qcrepo
+from qcinfo.log import task_log
+
+logger = task_log()
 
 category_dt = cninfo.categorys('1')
 if category_dt == None:
@@ -21,7 +24,7 @@ for i in [0, 1, 6, 7]: # 深证A 深证B 沪证A 沪证B
         )
     time.sleep(5) # 防止太快 被封
 qcrepo.set_stocks(df.to_json(orient="records"))
-print("Fetch successfully, found :" + str(len(df)))
+logger.info("Fetch successfully, found :" + str(len(df)))
 
 
 

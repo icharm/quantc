@@ -5,8 +5,8 @@ import datetime
 import json
 from qcinfo.log import task_log
 import traceback
-from .. import szse
-from .. import qcrepo
+from qcinfo import szse
+from qcinfo import qcrepo
 
 logger = task_log()
 

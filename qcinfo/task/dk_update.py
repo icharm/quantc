@@ -36,14 +36,11 @@ else:
                 timestamp = time.mktime(
                     datetime.datetime.strptime(str(quotes["date"])[0:10], "%Y-%m-%d").timetuple()) * 1000
 
-                if float(quotes["volume"]) == 0: #停止交易, 开盘、收盘、最高、最低 都为昨日收盘价
-                    quotes["open"] = close
-                    quotes["high"] = close
-                    quotes["low"] = close
-                    now = close
-                else:
-                    now = quotes["now"]
+                if float(quotes["volume"]) == 0:    # 停盘不更新
+                    logger.info(code + " volume is 0, terminate update.")
+                    continue
 
+                now = quotes["now"]
                 change = round(now - close, 2)
                 percentage = round(change / close * 100, 2)
                 pd.options.display.float_format = '{:.4f}'.format

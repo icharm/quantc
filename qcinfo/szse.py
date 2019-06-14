@@ -178,3 +178,8 @@ def stocks_page():
                 float(arr[i]["bgltgb"])  # 流通股 亿
             ], index=df.columns), ignore_index=True)
     return df
+# 深证交易所上市股票每分钟行情 当天
+# http://www.szse.cn/api/market/ssjjhq/getHistoryData?random=0.11177681782629256&cycleType=16&marketId=1&code=000001
+# cycleType=17 、21 5分钟行情
+# cycleType=18 15分钟行情
+# cycleType=19 30分钟行情

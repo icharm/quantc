@@ -20,7 +20,6 @@ for index, row in stocks.iterrows():
         date = time.strftime("%Y-%m-%d", time.localtime(times / 1000))
         if date != "2019-06-13":
             logger.info("code: " + code + " last timestamp is: " + date + " not today, need to retry!")
-            continue
         qcrepo.set_quotes(code, "d", json.dumps(quotes))
         count += 1
         logger.info(str(count) + " fetch " + str(code) + " success.")
