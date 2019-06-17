@@ -4,8 +4,44 @@
 import json
 import pandas as pd
 from .basic import *
+import datetime
+import time
+import traceback
+from os.path import dirname
+from qcinfo.log import qcinfo_log
+
+logger = qcinfo_log()
 
 base_url = "https://stock.xueqiu.com"
+
+header = {
+    "Accept": "application/json, text/plain, */*",
+    "Origin": "https://xueqiu.com",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+}
+
+def get_cookie():
+    try:
+        file = open(dirname(__file__)+"/store/xueqiu_cookie.json", mode="w+")
+        content = file.read()
+        cookie = ""
+        if content != "":
+            content = json.loads(content)
+            cookie = content["cookie"]
+            created = content["created"]
+            if datetime.datetime.fromtimestamp(created) - datetime.datetime.now() > datetime.timedelta(hours=12):
+                # Over 12h
+                cookie = ""
+        if cookie == "":
+            response = requests.get("https://xueqiu.com/", headers=header)
+            cookie = response.cookies["xq_a_token"]
+            js = json.dumps({"cookie": cookie, "created": time.time()})
+            file.write(js)
+        file.close()
+        return "xq_a_token=" + cookie + ";"
+    except:
+        logger.error("Xueqiu fetch cookies error.\n" + traceback.format_exc())
+        return ""
 
 async def company_info_async(code):
     '''
@@ -105,12 +141,7 @@ def quotes(code, type="day"):
     for key, value in param.items():
         params += key + "=" + str(value) + "&"
     url = url + "?" + params
-    header = {
-        "Accept": "application/json, text/plain, */*",
-        "Origin": "https://xueqiu.com",
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
-        "Cookie": "xq_a_token=4ce3f2bb2f4cef9c2b6fd45cd157b8bb6c6c5bf6;"
-    }
+    header["Cookie"] = get_cookie()
     content = requests.get(url, headers=header)
     arr = json.loads(content.text)
     arr1 = arr["data"]["item"]
