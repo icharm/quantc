@@ -2,6 +2,7 @@
 # Xueqiu.com stock data
 
 import json
+import pandas as pd
 from .basic import *
 
 base_url = "https://stock.xueqiu.com"
@@ -61,4 +62,58 @@ async def company_info_async(code):
         return None
     return json.loads(content)
 
-# print(company_info_async('600351'))
+def quotes(code, type="day"):
+    '''
+        "timestamp", 时间戳
+        "volume", 成交量
+        "open", 开盘价
+        "high", 最高价
+        "low", 最低价
+        "close", 收盘价
+        "chg", 涨跌额
+        "percent", 涨跌幅
+        "turnoverrate", 换手率
+        "amount", 交易额
+        "volume_post",
+        "amount_post",
+        "pe",
+        "pb",
+        "ps",
+        "pcf",
+        "market_capital",
+        "balance",
+        "hold_volume_cn",
+        "hold_ratio_cn",
+        "net_volume_cn",
+        "hold_volume_hk",
+        "hold_ratio_hk",
+        "net_volume_hk"
+    :param code:
+    :param type:
+    :return: dataframe
+    '''
+    url = base_url + "/v5/stock/chart/kline.json"
+    param = {
+        "symbol": prefix(code).upper(),
+        "begin": 1560752836600,     # 开始时间戳
+        "period": "day",
+        "count": -10000,          # 往前的数量
+        "indicator": "kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance",
+        "type": "normal"
+    }
+    params = ""
+    for key, value in param.items():
+        params += key + "=" + str(value) + "&"
+    url = url + "?" + params
+    header = {
+        "Accept": "application/json, text/plain, */*",
+        "Origin": "https://xueqiu.com",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+        "Cookie": "xq_a_token=4ce3f2bb2f4cef9c2b6fd45cd157b8bb6c6c5bf6;"
+    }
+    content = requests.get(url, headers=header)
+    arr = json.loads(content.text)
+    arr1 = arr["data"]["item"]
+    df = pd.DataFrame(data=arr1, columns=arr["data"]["column"])
+    select = df[["timestamp", "open", "close", "high", "low", "amount", "volume", "percent", "chg", "turnoverrate"]]
+    return select

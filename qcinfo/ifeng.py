@@ -1,3 +1,8 @@
 # -*- coding: UTF-8 -*-
 # Ifeng stock data
-url = "http://api.finance.ifeng.com/akdaily/?code=sh601989&type=last"
+base_url = "http://api.finance.ifeng.com"
+url = "/akweekly/?code=sh601989&type=last"
+
+# quotes()
+# akweekly
+# akmonthly

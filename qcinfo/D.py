@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Stock data fetch from website.
 from qcinfo import xueqiu as XQ
-from qcinfo import qcrepo
+from qcinfo import qcrepo, gtimg
 from qcinfo.log import qcinfo_log
 
 logger = qcinfo_log()
@@ -22,6 +22,18 @@ def quotes(code, type="d"):
     :return: dateframe
     '''
     return qcrepo.quotes(code, type)
+
+def quotes_lately(code, type="d"):
+    '''
+    最近的100条行情数据列表
+    :param code: Stock code
+    :param type: d：daily, w: weekly
+    :return: list
+    '''
+    if type == "d":
+        return gtimg.daily_lately(code)
+    else:
+        return gtimg.weekly_lately(code)
 
 def is_trading(date):
     '''

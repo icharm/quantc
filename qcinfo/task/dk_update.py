@@ -53,7 +53,8 @@ else:
                     quotes["money"],
                     quotes["volume"],
                     percentage,
-                    change
+                    change,
+                    None
                 ]
                 qcrepo.append_quotes(quotes["code"], "d", json.dumps(ds))
                 count += 1

@@ -22,14 +22,14 @@ def quotes(code, type="d"):
     行情列表
     :param code:
     :param type:
-    :return: DataFrame(Series(["time", "open", "close", "high", "low", "money", "vol", "percentage", "change"]))
-        时间戳，开盘价，收盘价，最高价，最低价，成交金额，成交量，涨跌幅%，涨跌金额
+    :return: DataFrame(Series(["time", "open", "close", "high", "low", "amount", "volume", "percent", "change", "turnover_rate"]))
+        时间戳，开盘价，收盘价，最高价，最低价，成交金额，成交量，涨跌幅%，涨跌金额，换手率
     '''
     try:
         if type == "d":
             file = ropen(dir + DK % (code))
             content = file.read()
-            df = pandas.DataFrame(data=json.loads(content), columns=["time", "open", "close", "high", "low", "money", "vol", "percentage", "change"])
+            df = pandas.DataFrame(data=json.loads(content), columns=["time", "open", "close", "high", "low", "amount", "volume", "percent", "change", "turnover_rate"])
             file.close()
         else:
             df = None
