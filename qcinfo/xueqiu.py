@@ -20,9 +20,12 @@ header = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
 }
 
+# Quotes type
+Q_TYPE = {"d": "day", "w": "week", "m": "month", "q": "quarter", "y": "year", "120": "120m", "60": "60m", "30": "30m", "15": "15m", "5": "5m", "1": "1m"}
+
 def get_cookie():
+    file = open(dirname(__file__) + "/store/xueqiu_cookie.json", mode="r+")
     try:
-        file = open(dirname(__file__)+"/store/xueqiu_cookie.json", mode="w+")
         content = file.read()
         cookie = ""
         if content != "":
@@ -30,16 +33,23 @@ def get_cookie():
             cookie = content["cookie"]
             created = content["created"]
             if datetime.datetime.fromtimestamp(created) - datetime.datetime.now() > datetime.timedelta(hours=12):
-                # Over 12h
+                logger.info("Cookie over 12 hours, update from xueqiu.com")
                 cookie = ""
         if cookie == "":
             response = requests.get("https://xueqiu.com/", headers=header)
-            cookie = response.cookies["xq_a_token"]
-            js = json.dumps({"cookie": cookie, "created": time.time()})
-            file.write(js)
+            if response.status_code != 200:
+                logger.info("Fetch cookie from xueqiu.com failed, reponse code: " + response.status_code)
+                cookie = ""
+            else:
+                cookie = response.cookies["xq_a_token"]
+                js = json.dumps({"cookie": cookie, "created": time.time()})
+                file.seek(0)    # 指向文件头 从头开始写
+                file.write(js)
+                logger.info("Cookie updated successfully.")
         file.close()
         return "xq_a_token=" + cookie + ";"
     except:
+        file.close()
         logger.error("Xueqiu fetch cookies error.\n" + traceback.format_exc())
         return ""
 
@@ -98,7 +108,7 @@ async def company_info_async(code):
         return None
     return json.loads(content)
 
-def quotes(code, type="day"):
+def quotes(code, type="d", count=-142, begin=int(time.time()*1000)):
     '''
         "timestamp", 时间戳
         "volume", 成交量
@@ -108,32 +118,20 @@ def quotes(code, type="day"):
         "close", 收盘价
         "chg", 涨跌额
         "percent", 涨跌幅
-        "turnoverrate", 换手率
+        "turnover_rate", 换手率
         "amount", 交易额
-        "volume_post",
-        "amount_post",
-        "pe",
-        "pb",
-        "ps",
-        "pcf",
-        "market_capital",
-        "balance",
-        "hold_volume_cn",
-        "hold_ratio_cn",
-        "net_volume_cn",
-        "hold_volume_hk",
-        "hold_ratio_hk",
-        "net_volume_hk"
     :param code:
     :param type:
-    :return: dataframe
+    :param count:
+    :param begin:
+    :return: dataframe or none
     '''
     url = base_url + "/v5/stock/chart/kline.json"
     param = {
         "symbol": prefix(code).upper(),
-        "begin": 1560752836600,     # 开始时间戳
-        "period": "day",
-        "count": -10000,          # 往前的数量
+        "begin": begin,             # 开始时间戳
+        "period": Q_TYPE[type],
+        "count": count,          # 往前 or 往后的数量
         "indicator": "kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance",
         "type": "normal"
     }
@@ -143,8 +141,56 @@ def quotes(code, type="day"):
     url = url + "?" + params
     header["Cookie"] = get_cookie()
     content = requests.get(url, headers=header)
+    if content.status_code != 200:
+        logger.error("Request xueqiu quotes error. url: " + url)
+        logger.error(traceback.format_exc())
+        return None
     arr = json.loads(content.text)
     arr1 = arr["data"]["item"]
     df = pd.DataFrame(data=arr1, columns=arr["data"]["column"])
     select = df[["timestamp", "open", "close", "high", "low", "amount", "volume", "percent", "chg", "turnoverrate"]]
+    select = select.rename({"chg": "change", "turnoverrate": "turnover_rate"}, axis="columns")
+    return select
+
+async def quotes_async(code, type="d", count=-142, begin=int(time.time()*1000)):
+    '''
+            "timestamp", 时间戳
+            "volume", 成交量
+            "open", 开盘价
+            "high", 最高价
+            "low", 最低价
+            "close", 收盘价
+            "change", 涨跌额
+            "percent", 涨跌幅
+            "turnover_rate", 换手率
+            "amount", 交易额
+        :param code:
+        :param type:
+        :param count:
+        :param begin:
+        :return: dataframe or none
+        '''
+    url = base_url + "/v5/stock/chart/kline.json"
+    param = {
+        "symbol": prefix(code).upper(),
+        "begin": begin,  # 开始时间戳
+        "period": Q_TYPE[type],
+        "count": count,  # 往前 or 往后的数量
+        "indicator": "kline,pe,pb,ps,pcf,market_capital,agt,ggt,balance",
+        "type": "normal"
+    }
+    params = ""
+    for key, value in param.items():
+        params += key + "=" + str(value) + "&"
+    url = url + "?" + params
+    header["Cookie"] = get_cookie()
+    content = await asyncrequest(url, encode="utf-8", header=header)
+    if content is None:
+        logger.error("Request xueqiu quotes error. url: " + url)
+        return None
+    arr = json.loads(content)
+    arr1 = arr["data"]["item"]
+    df = pd.DataFrame(data=arr1, columns=arr["data"]["column"])
+    select = df[["timestamp", "open", "close", "high", "low", "amount", "volume", "percent", "chg", "turnoverrate"]]
+    select = select.rename({"chg": "change", "turnoverrate": "turnover_rate"}, axis="columns")
     return select
