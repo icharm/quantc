@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
-# 从cninfo拉取所有股票至今的全部日K数据
+# 从xueqiu拉取所有股票至今的全部日K数据
 import time
-import json
 from qcinfo.log import task_log
 import traceback
 from qcinfo import xueqiu
@@ -15,7 +14,7 @@ for index, row in stocks.iterrows():
     try:
         code = row["seccode"]
         # quotes = cninfo.daily_line(code) # cninfo 的日K数据不全 弃用
-        quotes = xueqiu.quotes(code)
+        quotes = xueqiu.quotes(code, count=-10000)
         # 判断最后一条行情数据的日期是否和今天相等，来判断xueqiu的数据是否有缺失
         times = quotes.iloc[-1, 0]
         date = time.strftime("%Y-%m-%d", time.localtime(times / 1000))

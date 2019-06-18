@@ -74,10 +74,11 @@ def set_stocks(content):
 def set_quotes(code, type="d", content=""):
     try:
         if type == "d":
-            file = wopen(dir + DK % (code))
-            file.write(content)
-            file.close()
-
+            with wopen(dir + DK % (code)) as file:
+                file.write(content)
+        elif type == "w":
+            with wopen(dir + WK % (code)) as file:
+                file.write(content)
     except:
         logger.error(traceback.format_exc())
 
@@ -91,11 +92,15 @@ def append_quotes(code, type="d", content=""):
     '''
     try:
         if type == "d":
-            file = wopen(dir + DK % (code), mode="a")
-            file.seek(file.tell() - 1, os.SEEK_SET) # pointer to last char
-            file.truncate() # delete last char
-            file.write(","+content+"]")
-            file.close()
+            with wopen(dir + DK % (code), mode="a") as file:
+                file.seek(file.tell() - 1, os.SEEK_SET) # pointer to last char
+                file.truncate() # delete last char
+                file.write(","+content+"]")
+        elif type == "w":
+            with wopen(dir + WK % (code), mode="a") as file:
+                file.seek(file.tell() - 1, os.SEEK_SET) # pointer to last char
+                file.truncate() # delete last char
+                file.write(","+content+"]")
         return True
     except:
         logger.error(traceback.format_exc())
