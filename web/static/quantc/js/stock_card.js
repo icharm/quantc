@@ -81,8 +81,7 @@ function ajaxDaily(chart, id) {
         type:'GET',
         dataType: 'json',
         success: function (ret) {
-            let nodes = ret;
-            setData(chart, nodes, "");
+            setData(chart, ret, "");
             chart.hideLoading();
         },
         error: function (ret) {
@@ -98,9 +97,7 @@ function ajaxWeekly(chart, id) {
         type:'GET',
         dataType: 'json',
         success: function (ret) {
-            if (ret !== '') {
-                setDataWeekly(chart, ret.nodes);
-            }
+            setDataWeekly(chart, ret);
             chart.hideLoading();
             // Default to show a year weekly nodes.
             chart.rangeSelector.clickButton(4);

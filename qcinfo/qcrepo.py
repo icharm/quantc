@@ -17,6 +17,8 @@ CALENDAR="calendar.json"
 
 dir = dirname(__file__)+ '/store/'
 
+Q_COLS = ["timestamp", "open", "close", "high", "low", "amount", "volume", "percent", "change", "turnover_rate"]
+
 def quotes(code, type="d"):
     '''
     行情列表
@@ -27,10 +29,13 @@ def quotes(code, type="d"):
     '''
     try:
         if type == "d":
-            file = ropen(dir + DK % (code))
-            content = file.read()
-            df = pandas.DataFrame(data=json.loads(content), columns=["timestamp", "open", "close", "high", "low", "amount", "volume", "percent", "change", "turnover_rate"])
-            file.close()
+            with ropen(dir + DK % (code)) as file:
+                content = file.read()
+                df = pandas.DataFrame(data=json.loads(content), columns=Q_COLS)
+        elif type == "w":
+            with ropen(dir + WK % (code)) as file:
+                content = file.read()
+                df = pandas.DataFrame(data=json.loads(content), columns=Q_COLS)
         else:
             df = None
         return df
