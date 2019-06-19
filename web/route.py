@@ -6,7 +6,7 @@ from .handler.index import IndexHandler
 from .handler.hammer_shape import HammerShapeHandler, HammerShapeWeeklyHandler
 from .handler.venus_shape import VenusShapeHandler
 from .handler.stock_data import DailyLineHandler, WeeklyLineHandler
-from .handler.stock_data import QuotesHandler
+from .handler.stock_data import QuotesHandler, CompanyInfoHandler
 from .handler.stock_data import TestHandler
 
 url = [
@@ -17,5 +17,6 @@ url = [
     (r'/sd/daily_line', DailyLineHandler),
     (r'/sd/weekly_line', WeeklyLineHandler),
     (r'/sd/quotes', QuotesHandler),
+    (r'/sd/cinfo', CompanyInfoHandler),
     (r'/sd/test', TestHandler)
 ]

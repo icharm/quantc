@@ -24,6 +24,7 @@
                 <ul class="nav nav-tabs customtab" role="tablist" id="tabs">
                     <li class="nav-item"> <a id="d-{{stock.seccode}}" class="nav-link" data-toggle="tab" href="#d_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">Daily</span> </a> </li>
                     <li class="nav-item"> <a id="w-{{stock.seccode}}" class="nav-link" data-toggle="tab" href="#w_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Weekly</span></a> </li>
+                    <li class="nav-item"> <a id="c-{{stock.seccode}}" class="nav-link" data-toggle="tab" href="#c_{{stock.seccode}}" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">CompanyInfo</span></a> </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -36,6 +37,30 @@
                     <div class="tab-pane fade" id="w_{{stock.seccode}}" role="tabpanel">
                         {% block tab_weekly %}
                         {% end %}
+                    </div>
+                    <div class="tab-pane fade" id="c_{{stock.seccode}}" role="tabpanel" >
+                        <div class="row">
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Full Name</strong>
+                                <br>
+                                <p class="text-muted">[[ fullname ]]</p>
+                            </div>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Website</strong>
+                                <br>
+                                <p class="text-muted">[[ website ]]</p>
+                            </div>
+                            <div class="col-md-2 col-xs-3 b-r"> <strong>Controller</strong>
+                                <br>
+                                <p class="text-muted">[[ controller ]]</p>
+                            </div>
+                            <div class="col-md-4 col-xs-6"> <strong>Office Loc</strong>
+                                <br>
+                                <p class="text-muted">[[ office ]]</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <p class="m-t-30">[[ main ]]</p>
+                        <p>[[ introduction ]]</p>
+                        <p></p>
                     </div>
                 </div>
             </div>
@@ -74,5 +99,8 @@
 <script src="{{static_url('assets/plugins/highstock/price-indicator.js')}}"></script>
 <script src="{{static_url('assets/plugins/highstock/full-screen.js')}}"></script>
 <script src="{{static_url('assets/plugins/highstock/stock-tools.js')}}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
 {% block custom_js %} {% end %}
 {% end %}

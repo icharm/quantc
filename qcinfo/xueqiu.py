@@ -102,11 +102,12 @@ async def company_info_async(code):
     :param code: Stock code
     :return: Array item refer above json from api return
     '''
-    url = base_url + "/v5/stock/f10/cn/company.json?symbol=" + prefix(code)
-    content = await asyncrequest(url)
+    url = base_url + "/v5/stock/f10/cn/company.json?symbol=" + prefix(code).upper()
+    header["Cookie"] = get_cookie()
+    content = await asyncrequest(url, header=header)
     if content is None:
         return None
-    return json.loads(content)
+    return json.loads(content)["data"]["company"]
 
 def quotes(code, type="d", count=-142, begin=int(time.time()*1000)):
     '''

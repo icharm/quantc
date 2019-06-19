@@ -27,7 +27,7 @@ def request(url):
     return response.text
 
 async def asyncrequest(url, encode='utf-8', header={}):
-    response = await AsyncHTTPClient().fetch(url, header=header)
+    response = await AsyncHTTPClient().fetch(url, headers=header, validate_cert=False)
     if response.code != 200:
         logger.error('Request error url:' + url + ' ,response code: ' + str(response.code))
         return None

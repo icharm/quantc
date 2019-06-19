@@ -2,6 +2,8 @@
 var charts = new Map();
 // Cache all cards tab statue.
 var tabs = new Map();
+// All company info
+var cinfos = new Map();
 
 // 监听collapse卡片展开事件
 $(".collapse").on('show.bs.collapse', function(e) {
@@ -10,10 +12,14 @@ $(".collapse").on('show.bs.collapse', function(e) {
         tabs.set(id, 'd');
         $("#d-" + id).tab('show');
         return showKLineChart(id, 'd');
-    } else {
+    } else if (defaultTab === "w") {
         tabs.set(id, 'w');
         $("#w-" + id).tab('show'); //展示第二个tab页
         return showKLineChart(id, 'w');
+    } else {
+        tabs.set(id, 'c');
+        $("#c-" + id).tab('show'); //展示第三个tab页
+        return showCompanyInfo(id, 'c');
     }
 });
 
@@ -22,7 +28,11 @@ $("#tabs a").on('shown.bs.tab', function(e){
     let tmp = id.split('-');
     let type = tmp[0], code = tmp[1];
     tabs.set(code, type);
-    return showKLineChart(code, type);
+    if (type === "c") {
+        showCompanyInfo(code, type)
+    } else {
+        return showKLineChart(code, type);
+    }
 });
 
 // 监听expand卡片全屏事件
@@ -75,6 +85,14 @@ function showKLineChart(id, type) {
     }
 }
 
+function showCompanyInfo(code, type) {
+    let id = type + "_" + code;
+    if (cinfos.get(id)) {
+        return;
+    }
+    ajaxCinfo(code, id)
+}
+
 function ajaxDaily(chart, id) {
     $.ajax({
         url: '/sd/daily_line?code='+id,
@@ -107,6 +125,33 @@ function ajaxWeekly(chart, id) {
             chart.hideLoading();
         }
     });
+}
+
+function ajaxCinfo(code, id) {
+    $.ajax({
+        url: '/sd/cinfo?code='+code,
+        type:'GET',
+        dataType: 'json',
+        success: function (ret) {
+            console.log(ret);
+            var cinfo = new Vue({
+                delimiters:['[[', ']]'],
+                el: "#" + id,
+                data: {
+                    'fullname': ret.org_name_cn,
+                    'website': ret.org_website,
+                    'controller': ret.actual_controller,
+                    'office': ret.office_address_cn,
+                    'main':ret.operating_scope,
+                    'introduction': ret.org_cn_introduction
+                }
+            });
+            cinfos.set(id, cinfo)
+        },
+        error: function (ret) {
+            console.log(ret);
+        }
+    })
 }
 
 

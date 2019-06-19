@@ -25,6 +25,13 @@ class QuotesHandler(tornado.web.RequestHandler):
             self.write('')
         self.write(json.dumps(await sina.quotes_async(code)))
 
+class CompanyInfoHandler(tornado.web.RequestHandler):
+    async def get(self):
+        code = self.get_argument('code')
+        if code is None or code == '':
+            self.write('')
+        self.write(await D.company_info_async(code))
+
 class TestHandler(tornado.web.RequestHandler):
     async def get(self):
         query = self.get_argument('q')
