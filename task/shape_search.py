@@ -26,6 +26,10 @@ def main():
             if quotes is None:
                 continue
             quotes = quotes.iloc[-50:-1].to_dict(orient="records")
+            date = time.strftime("%Y-%m-%d", time.localtime(int(quotes[-1]["timestamp"] / 1000)))
+            if date != today_date:
+                logger.info(stock.seccode + " recent quotes no today, is:  " + date)
+                continue
             logger.debug('Shape analysis in stock : ' + str(stock.seccode) + ' ' + str(stock.secname))
             if hammer_shape(stock, quotes):
                 hammer_count += 1
