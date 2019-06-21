@@ -22,7 +22,10 @@ def main():
     stocks = SwStock.select()
     for stock in stocks:
         try:
-            quotes = D.quotes_lately(stock.seccode)
+            quotes = D.quotes(stock.seccode, type="d")
+            if quotes is None:
+                continue
+            quotes = quotes.iloc[-50:-1].to_dict(orient="records")
             logger.debug('Shape analysis in stock : ' + str(stock.seccode) + ' ' + str(stock.secname))
             if hammer_shape(stock, quotes):
                 hammer_count += 1
@@ -46,7 +49,7 @@ def hammer_shape(stock, quotes):
         color=result['color'],
         ratio=result['ratio'],
         lratio=result['lratio'],
-        date=time.strftime("%Y-%m-%d", time.localtime()),
+        date=time.strftime("%Y-%m-%d", time.localtime(quotes[-1]["timestamp"])),
         score_s=hammer_score_s(result['ratio'], result['lratio']),
         close=quotes[-1]['close']
     )
@@ -65,7 +68,7 @@ def venus_shape(stock, quotes):
         type='day',
         trend_before=trend_before(quotes),
         color=1,
-        date=quotes[-1]['date'],
+        date=time.strftime("%Y-%m-%d", time.localtime(quotes[-1]["timestamp"])),
         close=quotes[-1]['close'],
         score_s=result,
     )
