@@ -25,7 +25,7 @@ def main():
             quotes = D.quotes(stock.seccode, type="d")
             if quotes is None:
                 continue
-            quotes = quotes.iloc[-50:-1].to_dict(orient="records")
+            quotes = quotes.iloc[-50:].to_dict(orient="records")
             date = time.strftime("%Y-%m-%d", time.localtime(int(quotes[-1]["timestamp"] / 1000)))
             if date != today_date:
                 logger.info(stock.seccode + " recent quotes no today, is:  " + date)
@@ -77,5 +77,6 @@ def venus_shape(stock, quotes):
         score_s=result,
     )
     logger.debug('Venus found! : ' + str(stock.seccode) + ' ' + str(stock.secname))
+    return True
 
 main()

@@ -32,7 +32,7 @@ def get_cookie():
             content = json.loads(content)
             cookie = content["cookie"]
             created = content["created"]
-            if datetime.datetime.fromtimestamp(created) - datetime.datetime.now() > datetime.timedelta(hours=12):
+            if datetime.datetime.now() - datetime.datetime.fromtimestamp(created) > datetime.timedelta(hours=12):
                 logger.info("Cookie over 12 hours, update from xueqiu.com")
                 cookie = ""
         if cookie == "":
@@ -45,6 +45,7 @@ def get_cookie():
                 js = json.dumps({"cookie": cookie, "created": time.time()})
                 file.seek(0)    # 指向文件头 从头开始写
                 file.write(js)
+                file.truncate()     # 删除后面多余的内容
                 logger.info("Cookie updated successfully.")
         file.close()
         return "xq_a_token=" + cookie + ";"
