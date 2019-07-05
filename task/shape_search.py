@@ -7,7 +7,7 @@ from qcinfo import D
 from qcinfo import szse
 from basic import log
 from model import SwStock
-from model import HammerShape, VenusShape
+from model import ShapeDaily
 
 logger = log.Log()
 
@@ -45,38 +45,32 @@ def hammer_shape(stock, quotes):
     result = is_hammer_shape(quotes)
     if not result:
         return False
-    HammerShape.create(
-        seccode=stock.seccode,
-        secname=stock.secname,
-        type='day',
-        trend_before=result['trend_before'],
-        color=result['color'],
-        ratio=result['ratio'],
-        lratio=result['lratio'],
-        date=time.strftime("%Y-%m-%d", time.localtime(int(quotes[-1]["timestamp"] / 1000))),
-        score_s=hammer_score_s(result['ratio'], result['lratio']),
-        close=quotes[-1]['close']
-    )
+    save(result, stock, quotes, 'hammer')
     result['seccode'] = str(stock.seccode)
     result['secname'] = str(stock.secname)
-    logger.debug('Found! : ' + str(result))
+    logger.debug('Hammer Found! : ' + str(result))
     return True
 
 def venus_shape(stock, quotes):
     result = venus_shape_judge(quotes)
     if not result:
         return False
-    VenusShape.create(
-        seccode=stock.seccode,
-        secname=stock.secname,
-        type='day',
-        trend_before=trend_before(quotes),
-        color=1,
-        date=time.strftime("%Y-%m-%d", time.localtime(int(quotes[-1]["timestamp"] / 1000))),
-        close=quotes[-1]['close'],
-        score_s=result,
-    )
+    save(result, stock, quotes, 'venus')
     logger.debug('Venus found! : ' + str(stock.seccode) + ' ' + str(stock.secname))
     return True
+
+def save(result, stock, quotes, type):
+    ShapeDaily.create(
+        seccode=stock.seccode,
+        secname=stock.secname,
+        type=type,
+        trend_before=result['trend_before'],
+        color=1,
+        date=today_date,
+        close=quotes[-1]['close'],
+        score_s=result['score'],
+    )
+
+
 
 main()

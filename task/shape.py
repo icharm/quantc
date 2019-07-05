@@ -3,47 +3,92 @@
 from basic import log
 logger = log.Log()
 
+# def is_hammer_shape(quotes):
+#     # Ratio of entity and line
+#     entity_head_line_ration = 0.4
+#     # entity_line_ratio_h = 0.5
+#     # linehead_entity_ratio_h = 0.2
+#     # linehead_line_ratio_h = 0.3
+#
+#     color = 1
+#     if quotes[-1]['open'] < 2:     # Open price < 2, not consider.
+#         return False
+#
+#     line_h = quotes[-1]['high'] - quotes[-1]['low']    # Keep two decimals
+#     entity_h = quotes[-1]['open'] - quotes[-1]['close']
+#     if line_h <= 0:
+#         return False
+#     # rais(1) or drop(-1)
+#     if entity_h > 0:    # Open - Close > 0 drop
+#         color = -1
+#     entity_h = abs(entity_h)
+#     # entity line ratio
+#     ratio = round(entity_h / line_h, 4)
+#     # line head line ratio
+#     if color > 0:
+#         lhead = quotes[-1]['high'] - quotes[-1]['close']   # High - Close rise
+#     else:
+#         lhead = quotes[-1]['high'] - quotes[-1]['open']   # High - Open drop
+#     if lhead >= entity_h:
+#         return False
+#     lratio = round(lhead / line_h, 4)
+#     ratio = lratio + ratio
+#     if ratio > entity_head_line_ration:
+#         return False
+#
+#     trendb = trend_before(quotes)
+#
+#     if trendb <= 0:
+#         return False
+#     # is hammer shape
+#     # logger.info(str(quotes))
+#     return {
+#         'trend_before': trendb,
+#         'color': color,
+#         'ratio': ratio,
+#         'lratio': lratio
+#     }
+
 def is_hammer_shape(quotes):
-    # Ratio of entity and line
-    entity_head_line_ration = 0.4
-    # entity_line_ratio_h = 0.5
-    # linehead_entity_ratio_h = 0.2
-    # linehead_line_ratio_h = 0.3
+    # 趋势 跌
+    trendb = trend_before(quotes)
+    if trendb > 0:
+        return False
+    # 成交量趋势 涨
+    val_trend = trend_before(quotes, item='volume')
+    if val_trend < 0:
+        return False
 
+    q = quotes[-1]
     color = 1
-    if quotes[-1]['open'] < 2:     # Open price < 2, not consider.
-        return False
-
-    line_h = quotes[-1]['high'] - quotes[-1]['low']    # Keep two decimals
-    entity_h = quotes[-1]['open'] - quotes[-1]['close']
-    if line_h <= 0:
-        return False
-    # rais(1) or drop(-1)
-    if entity_h > 0:    # Open - Close > 0 drop
+    line = q['high'] - q['low']     # 线高
+    entity = q['close'] - q['open'] # 实体高度
+    top = q['high'] - q['close']    # 头高度
+    footer = q['high'] - q['open']  # 脚高度
+    if q['open'] > q['close']:
         color = -1
-    entity_h = abs(entity_h)
-    # entity line ratio
-    ratio = round(entity_h / line_h, 4)
-    # line head line ratio
-    if color > 0:
-        lhead = quotes[-1]['high'] - quotes[-1]['close']   # High - Close rise
-    else:
-        lhead = quotes[-1]['high'] - quotes[-1]['open']   # High - Open drop
-    if lhead >= entity_h:
-        return False
-    lratio = round(lhead / line_h, 4)
-    ratio = lratio + ratio
-    if ratio > entity_head_line_ration:
+        entity = q['open'] - q['close']
+        top = q['high'] - q['open']
+
+    # 十字或者一字板
+    if q['open'] == q['close']:
         return False
 
-    trendb= trend_before(quotes)
-    # is hammer shape
-    # logger.info(str(quotes))
+    # 头部长度不超过10%
+    if top > line * 0.1:
+        return False
+
+    # 实体长度不超过40%
+    if entity > line * 0.4:
+        return False
+
+    # 分数
+    score = round(footer / line * 100, 2)
+
     return {
         'trend_before': trendb,
         'color': color,
-        'ratio': ratio,
-        'lratio': lratio
+        'socre': score,
     }
 
 def hammer_score_s(ratio, lratio):
