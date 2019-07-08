@@ -54,41 +54,44 @@ def is_hammer_shape(quotes):
     trendb = trend_before(quotes)
     if trendb > 0:
         return False
-    # 成交量趋势 涨
+    # 成交量趋势 跌
     val_trend = trend_before(quotes, item='volume')
-    if val_trend < 0:
+    if val_trend > 0:
         return False
 
     q = quotes[-1]
     color = 1
     line = q['high'] - q['low']     # 线高
     entity = q['close'] - q['open'] # 实体高度
-    top = q['high'] - q['close']    # 头高度
-    footer = q['high'] - q['open']  # 脚高度
+    top_h = q['high'] - q['close']    # 头高度
+    footer = line - (q['high'] - q['open'])  # 脚高度
     if q['open'] > q['close']:
         color = -1
         entity = q['open'] - q['close']
-        top = q['high'] - q['open']
+        top_h = q['high'] - q['open']
+        footer = line - (q['high'] - q['close'])
 
     # 十字或者一字板
     if q['open'] == q['close']:
         return False
 
     # 头部长度不超过10%
-    if top > line * 0.1:
+    if top_h > line * 0.1:
         return False
 
     # 实体长度不超过40%
-    if entity > line * 0.4:
+    if entity > line * 0.3:
         return False
 
     # 分数
-    score = round(footer / line * 100, 2)
+    score = round((footer / q['low']) * 1000, 2)
+    if score < 15:
+        return False
 
     return {
         'trend_before': trendb,
         'color': color,
-        'socre': score,
+        'score': score,
     }
 
 def hammer_score_s(ratio, lratio):
@@ -136,19 +139,56 @@ def venus_shape_judge(quotes_list):
     # 前天跌，昨天跌到底，今天高开高走
     # 成交量较前五天平均值收缩
     if q1_l >= q2_h and q3_l >= q2_h and q2_t < 0 and q1_t > 0 and vol3_average > vol2_average and close3_average >= close2_average:
-        c1 = (q1_l - q2_h) / q2['close']
-        c2 = (q3_l - q2_h) / q3['open']
+        c1 = (q1_l - q2_h) / q2_h
+        c2 = (q3_l - q2_h) / q2_h
         c3 = (q1_h - q1_l) / q2['close']
-        c4 = (vol3_average - vol2_average) / vol3_average
-        return round((c1 + c2 + c3 + c4) * 1000, 2)
+        c4 = (vol3_average - vol2_average) / vol2_average
+        return {
+            'trend_before': trend_before(quotes_list),
+            'color': 1,
+            'score': round((c1 + c2 + c3 + c4) * 1000, 2)
+        }
     # 前天跌，昨天低开高走，今天涨
     # 成交量较前五天平均值增加
     elif q1_l >= q2_h and q3_l >= q2_h and q2_t > 0 and q1_t > 0 and vol2_average < vol3_average and close3_average >= close2_average:
-        c1 = (q1_l - q2_h) / q2['close']
-        c2 = (q3_l - q2_h) / q3['open']
+        c1 = (q1_l - q2_h) / q2_h
+        c2 = (q3_l - q2_h) / q2_h
         c3 = (q1_h - q1_l) / q2['close']
-        c4 = (vol2_average - vol3_average) / vol2_average
-        return round((c1 + c2 + c3 + c4) * 1000, 2)
+        c4 = (vol2_average - vol3_average) / vol3_average
+        return {
+            'trend_before': trend_before(quotes_list),
+            'color': 1,
+            'score': round((c1 + c2 + c3 + c4) * 1000, 2)
+        }
+    else:
+        return False
+
+def is_cross_shape(quotes):
+    '''底部缩量的十字星线'''
+    # 趋势 跌
+    trendb = trend_before(quotes)
+    if trendb > 0:
+        return False
+    # 成交量趋势 跌
+    val_trend = trend_before(quotes, item='volume')
+    if val_trend >= 0:
+        return False
+
+    q = quotes[-1]
+    color = 1
+    line = q['high'] - q['low']  # 线高
+    high = q['close']
+    if q['open'] > q['close']:
+        color = -1
+        high = q['open']
+    score = round(line / q['low'] / 2 * 1000, 2)
+    # 十字, 非一字板，非T字, 分数低于15舍弃，十字数量太多
+    if q['open'] == q['close'] and line != 0 and q['high'] != high and score > 15:
+        return {
+            'trend_before': trendb,
+            'color': color,
+            'score': score
+        }
     else:
         return False
 

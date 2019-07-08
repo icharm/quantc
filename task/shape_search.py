@@ -7,7 +7,7 @@ from qcinfo import D
 from qcinfo import szse
 from basic import log
 from model import SwStock
-from model import ShapeDaily
+from model import ShapeDaily, Statistics
 
 logger = log.Log()
 
@@ -19,6 +19,7 @@ def main():
         return
     hammer_count = 0
     venus_count = 0
+    cross_count = 0
     stocks = SwStock.select()
     for stock in stocks:
         try:
@@ -27,19 +28,29 @@ def main():
                 continue
             quotes = quotes.iloc[-50:].to_dict(orient="records")
             date = time.strftime("%Y-%m-%d", time.localtime(int(quotes[-1]["timestamp"] / 1000)))
-            if date != today_date:
-                logger.info(stock.seccode + " recent quotes no today, is:  " + date)
-                continue
+            # if date != today_date:
+            #     logger.info(stock.seccode + " recent quotes no today, is:  " + date)
+            #     continue
             logger.debug('Shape analysis in stock : ' + str(stock.seccode) + ' ' + str(stock.secname))
             if hammer_shape(stock, quotes):
                 hammer_count += 1
             if venus_shape(stock, quotes):
                 venus_count += 1
+            if cross_shape(stock, quotes):
+                cross_count += 1
+
         except:
             logger.error(traceback.format_exc())
             continue
+    Statistics.create(
+        date=today_date,
+        hammer_count=hammer_count,
+        venus_count=venus_count,
+        cross_count=cross_count
+    )
     logger.info('Found ' + str(hammer_count) + ' hammer shape.\n' +
-                'Found ' + str(venus_count) + ' venus shape.\n')
+                'Found ' + str(venus_count) + ' venus shape.\n' +
+                'Found ' + str(cross_count) + ' cross shape.\n')
 
 def hammer_shape(stock, quotes):
     result = is_hammer_shape(quotes)
@@ -59,13 +70,21 @@ def venus_shape(stock, quotes):
     logger.debug('Venus found! : ' + str(stock.seccode) + ' ' + str(stock.secname))
     return True
 
+def cross_shape(stock, quotes):
+    result = is_cross_shape(quotes)
+    if not result:
+        return False
+    save(result, stock, quotes, 'cross')
+    logger.debug('Cross found! : ' + str(stock.seccode) + ' ' + str(stock.secname))
+    return True
+
 def save(result, stock, quotes, type):
     ShapeDaily.create(
         seccode=stock.seccode,
         secname=stock.secname,
         type=type,
         trend_before=result['trend_before'],
-        color=1,
+        color=result['color'],
         date=today_date,
         close=quotes[-1]['close'],
         score_s=result['score'],

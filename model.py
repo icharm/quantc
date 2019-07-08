@@ -69,7 +69,7 @@ class HammerShapeWeek(Model):
     date = DateField()      # trade date
     close = DoubleField()   # close price.
     trend_after = IntegerField(null=True)    # rise 1 or drop -1
-    week1 = DoubleField(null=True)      # after one day range of pice change.
+    week1 = DoubleField(null=True)      # after one day range of price change.
     week2 = DoubleField(null=True)
     week3 = DoubleField(null=True)
     month1 = DoubleField(null=True)
@@ -136,8 +136,18 @@ class ShapeDaily(Model):
     class Meta:
         database = db
 
-tables = [SwStock, HammerShape, TradeCalendar, HammerShapeWeek, VenusShape, ShapeDaily]
-db.connect()
-db.create_tables([ShapeDaily])
-logger.debug('Tables created successfully.')
+class Statistics(Model):
+    date = CharField()
+    hammer_count = IntegerField(default=0)
+    venus_count = IntegerField(default=0)
+    cross_count = IntegerField(default=0)
+    updated = DateTimeField(default=datetime.datetime.now)
+
+    class Meta:
+        database = db
+
+tables = [SwStock, HammerShape, TradeCalendar, HammerShapeWeek, VenusShape, ShapeDaily, Statistics]
+# db.connect()
+# db.create_tables([Statistics])
+# logger.debug('Tables created successfully.')
 
