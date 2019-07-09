@@ -89,7 +89,7 @@
                     selectedDate: date,
                     selectedDateFormat:  'YYYY-MM-DD',
                     onSelectedDateChanged: function(a, t) {
-                        window.location.href='/vs/d?date='+ moment(t).format("YYYY-MM-DD")
+                        window.location.href='/shape/d/{{ lv2 }}?date='+ moment(t).format("YYYY-MM-DD")
                     }
                 })
             }
