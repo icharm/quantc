@@ -3,52 +3,6 @@
 from basic import log
 logger = log.Log()
 
-# def is_hammer_shape(quotes):
-#     # Ratio of entity and line
-#     entity_head_line_ration = 0.4
-#     # entity_line_ratio_h = 0.5
-#     # linehead_entity_ratio_h = 0.2
-#     # linehead_line_ratio_h = 0.3
-#
-#     color = 1
-#     if quotes[-1]['open'] < 2:     # Open price < 2, not consider.
-#         return False
-#
-#     line_h = quotes[-1]['high'] - quotes[-1]['low']    # Keep two decimals
-#     entity_h = quotes[-1]['open'] - quotes[-1]['close']
-#     if line_h <= 0:
-#         return False
-#     # rais(1) or drop(-1)
-#     if entity_h > 0:    # Open - Close > 0 drop
-#         color = -1
-#     entity_h = abs(entity_h)
-#     # entity line ratio
-#     ratio = round(entity_h / line_h, 4)
-#     # line head line ratio
-#     if color > 0:
-#         lhead = quotes[-1]['high'] - quotes[-1]['close']   # High - Close rise
-#     else:
-#         lhead = quotes[-1]['high'] - quotes[-1]['open']   # High - Open drop
-#     if lhead >= entity_h:
-#         return False
-#     lratio = round(lhead / line_h, 4)
-#     ratio = lratio + ratio
-#     if ratio > entity_head_line_ration:
-#         return False
-#
-#     trendb = trend_before(quotes)
-#
-#     if trendb <= 0:
-#         return False
-#     # is hammer shape
-#     # logger.info(str(quotes))
-#     return {
-#         'trend_before': trendb,
-#         'color': color,
-#         'ratio': ratio,
-#         'lratio': lratio
-#     }
-
 def is_hammer_shape(quotes):
     # 趋势 跌
     trendb = trend_before(quotes)
@@ -93,12 +47,6 @@ def is_hammer_shape(quotes):
         'color': color,
         'score': score,
     }
-
-def hammer_score_s(ratio, lratio):
-    add = (ratio + lratio)
-    if add == 0:    # Shape T super hammer.
-        return 10000
-    return round(10 / (ratio + lratio), 2)
 
 def venus_shape_judge(quotes_list):
     q1 = quotes_list[-1]

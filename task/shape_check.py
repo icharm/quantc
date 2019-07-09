@@ -3,7 +3,7 @@ import time
 from qcinfo import D
 from qcinfo import sina
 from basic import log
-from model import ShapeDaily
+from model import ShapeDaily, ShapeWeekly
 
 logger = log.Log()
 fm = '%Y-%m-%d'
@@ -18,6 +18,7 @@ def main():
         if date is None:
             continue
         check(date, i)
+        check_week(date, i)
 
 def check(date, num):
     logger.debug('checking for d' + str(num) + ', date is ' + date)
@@ -27,6 +28,23 @@ def check(date, num):
         codes.append(stock.seccode)
     if len(codes) == 0:
         logger.info('No shape stock need to check for d' + str(num) + ', date is ' + date)
+        return
+    quotess = sina.quotes_multiple(codes)
+
+    for stock in stocks:
+        quotes = quotess.get(stock.seccode)
+        today_close = quotes.get('close')
+        rg = round((today_close - stock.close) / stock.close * 100, 2)
+        save(stock, num, rg)
+
+def check_week(date, num):
+    logger.debug('checking for d' + str(num) + ' in weekly shape, date is ' + date)
+    stocks = ShapeWeekly.select().where(ShapeWeekly.date == date)
+    codes = []
+    for stock in stocks:
+        codes.append(stock.seccode)
+    if len(codes) == 0:
+        logger.info('No shape stock need to check for d' + str(num) + ' in weekly shape, date is ' + date)
         return
     quotess = sina.quotes_multiple(codes)
 
