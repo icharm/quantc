@@ -83,3 +83,21 @@ def islast_trading_day_week(date):
         return True
     else:
         return False
+
+def previous_trading_day(date, n=1):
+    '''
+    指定日期的前一个交易日
+    :param date: String %Y-%m-%d
+    :param n: Int 前n个交易日
+    :return: date string or none(no trading day this week)
+    '''
+    cdf = calendar()
+    previous = None
+    for index, row in cdf.iterrows():
+        if row['date'] == date:
+            for i in range(n+0, n+100):
+                tmp = cdf.iloc[index - i]
+                if tmp['open'] == 1:
+                    previous = tmp['date']
+                    break
+    return previous
