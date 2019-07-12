@@ -13,9 +13,9 @@ logger = log.Log()
 today_date = time.strftime('%Y-%m-%d', time.localtime())
 
 def main():
-    # if not D.islast_trading_day_week(today_date):
-    #     logger.info('Today is not last trading day of week, interrupt search.')
-    #     return
+    if not D.islast_trading_day_week(today_date):
+        logger.info('Today is not last trading day of week, interrupt search.')
+        return
     hammer_count = 0
     venus_count = 0
     cross_count = 0
@@ -27,9 +27,9 @@ def main():
                 continue
             quotes = quotes.iloc[-50:].to_dict(orient="records")
             date = time.strftime("%Y-%m-%d", time.localtime(int(quotes[-1]["timestamp"] / 1000)))
-            # if date != today_date:
-            #     logger.info(stock.seccode + " recent quotes no today, is:  " + date)
-            #     continue
+            if date != today_date:
+                logger.info(stock.seccode + " recent quotes no today, is:  " + date)
+                continue
             logger.debug('Shape analysis in stock : ' + str(stock.seccode) + ' ' + str(stock.secname))
             if hammer_shape(stock, quotes):
                 hammer_count += 1

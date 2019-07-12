@@ -19,8 +19,8 @@ def prefix(code):
         code = 'sh' + code
     return code
 
-def request(url):
-    response = requests.get(url)
+def request(url, headers=[]):
+    response = requests.get(url, headers=headers)
     if response.status_code != 200:
         logger.error('Request error url:' + url + ' ,response code: ' + str(response.status_code))
         return None
