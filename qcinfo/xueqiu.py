@@ -23,44 +23,56 @@ header = {
 # Quotes type
 Q_TYPE = {"d": "day", "w": "week", "m": "month", "q": "quarter", "y": "year", "120": "120m", "60": "60m", "30": "30m", "15": "15m", "5": "5m", "1": "1m"}
 
-def get_cookie():
+def get_header():
     file = open(dirname(__file__) + "/store/xueqiu_cookie.json", mode="r+")
     try:
         content = file.read()
-        cookie = ""
-        if content != "":
-            content = json.loads(content)
-            cookie = content["cookie"]
-            created = content["created"]
-            if datetime.datetime.now() - datetime.datetime.fromtimestamp(created) > datetime.timedelta(hours=12):
-                logger.info("Cookie over 12 hours, update from xueqiu.com")
-                cookie = ""
-        if cookie == "":
-            response = requests.get("https://xueqiu.com/", headers=header)
-            if response.status_code != 200:
-                logger.info("Fetch cookie from xueqiu.com failed, reponse code: " + response.status_code)
-                cookie = ""
-            else:
-                cookie = response.cookies["xq_a_token"]
-                js = json.dumps({"cookie": cookie, "created": time.time()})
-                file.seek(0)    # 指向文件头 从头开始写
-                file.write(js)
-                file.truncate()     # 删除后面多余的内容
-                logger.info("Cookie updated successfully.")
         file.close()
-        return "xq_a_token=" + cookie + ";"
+        if content == "":
+            refreshHeader()
+        content = json.loads(content)
+        cookie = content["cookie"]
+        created = content["created"]
+        agent_id = content["user_agent_id"]
+        if datetime.datetime.now() - datetime.datetime.fromtimestamp(created) > datetime.timedelta(hours=6):
+            logger.info("Cookie over 6 hours, update from xueqiu.com")
+            return refreshHeader()
+        header["Cookie"] = "xq_a_token=" + cookie + ";"
+        header['User-Agent'] = user_agents[agent_id]
+        return header
     except:
         file.close()
         logger.error("Xueqiu fetch cookies error.\n" + traceback.format_exc())
         return ""
 
-def generateHeader():
-    ip = randomIpv4()
-    header['X-Real-IP'] = ip
-    header['X-Forwarded-For'] = ip
-    header['User-Agent'] = user_agents[random.randint(0, 69)]
-    header["Cookie"] = get_cookie()
+def refreshHeader():
+    file = open(dirname(__file__) + "/store/xueqiu_cookie.json", mode="r+")
+    agent_id = random.randint(0, 69)
+    header['User-Agent'] = user_agents[agent_id]
+    header["Cookie"] = ""
+    response = requests.get("https://xueqiu.com/", headers=header)
+    if response.status_code != 200:
+        logger.info("Fetch cookie from xueqiu.com failed, reponse code: " + response.status_code)
+    else:
+        cookie = response.cookies["xq_a_token"]
+        js = json.dumps({"cookie": cookie, "user_agent_id": agent_id, "created": time.time()})
+        file.seek(0)  # 指向文件头 从头开始写
+        file.write(js)
+        file.truncate()  # 删除后面多余的内容
+        logger.info("Cookie updated successfully.")
+        header["Cookie"] = "xq_a_token=" + cookie + ";"
+        header['User-Agent'] = user_agents[agent_id]
+    file.close()
     return header
+
+
+
+def generateHeader():
+    header1 = get_header()
+    ip = randomIpv4()
+    header1['X-Real-IP'] = ip
+    header1['X-Forwarded-For'] = ip
+    return header1
 
 async def company_info_async(code):
     '''
@@ -112,8 +124,7 @@ async def company_info_async(code):
     :return: Array item refer above json from api return
     '''
     url = base_url + "/v5/stock/f10/cn/company.json?symbol=" + prefix(code).upper()
-    content = await asyncrequest(url, header=generateHeader())
-    print(header)
+    content = await asyncrequest(url, header=get_header())
     if content is None:
         return None
     return json.loads(content)["data"]["company"]
@@ -149,7 +160,7 @@ def quotes(code, type="d", count=-142, begin=int(time.time()*1000)):
     for key, value in param.items():
         params += key + "=" + str(value) + "&"
     url = url + "?" + params
-    content = requests.get(url, headers=generateHeader())
+    content = requests.get(url, headers=get_header())
     if content.status_code != 200:
         logger.error("Request xueqiu quotes error. url: " + url)
         logger.error(traceback.format_exc())
@@ -160,6 +171,8 @@ def quotes(code, type="d", count=-142, begin=int(time.time()*1000)):
     select = df[["timestamp", "open", "close", "high", "low", "amount", "volume", "percent", "chg", "turnoverrate"]]
     select = select.rename({"chg": "change", "turnoverrate": "turnover_rate"}, axis="columns")
     return select
+
+print(quotes("600606"))
 
 async def quotes_async(code, type="d", count=-142, begin=int(time.time()*1000)):
     '''
@@ -192,8 +205,7 @@ async def quotes_async(code, type="d", count=-142, begin=int(time.time()*1000)):
     for key, value in param.items():
         params += key + "=" + str(value) + "&"
     url = url + "?" + params
-    header["Cookie"] = get_cookie()
-    content = await asyncrequest(url, encode="utf-8", header=generateHeader())
+    content = await asyncrequest(url, encode="utf-8", header=get_header())
     if content is None:
         logger.error("Request xueqiu quotes error. url: " + url)
         return None

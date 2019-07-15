@@ -34,7 +34,7 @@ else:
             qcrepo.append_quotes(code, "d", quotes.iloc[0].to_json(orient="values"))
             count += 1
             logger.info(str(count) + " update : " + code + " daily quotes successfully.")
-            time.sleep(random.randint(0, 5))
+            time.sleep(random.randint(0, 2))
         except:
             logger.error(traceback.format_exc())
             continue
