@@ -3,6 +3,7 @@
 
 import time
 import traceback
+import random
 from qcinfo.log import task_log
 from qcinfo import xueqiu
 from qcinfo import qcrepo
@@ -34,6 +35,7 @@ else:
             qcrepo.append_quotes(code, "w", quotes.iloc[0].to_json(orient="values"))
             count += 1
             logger.info(str(count) + " update : " + code + " weekly quotes successfully.")
+            time.sleep(random.randint(0, 5))
         except:
             logger.error(traceback.format_exc())
             continue

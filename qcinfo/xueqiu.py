@@ -17,7 +17,7 @@ base_url = "https://stock.xueqiu.com"
 header = {
     "Accept": "application/json, text/plain, */*",
     "Origin": "https://xueqiu.com",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36",
+    "User-Agent": "",
 }
 
 # Quotes type
@@ -53,6 +53,14 @@ def get_cookie():
         file.close()
         logger.error("Xueqiu fetch cookies error.\n" + traceback.format_exc())
         return ""
+
+def generateHeader():
+    ip = randomIpv4()
+    header['X-Real-IP'] = ip
+    header['X-Forwarded-For'] = ip
+    header['User-Agent'] = user_agents[random.randint(0, 69)]
+    header["Cookie"] = get_cookie()
+    return header
 
 async def company_info_async(code):
     '''
@@ -104,8 +112,8 @@ async def company_info_async(code):
     :return: Array item refer above json from api return
     '''
     url = base_url + "/v5/stock/f10/cn/company.json?symbol=" + prefix(code).upper()
-    header["Cookie"] = get_cookie()
-    content = await asyncrequest(url, header=header)
+    content = await asyncrequest(url, header=generateHeader())
+    print(header)
     if content is None:
         return None
     return json.loads(content)["data"]["company"]
@@ -141,8 +149,7 @@ def quotes(code, type="d", count=-142, begin=int(time.time()*1000)):
     for key, value in param.items():
         params += key + "=" + str(value) + "&"
     url = url + "?" + params
-    header["Cookie"] = get_cookie()
-    content = requests.get(url, headers=header)
+    content = requests.get(url, headers=generateHeader())
     if content.status_code != 200:
         logger.error("Request xueqiu quotes error. url: " + url)
         logger.error(traceback.format_exc())
@@ -186,7 +193,7 @@ async def quotes_async(code, type="d", count=-142, begin=int(time.time()*1000)):
         params += key + "=" + str(value) + "&"
     url = url + "?" + params
     header["Cookie"] = get_cookie()
-    content = await asyncrequest(url, encode="utf-8", header=header)
+    content = await asyncrequest(url, encode="utf-8", header=generateHeader())
     if content is None:
         logger.error("Request xueqiu quotes error. url: " + url)
         return None
