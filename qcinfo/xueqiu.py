@@ -28,8 +28,8 @@ def get_header():
     try:
         content = file.read()
         file.close()
-        if content == "":
-            refreshHeader()
+        if content.strip() == '':
+            return refreshHeader()
         content = json.loads(content)
         cookie = content["cookie"]
         created = content["created"]
@@ -171,8 +171,6 @@ def quotes(code, type="d", count=-142, begin=int(time.time()*1000)):
     select = df[["timestamp", "open", "close", "high", "low", "amount", "volume", "percent", "chg", "turnoverrate"]]
     select = select.rename({"chg": "change", "turnoverrate": "turnover_rate"}, axis="columns")
     return select
-
-print(quotes("600606"))
 
 async def quotes_async(code, type="d", count=-142, begin=int(time.time()*1000)):
     '''

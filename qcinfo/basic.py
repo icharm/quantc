@@ -9,8 +9,6 @@ logger = log.Log()
 
 # user-agent request header
 user_agents = [
-    "Mozilla/5.0 (Windows: U; Windows NT 5.1; zh-CN; rv:1.7.5) Gecko/20041124 Firefox/1.0",
-    "Mozilla/5.0 (Windows: U; Windows NT 6.0; zh-CN; rv:1.9.2.18) Gecko/20110614 Firefox/3.6.18",
     "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:8.0.1) Gecko/20100101 Firefox/8.0.1",
     "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0",
     "Mozilla/5.0 (Windows NT 6.1; rv:41.0) Gecko/20100101 Firefox/41.0",
