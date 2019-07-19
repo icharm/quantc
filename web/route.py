@@ -2,7 +2,7 @@
 """
 the url structure of website
 """
-from .handler.index import IndexHandler
+from .handler.index import IndexHandler, ShapeStatisticsHandler
 from .handler.shape import ShapeDailyHandler, ShapeWeeklyHandler
 from .handler.stock_data import DailyLineHandler, WeeklyLineHandler
 from .handler.stock_data import QuotesHandler, CompanyInfoHandler
@@ -16,5 +16,6 @@ url = [
     (r'/sd/weekly_line', WeeklyLineHandler),
     (r'/sd/quotes', QuotesHandler),
     (r'/sd/cinfo', CompanyInfoHandler),
+    (r'/db/shape_statistics', ShapeStatisticsHandler),
     (r'/sd/test', TestHandler)
 ]

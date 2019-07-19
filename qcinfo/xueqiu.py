@@ -47,7 +47,7 @@ def get_header():
 
 def refreshHeader():
     file = open(dirname(__file__) + "/store/xueqiu_cookie.json", mode="r+")
-    agent_id = random.randint(0, 69)
+    agent_id = random.randint(0, 67)
     header['User-Agent'] = user_agents[agent_id]
     header["Cookie"] = ""
     response = requests.get("https://xueqiu.com/", headers=header)
